@@ -1,0 +1,69 @@
+package com.bookstore.demo.controller;
+
+import com.bookstore.demo.model.Admin;
+import com.bookstore.demo.model.Book;
+import com.bookstore.demo.service.AdminService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/books")
+public class BookController {
+
+    private final AdminService adminService;
+
+    @Autowired
+    public BookController(AdminService adminService) {
+        this.adminService = adminService;
+    }
+
+    // Endpoint para obter todos os livros
+    @GetMapping
+    public List<Book> getAllBooks() {
+        try {
+            return adminService.getAllBooks();
+        } catch (Exception e) {
+            // Adicione lógica para lidar com exceções, como logar o erro ou retornar uma resposta de erro ao cliente
+            // Por exemplo, você pode retornar um ResponseEntity com um status HTTP específico para indicar um erro
+            // Aqui estamos apenas relançando a exceção (pode não ser a melhor prática em todos os casos)
+            throw new RuntimeException("Erro ao obter todos os livros", e);
+        }
+    }
+
+    // Endpoint para adicionar um novo livro
+    @PostMapping
+    public Book addBook(@RequestBody Book book) {
+        try {
+            return adminService.addBook(book);
+        } catch (Exception e) {
+            // Adicione lógica para lidar com exceções
+            throw new RuntimeException("Erro ao adicionar um novo livro", e);
+        }
+    }
+
+    @PutMapping("/{bookId}")
+    public Book updateBook(@PathVariable Long bookId, @RequestBody Book book) {
+        try {
+            return adminService.updateBook(book);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao atualizar o livro com ID: " + bookId, e);
+        }
+    }
+
+    // Endpoint para excluir um livro
+    @DeleteMapping("/{bookId}")
+    public void deleteBook(@PathVariable Long bookId) {
+        try {
+            adminService.deleteBook(bookId);
+        } catch (Exception e) {
+            // Adicione lógica para lidar com exceções
+            throw new RuntimeException("Erro ao excluir o livro com ID: " + bookId, e);
+        }
+    }
+
+    // Exemplo adicional: Endpoint para realizar outras operações relacionadas a livros
+    // ...
+
+}

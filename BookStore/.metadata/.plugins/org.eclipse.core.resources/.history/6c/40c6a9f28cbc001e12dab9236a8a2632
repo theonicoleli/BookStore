@@ -1,0 +1,36 @@
+package com.bookstore.demo.services;
+
+import com.bookstore.demo.model.Book;
+import com.bookstore.demo.repositories.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class AdminService {
+
+    private final BookRepository bookRepository;
+
+    @Autowired
+    public AdminService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
+    }
+
+    public Book addBook(Book book) {
+        return bookRepository.save(book);
+    }
+
+    public Book updateBook(Book book) {
+        return bookRepository.save(book);
+    }
+
+    public void deleteBook(Long bookId) {
+        bookRepository.deleteById(bookId);
+    }
+
+}

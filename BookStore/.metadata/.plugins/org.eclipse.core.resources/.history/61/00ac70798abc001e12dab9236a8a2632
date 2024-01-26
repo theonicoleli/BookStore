@@ -1,0 +1,43 @@
+package com.bookstore.demo.service;
+
+import com.bookstore.demo.model.Book;
+import com.bookstore.demo.repositories.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class AdminService {
+
+    private final BookRepository bookRepository;
+
+    @Autowired
+    public AdminService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
+    // Método para que o Admin tenha acesso a todos os livros
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
+    }
+
+    // Método para adicionar um novo livro
+    public Book addBook(Book book) {
+        // Adicione lógica de validação ou processamento antes de salvar o livro, se necessário
+        return bookRepository.save(book);
+    }
+
+    // Método para atualizar um livro existente
+    public Book updateBook(Book book) {
+        // Adicione lógica de validação ou processamento antes de atualizar o livro, se necessário
+        return bookRepository.save(book);
+    }
+
+    // Método para excluir um livro
+    public void deleteBook(Long bookId) {
+        bookRepository.deleteById(bookId);
+    }
+
+    // Adicione mais métodos conforme necessário para acessar outros recursos do BookRepository
+}

@@ -1,0 +1,31 @@
+// UserService.java
+@Service
+public class UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário com ID " + userId + " não encontrado."));
+    }
+
+    public User addUser(User user) {
+        // Adicione validações ou lógica adicional, se necessário, antes de salvar o usuário
+        return userRepository.save(user);
+    }
+
+    public void deleteUser(Long userId) {
+        if (userRepository.existsById(userId)) {
+            userRepository.deleteById(userId);
+        } else {
+            throw new EntityNotFoundException("Usuário com ID " + userId + " não encontrado. Não foi possível excluir.");
+        }
+    }
+
+    // Adicione outros métodos conforme necessário
+}

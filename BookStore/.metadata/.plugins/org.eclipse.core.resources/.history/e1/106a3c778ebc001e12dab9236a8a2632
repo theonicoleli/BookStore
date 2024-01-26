@@ -1,0 +1,40 @@
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+        try {
+            User user = userService.getUserById(userId);
+            return ResponseEntity.ok(user);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            throw new UserException("Erro ao obter o usuário com ID: " + userId, e);
+        }
+    }
+
+    @PostMapping
+    public User addUser(@RequestBody User user) {
+        try {
+            return userService.addUser(user);
+        } catch (Exception e) {
+            throw new UserException("Erro ao adicionar um novo usuário", e);
+        }
+    }
+
+    // Adicione outros métodos conforme necessário
+
+}

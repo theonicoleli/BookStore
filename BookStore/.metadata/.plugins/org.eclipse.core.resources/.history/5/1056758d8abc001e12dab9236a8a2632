@@ -1,0 +1,18 @@
+package com.bookstore.demo.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "admin")
+public class Admin extends User{
+	
+    private final AdminService adminService;
+
+    @Autowired
+    public Admin(AdminService adminService) {
+        this.adminService = adminService;
+    }
+	
+
+}

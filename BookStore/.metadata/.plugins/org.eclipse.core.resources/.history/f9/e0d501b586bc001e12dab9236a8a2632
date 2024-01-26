@@ -1,0 +1,20 @@
+package com.bookstore.demo.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.annotation.Nonnull;
+
+@Entity
+@Table(name = "book")
+public class Book {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Nonnull
+	private Long id;
+	
+
+}

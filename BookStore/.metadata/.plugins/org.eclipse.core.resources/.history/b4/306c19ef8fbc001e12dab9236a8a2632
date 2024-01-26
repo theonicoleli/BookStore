@@ -1,0 +1,10 @@
+server.port=8080
+
+spring.mvc.view.prefix= /jsp/
+spring.mvc.view.suffix=.jsp
+
+spring.datasource.url=jdbc:mysql://localhost:3306/todo_app
+spring.datasource.username=root
+spring.datasource.password=PUC@1234
+
+spring.jpa.hibernate.ddl-auto=update

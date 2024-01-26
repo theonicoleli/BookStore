@@ -1,0 +1,59 @@
+package com.bookstore.demo.controller;
+
+import com.bookstore.demo.exceptions.BookException;
+import com.bookstore.demo.model.Book;
+import com.bookstore.demo.services.AdminService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/books")
+public class BookController {
+
+    private final AdminService adminService;
+
+    @Autowired
+    public BookController(AdminService adminService) {
+        this.adminService = adminService;
+    }
+
+    @GetMapping
+    public List<Book> getAllBooks() {
+        try {
+            return adminService.getAllBooks();
+        } catch (Exception e) {
+            throw new BookException("Erro ao obter todos os livros", e);
+        }
+    }
+
+    @PostMapping
+    public Book addBook(@RequestBody Book book) {
+        try {
+            return adminService.addBook(book);
+        } catch (Exception e) {
+            throw new BookException("Erro ao adicionar um novo livro", e);
+        }
+    }
+
+    @PutMapping("/{bookId}")
+    public ResponseEntity<Book> updateBook(@PathVariable Long bookId, @RequestBody Book updatedBook) {
+        try {
+            Book updated = adminService.updateBook(bookId, updatedBook);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            throw new BookException("Erro ao atualizar o livro com ID: " + bookId, e);
+        }
+    }
+
+    @DeleteMapping("/{bookId}")
+    public void deleteBook(@PathVariable Long bookId) {
+        try {
+            adminService.deleteBook(bookId);
+        } catch (Exception e) {
+            throw new BookException("Erro ao excluir o livro com ID: " + bookId, e);
+        }
+    }
+}
