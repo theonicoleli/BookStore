@@ -1,6 +1,7 @@
 package com.bookstore.demo.services;
 
 import com.bookstore.demo.model.Book;
+import com.bookstore.demo.model.BookRequest;
 import com.bookstore.demo.repositories.BookRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -29,14 +30,14 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public Book updateBook(Long bookId, Book updatedBook) {
+    public Book updateBook(Long bookId, BookRequest bookRequest) {
         Optional<Book> optionalBook = bookRepository.findById(bookId);
 
         if (optionalBook.isPresent()) {
             Book existingBook = optionalBook.get();
-            existingBook.setName(updatedBook.getName());
-            existingBook.setStatus(updatedBook.isStatus());
-            existingBook.setImagePath(updatedBook.getImagePath());
+            existingBook.setName(bookRequest.getName());
+            existingBook.setStatus(bookRequest.isStatus());
+            existingBook.setImagePath(bookRequest.getImagePath());
 
             return bookRepository.save(existingBook);
         } else {

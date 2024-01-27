@@ -1,0 +1,97 @@
+package com.bookstore.demo.controller;
+
+import com.bookstore.demo.exceptions.BookException;
+import com.bookstore.demo.model.Book;
+import com.bookstore.demo.model.User;
+import com.bookstore.demo.services.BookService;
+
+import jakarta.persistence.EntityNotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/books")
+public class BookController {
+
+    private final BookService bookService;
+
+    @Autowired
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
+
+    @GetMapping
+    public List<Book> getAllBooks() {
+        try {
+            return bookService.getAllBooks();
+        } catch (Exception e) {
+            throw new BookException("Erro ao obter todos os livros", e);
+        }
+    }
+
+    @PostMapping
+    public Book addBook(@RequestBody Book book) {
+        try {
+            User user = book.getUser();
+
+            if (user != null) {
+                // Retrieve the user from the database
+                User existingUser = userService.getUserById(user.getId());
+
+                // Set the user for the book
+                book.setUser(existingUser);
+
+                // Add the book to the user's book list
+                if (existingUser.getBookList() == null) {
+                    existingUser.setBookList(new ArrayList<>());
+                }
+                existingUser.getBookList().add(book);
+
+                // Save the user to update the book list
+                userService.addUser(existingUser);
+            }
+
+            return bookService.addBook(book);
+        } catch (Exception e) {
+            throw new BookException("Erro ao adicionar um novo livro", e);
+        }
+    }
+
+
+
+    @PutMapping("/{bookId}")
+    public ResponseEntity<Book> updateBook(@PathVariable Long bookId, @RequestBody Book updatedBook) {
+        try {
+            Book updated = bookService.updateBook(bookId, updatedBook);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            throw new BookException("Erro ao atualizar o livro com ID: " + bookId, e);
+        }
+    }
+
+    @DeleteMapping("/{bookId}")
+    public void deleteBook(@PathVariable Long bookId) {
+        try {
+        	bookService.deleteBook(bookId);
+        } catch (Exception e) {
+            throw new BookException("Erro ao excluir o livro com ID: " + bookId, e);
+        }
+    }
+    
+    @PatchMapping("/{bookId}/status")
+    public ResponseEntity<Book> updateStatus(@PathVariable Long bookId, @RequestParam boolean newStatus) {
+        try {
+            Book updatedBook = bookService.updateStatus(bookId, newStatus);
+            return ResponseEntity.ok(updatedBook);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            throw new BookException("Erro ao atualizar o status do livro com ID: " + bookId, e);
+        }
+    }
+}

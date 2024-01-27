@@ -1,9 +1,12 @@
 package com.bookstore.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -21,11 +24,17 @@ public class Book {
 	
 	private String imagePath;
 	
-	@ManyToOne
-	private User user;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "user_id")
+    private User user;
 
 	public Long getId() {
 		return id;
+	}
+	
+	public User getUser() {
+		return user;
 	}
 
 	public void setId(Long id) {
@@ -55,4 +64,9 @@ public class Book {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
+
+    public void setUser(User user) {
+    	this.user = user;
+    }
+
 }

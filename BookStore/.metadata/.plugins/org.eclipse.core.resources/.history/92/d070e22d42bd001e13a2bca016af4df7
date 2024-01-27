@@ -1,0 +1,108 @@
+package com.bookstore.demo.controller;
+
+import com.bookstore.demo.exceptions.BookException;
+import com.bookstore.demo.exceptions.UserException;
+import com.bookstore.demo.model.Book;
+import com.bookstore.demo.model.User;
+import com.bookstore.demo.repositories.BookRepository;
+import com.bookstore.demo.repositories.UserRepository;
+import com.bookstore.demo.services.BookService;
+import com.bookstore.demo.services.UserService;
+
+import jakarta.persistence.EntityNotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/books")
+public class BookController {
+
+    private final BookService bookService;
+    
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
+
+    @GetMapping
+    public List<Book> getAllBooks() {
+        try {
+            return bookService.getAllBooks();
+        } catch (Exception e) {
+            throw new BookException("Erro ao obter todos os livros", e);
+        }
+    }
+
+    @PostMapping("/api/books")
+    public ResponseEntity<Book> addBook(@RequestBody BookRequest bookRequest) {
+        try {
+
+            User user = userRepository.findById(bookRequest.getUserId())
+                    .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + bookRequest.getUserId()));
+
+            // Create a new book
+            Book newBook = new Book();
+            newBook.setName(bookRequest.getName());
+            newBook.setStatus(bookRequest.isStatus());
+            newBook.setImagePath(bookRequest.getImagePath());
+
+            // Set the user for the book
+            newBook.setUser(user);
+
+            // Add the book to the user's book list
+            if (user.getBookList() == null) {
+                user.setBookList(new ArrayList<>());
+            }
+            user.getBookList().add(newBook);
+
+            // Save the updated user to ensure the book association is stored in the database
+            userRepository.save(user);
+
+            // Return the newly added book
+            return new ResponseEntity<>(newBook, HttpStatus.CREATED);
+        } catch (Exception e) {
+            // Handle exceptions
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @PutMapping("/{bookId}")
+    public ResponseEntity<Book> updateBook(@PathVariable Long bookId, @RequestBody Book updatedBook) {
+        try {
+            Book updated = bookService.updateBook(bookId, updatedBook);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            throw new BookException("Erro ao atualizar o livro com ID: " + bookId, e);
+        }
+    }
+
+    @DeleteMapping("/{bookId}")
+    public void deleteBook(@PathVariable Long bookId) {
+        try {
+        	bookService.deleteBook(bookId);
+        } catch (Exception e) {
+            throw new BookException("Erro ao excluir o livro com ID: " + bookId, e);
+        }
+    }
+    
+    @PatchMapping("/{bookId}/status")
+    public ResponseEntity<Book> updateStatus(@PathVariable Long bookId, @RequestParam boolean newStatus) {
+        try {
+            Book updatedBook = bookService.updateStatus(bookId, newStatus);
+            return ResponseEntity.ok(updatedBook);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            throw new BookException("Erro ao atualizar o status do livro com ID: " + bookId, e);
+        }
+    }
+}

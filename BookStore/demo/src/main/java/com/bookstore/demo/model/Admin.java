@@ -1,11 +1,9 @@
 package com.bookstore.demo.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "admin")
-public class Admin extends User{
+public class Admin extends User {
 	
 	private String job = "ADMIN";
 	

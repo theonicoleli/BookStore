@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,11 +52,38 @@ public class UserController {
 	 public ResponseEntity<User> addUser(@RequestBody User user) {
 	     try {
 	         User addedUser = userService.addUser(user);
+
+	         List<Book> books = addedUser.getBookList();
+	         if (books != null && !books.isEmpty()) {
+	             for (Book book : books) {
+	                 book.setUser(addedUser);
+	             }
+	         }
+
 	         return ResponseEntity.ok(addedUser);
 	     } catch (Exception e) {
 	         throw new UserException("Erro ao adicionar um novo usuário", e);
 	     }
 	 }
+	 
+	 @PutMapping("/{userId}")
+	 public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
+	     try {
+	         User existingUser = userService.getUserById(userId);
+	         
+	         existingUser.setName(updatedUser.getName());
+	         existingUser.setEmail(updatedUser.getEmail());
+	         existingUser.setPassword(updatedUser.getPassword());
+	         
+	         User savedUser = userService.updateUser(existingUser);
+
+	         return ResponseEntity.ok(savedUser);
+	     } catch (Exception e) {
+	         throw new UserException("Erro ao atualizar a lista de livros do usuário com ID: " + userId, e);
+	     }
+	 }
+
+
 	
 	 @DeleteMapping("/{userId}")
 	 public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {

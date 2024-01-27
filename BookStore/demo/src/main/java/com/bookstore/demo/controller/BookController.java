@@ -2,14 +2,20 @@ package com.bookstore.demo.controller;
 
 import com.bookstore.demo.exceptions.BookException;
 import com.bookstore.demo.model.Book;
+import com.bookstore.demo.model.BookRequest;
+import com.bookstore.demo.model.User;
+import com.bookstore.demo.repositories.BookRepository;
+import com.bookstore.demo.repositories.UserRepository;
 import com.bookstore.demo.services.BookService;
 
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,10 +23,15 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
+    private final BookRepository bookRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, BookRepository bookRepository) {
         this.bookService = bookService;
+		this.bookRepository = bookRepository;
     }
 
     @GetMapping
@@ -33,18 +44,63 @@ public class BookController {
     }
 
     @PostMapping
-    public Book addBook(@RequestBody Book book) {
+    public ResponseEntity<Book> addBook(@RequestBody BookRequest bookRequest) {
         try {
-            return bookService.addBook(book);
+            Book newBook = new Book();
+            newBook.setName(bookRequest.getName());
+            newBook.setStatus(bookRequest.isStatus());
+            newBook.setImagePath(bookRequest.getImagePath());
+            
+        	if (bookRequest.getUserId() != null) {
+                User user = userRepository.findById(bookRequest.getUserId())
+                        .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + bookRequest.getUserId()));
+                
+                newBook.setUser(user);
+
+                if (user.getBookList() == null) {
+                    user.setBooks(new ArrayList<>());
+                }
+                user.getBookList().add(newBook);
+
+                userRepository.save(user);
+                
+        	}
+        	
+        	bookRepository.save(newBook);
+
+            return new ResponseEntity<>(newBook, HttpStatus.CREATED);
         } catch (Exception e) {
-            throw new BookException("Erro ao adicionar um novo livro", e);
+        	e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+
     @PutMapping("/{bookId}")
-    public ResponseEntity<Book> updateBook(@PathVariable Long bookId, @RequestBody Book updatedBook) {
+    public ResponseEntity<Book> updateBook(@PathVariable Long bookId, @RequestBody BookRequest bookRequest) {
         try {
-            Book updated = bookService.updateBook(bookId, updatedBook);
+        	Book newBook = new Book();
+        	
+        	newBook.setId(bookId);
+        	newBook.setName(bookRequest.getName());
+        	newBook.setStatus(bookRequest.isStatus());
+        	newBook.setImagePath(bookRequest.getImagePath());
+        	
+        	if (bookRequest.getUserId() != null) {
+                User user = userRepository.findById(bookRequest.getUserId())
+                        .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + bookRequest.getUserId()));
+                
+                newBook.setUser(user);
+
+                if (user.getBookList() == null) {
+                    user.setBooks(new ArrayList<>());
+                }
+                user.getBookList().add(newBook);
+
+                userRepository.save(user);
+                
+        	}
+            Book updated = bookService.updateBook(bookId, bookRequest);
             return ResponseEntity.ok(updated);
         } catch (Exception e) {
             throw new BookException("Erro ao atualizar o livro com ID: " + bookId, e);
