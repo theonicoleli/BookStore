@@ -1,11 +1,15 @@
 package com.bookstore.demo.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bookstore.demo.model.Book;
 import com.bookstore.demo.model.User;
+import com.bookstore.demo.repositories.BookRepository;
 import com.bookstore.demo.repositories.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -15,6 +19,9 @@ public class UserService {
 
 	 @Autowired
 	 private UserRepository userRepository;
+	 
+	 @Autowired
+	 private BookRepository bookRepository;
 	
 	 public List<User> getAllUsers() {
 	     return userRepository.findAll();
@@ -30,12 +37,21 @@ public class UserService {
 	 }
 	
 	 public void deleteUser(Long userId) {
-	     if (userRepository.existsById(userId)) {
-	         userRepository.deleteById(userId);
-	     } else {
-	         throw new EntityNotFoundException("Usuário com ID " + userId + " não encontrado. Não foi possível excluir.");
-	     }
-	 }
+	    if (userRepository.existsById(userId)) {
+	        User user = getUserById(userId);
+
+	        List<Book> booksToRemove = new ArrayList<>(user.getBookList());
+
+	        for (Book book : booksToRemove) {
+	            deleteBookFromUser(userId, book.getId());
+	        }
+
+	        userRepository.deleteById(userId);
+	    } else {
+	        throw new EntityNotFoundException("Usuário com ID " + userId + " não encontrado. Não foi possível excluir.");
+	    }
+	}
+
 
 	 public User updateUser(User user) {
 	    Long userId = user.getId();
@@ -45,5 +61,27 @@ public class UserService {
 	        throw new EntityNotFoundException("User with ID " + userId + " not found. Cannot update.");
 		}
 	}
+	 
+	 public void deleteBookFromUser(Long userId, Long bookId) {
+	    Optional<User> userOptional = userRepository.findById(userId);
+	    
+	    if (userOptional.isPresent()) {
+	        User user = userOptional.get();
+	        
+	        Optional<Book> bookOptional = bookRepository.findById(bookId);
+	        
+	        if (bookOptional.isPresent()) {
+	            Book book = bookOptional.get();
+	            
+	            if (user.getBookList().contains(book)) {
+	                book.setUser(null);
+	                bookRepository.save(book);
+	                
+	                user.getBookList().remove(book);
+	                userRepository.save(user);
+	            }
+	        }
+	    }
+	 }
 
 }

@@ -82,8 +82,6 @@ public class UserController {
 	         throw new UserException("Erro ao atualizar a lista de livros do usuário com ID: " + userId, e);
 	     }
 	 }
-
-
 	
 	 @DeleteMapping("/{userId}")
 	 public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
@@ -96,4 +94,5 @@ public class UserController {
 	         throw new UserException("Erro ao excluir o usuário com ID: " + userId, e);
 	     }
 	 }
+
 }

@@ -7,6 +7,7 @@ import com.bookstore.demo.model.User;
 import com.bookstore.demo.repositories.BookRepository;
 import com.bookstore.demo.repositories.UserRepository;
 import com.bookstore.demo.services.BookService;
+import com.bookstore.demo.services.UserService;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/books")
@@ -27,6 +29,9 @@ public class BookController {
     
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public BookController(BookService bookService, BookRepository bookRepository) {
@@ -79,33 +84,48 @@ public class BookController {
     @PutMapping("/{bookId}")
     public ResponseEntity<Book> updateBook(@PathVariable Long bookId, @RequestBody BookRequest bookRequest) {
         try {
-        	Book newBook = new Book();
-        	
-        	newBook.setId(bookId);
-        	newBook.setName(bookRequest.getName());
-        	newBook.setStatus(bookRequest.isStatus());
-        	newBook.setImagePath(bookRequest.getImagePath());
-        	
-        	if (bookRequest.getUserId() != null) {
-                User user = userRepository.findById(bookRequest.getUserId())
-                        .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + bookRequest.getUserId()));
-                
-                newBook.setUser(user);
+            Optional<Book> bookOptional = bookRepository.findById(bookId);
 
-                if (user.getBookList() == null) {
-                    user.setBooks(new ArrayList<>());
+            if (bookOptional.isPresent()) {
+                Book existingBook = bookOptional.get();
+                existingBook.setName(bookRequest.getName());
+                existingBook.setStatus(bookRequest.isStatus());
+                existingBook.setImagePath(bookRequest.getImagePath());
+
+                if (bookRequest.getUserId() != null) {
+                    User user = userRepository.findById(bookRequest.getUserId())
+                            .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + bookRequest.getUserId()));
+
+                    existingBook.setUser(user);
+
+                    if (user.getBookList() == null) {
+                        user.setBooks(new ArrayList<>());
+                    }
+                    user.getBookList().add(existingBook);
+
+                    userRepository.save(user);
+
+                } else {
+                    if (existingBook.getUser() != null) {
+                        userService.deleteBookFromUser(existingBook.getUser().getId(), bookId);
+                    }
+
+                    existingBook.setUser(null);
                 }
-                user.getBookList().add(newBook);
 
-                userRepository.save(user);
-                
-        	}
-            Book updated = bookService.updateBook(bookId, bookRequest);
-            return ResponseEntity.ok(updated);
+                bookRepository.save(existingBook);
+
+                Book updated = bookService.updateBook(bookId, bookRequest);
+                return ResponseEntity.ok(updated);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+
         } catch (Exception e) {
             throw new BookException("Erro ao atualizar o livro com ID: " + bookId, e);
         }
     }
+
 
     @DeleteMapping("/{bookId}")
     public void deleteBook(@PathVariable Long bookId) {
