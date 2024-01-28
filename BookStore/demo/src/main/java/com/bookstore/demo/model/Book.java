@@ -1,5 +1,6 @@
 package com.bookstore.demo.model;
 
+import com.bookstore.demo.enums.BooksTheme;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -23,6 +24,10 @@ public class Book {
 	private boolean status;
 	
 	private String imagePath;
+	
+	private String description;
+	
+	private BooksTheme theme;
 	
     @ManyToOne
     @JsonIgnore
@@ -68,5 +73,26 @@ public class Book {
     public void setUser(User user) {
     	this.user = user;
     }
+    
+    public void setDescription(String description) {
+    	this.description = description;
+    }
 
+    public String getDescription() {
+    	return description;
+    }
+    
+    public String getTheme() {
+        return String.valueOf(theme);
+    }
+    
+    public void setTheme(String theme) {
+        try {
+            this.theme = BooksTheme.valueOf(theme);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Tema inválido: " + theme);
+        }
+    }
+
+    
 }

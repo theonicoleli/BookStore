@@ -1,0 +1,5 @@
+package com.bookstore.demo.enums;
+
+public enum BooksTheme {
+
+}

@@ -1,5 +1,6 @@
 package com.bookstore.demo.services;
 
+import com.bookstore.demo.enums.BooksTheme;
 import com.bookstore.demo.model.Book;
 import com.bookstore.demo.model.BookRequest;
 import com.bookstore.demo.repositories.BookRepository;
@@ -29,6 +30,10 @@ public class BookService {
     public Book addBook(Book book) {
         return bookRepository.save(book);
     }
+    
+    public List<Book> getAllBooksByTheme(String theme) {
+    	return bookRepository.findAllByTheme(BooksTheme.valueOf(theme));
+    }
 
     public Book updateBook(Long bookId, BookRequest bookRequest) {
         Optional<Book> optionalBook = bookRepository.findById(bookId);
@@ -38,6 +43,7 @@ public class BookService {
             existingBook.setName(bookRequest.getName());
             existingBook.setStatus(bookRequest.isStatus());
             existingBook.setImagePath(bookRequest.getImagePath());
+            existingBook.setDescription(bookRequest.getDescription());
 
             return bookRepository.save(existingBook);
         } else {

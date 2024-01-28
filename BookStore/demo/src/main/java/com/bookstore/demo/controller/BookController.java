@@ -47,6 +47,22 @@ public class BookController {
             throw new BookException("Erro ao obter todos os livros", e);
         }
     }
+    
+    @GetMapping("/theme/{booksTheme}")
+    public ResponseEntity<List<Book>> getAllBooksByTheme(@PathVariable String booksTheme) {
+        try {
+            List<Book> books = bookService.getAllBooksByTheme(booksTheme);
+
+            if (books.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+
+            return ResponseEntity.ok(books);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 
     @PostMapping
     public ResponseEntity<Book> addBook(@RequestBody BookRequest bookRequest) {
@@ -55,6 +71,8 @@ public class BookController {
             newBook.setName(bookRequest.getName());
             newBook.setStatus(bookRequest.isStatus());
             newBook.setImagePath(bookRequest.getImagePath());
+            newBook.setDescription(bookRequest.getDescription());
+            newBook.setTheme(bookRequest.getTheme());
             
         	if (bookRequest.getUserId() != null) {
                 User user = userRepository.findById(bookRequest.getUserId())
@@ -91,6 +109,8 @@ public class BookController {
                 existingBook.setName(bookRequest.getName());
                 existingBook.setStatus(bookRequest.isStatus());
                 existingBook.setImagePath(bookRequest.getImagePath());
+                existingBook.setDescription(bookRequest.getDescription());
+                existingBook.setTheme(bookRequest.getTheme());
 
                 if (bookRequest.getUserId() != null) {
                     User user = userRepository.findById(bookRequest.getUserId())

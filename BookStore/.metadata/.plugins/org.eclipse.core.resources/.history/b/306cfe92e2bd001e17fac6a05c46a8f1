@@ -1,0 +1,66 @@
+package com.bookstore.demo.services;
+
+import com.bookstore.demo.model.Book;
+import com.bookstore.demo.model.BookRequest;
+import com.bookstore.demo.repositories.BookRepository;
+
+import jakarta.persistence.EntityNotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class BookService {
+
+    private final BookRepository bookRepository;
+
+    @Autowired
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
+    }
+
+    public Book addBook(Book book) {
+        return bookRepository.save(book);
+    }
+
+    public Book updateBook(Long bookId, BookRequest bookRequest) {
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+
+        if (optionalBook.isPresent()) {
+            Book existingBook = optionalBook.get();
+            existingBook.setName(bookRequest.getName());
+            existingBook.setStatus(bookRequest.isStatus());
+            existingBook.setImagePath(bookRequest.getImagePath());
+            existingBook.setDescription(bookRequest.getDescription());
+
+            return bookRepository.save(existingBook);
+        } else {
+            throw new EntityNotFoundException("Livro com ID " + bookId + " não encontrado.");
+        }
+    }
+
+    public void deleteBook(Long bookId) {
+        bookRepository.deleteById(bookId);
+    }
+    
+    public Book updateStatus(Long bookId, boolean newStatus) {
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+
+        if (optionalBook.isPresent()) {
+            Book existingBook = optionalBook.get();
+            existingBook.setStatus(newStatus);
+
+            return bookRepository.save(existingBook);
+        } else {
+            throw new EntityNotFoundException("Livro com ID " + bookId + " não encontrado.");
+        }
+    }
+
+}

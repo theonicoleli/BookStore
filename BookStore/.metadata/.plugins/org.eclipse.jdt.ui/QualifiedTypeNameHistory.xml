@@ -46,4 +46,6 @@
     <fullyQualifiedTypeName name="com.bookstore.demo.model.Book"/>
     <fullyQualifiedTypeName name="com.bookstore.demo.services.UserService"/>
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="org.springframework.data.repository.query.Param"/>
+    <fullyQualifiedTypeName name="com.bookstore.demo.enums.BooksTheme"/>
 </qualifiedTypeNameHistroy>
