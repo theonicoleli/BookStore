@@ -1,0 +1,32 @@
+.title-group, .header .links, .header a, .header {
+    display: flex;
+}
+
+.header {
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    padding: 20px;
+    justify-content: space-between;
+    background-color: #3F88C5;
+    color: #F1FAFF;
+}
+
+.header a {
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.title-group a {
+    gap: 6px;
+    font-size: 17px;
+}
+
+.title-group a i {
+    user-select: none;
+}
+
+.header .links {
+    gap: 40px;
+}
+
