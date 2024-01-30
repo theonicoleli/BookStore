@@ -48,4 +48,9 @@
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="org.springframework.data.repository.query.Param"/>
     <fullyQualifiedTypeName name="com.bookstore.demo.enums.BooksTheme"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.CrossOrigin"/>
+    <fullyQualifiedTypeName name="org.springframework.web.multipart.MultipartFile"/>
+    <fullyQualifiedTypeName name="java.io.File"/>
+    <fullyQualifiedTypeName name="java.io.BufferedOutputStream"/>
+    <fullyQualifiedTypeName name="java.io.FileOutputStream"/>
 </qualifiedTypeNameHistroy>

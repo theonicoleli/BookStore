@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
@@ -63,7 +64,21 @@ public class BookController {
         }
     }
 
+    @GetMapping("/status/{bookStatus}")
+    public ResponseEntity<List<Book>> getAllBooksByStatus(@PathVariable boolean bookStatus) {
+        try {
+            List<Book> books = bookService.getAllBooksByStatus(bookStatus);
 
+            if (books.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+
+            return ResponseEntity.ok(books);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+    
     @PostMapping
     public ResponseEntity<Book> addBook(@RequestBody BookRequest bookRequest) {
         try {
@@ -167,4 +182,5 @@ public class BookController {
             throw new BookException("Erro ao atualizar o status do livro com ID: " + bookId, e);
         }
     }
+    
 }

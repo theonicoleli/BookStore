@@ -1,0 +1,26 @@
+package com.bookstore.demo.util;
+
+import org.springframework.web.multipart.MultipartFile;
+
+public class UploadUtil {
+	
+	public static boolean fazerUploadImagem(MultipartFile imagem) {
+		
+		boolean succesUpload = false;
+		
+		if (!imagem .isEmpty()) {
+			String nomeArquivo = imagem.getOriginalFilename();
+			
+			try {
+				
+				String pastaUploadImagem = ""
+				
+				
+			} catch (Exception e) {
+				
+			}
+		}
+		return succesUpload;
+	}
+
+}

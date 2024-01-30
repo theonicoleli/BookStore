@@ -8,18 +8,34 @@ import { HeaderComponent } from './components/template/header/header.component';
 import { FooterComponent } from './components/template/footer/footer.component';
 
 import { MatToolbarModule} from '@angular/material/toolbar';
+import { HomeComponent } from './views/home/home.component';
+
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
+import { BooksComponent } from './views/books/books.component';
+
+import { HttpClientModule } from '@angular/common/http';
+import { BookinfoComponent } from './components/template/bookinfo/bookinfo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    HomeComponent,
+    BooksComponent,
+    BookinfoComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatCardModule,
+    HttpClientModule
   ],
   providers: [
     provideClientHydration()

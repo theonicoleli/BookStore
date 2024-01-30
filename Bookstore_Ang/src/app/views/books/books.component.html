@@ -1,0 +1,12 @@
+<div class="books">
+    <h1>Whole books</h1>
+
+    <ul *ngIf="books">
+        <li *ngFor="let book of books">
+            <app-bookinfo [bookName]="book.name" [status]="book.status" [imagePath]="book.imagePath"
+                [description]="book.description" [theme]="book.theme"></app-bookinfo>
+        </li>
+    </ul>
+
+    <p *ngIf="!books">Loading books...</p>
+</div>

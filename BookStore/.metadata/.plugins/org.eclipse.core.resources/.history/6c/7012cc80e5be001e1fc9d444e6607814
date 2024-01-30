@@ -1,0 +1,36 @@
+package com.bookstore.demo.util;
+
+import java.io.File;
+
+import org.springframework.web.multipart.MultipartFile;
+
+public class UploadUtil {
+	
+	public static boolean fazerUploadImagem(MultipartFile imagem) {
+		
+		boolean succesUpload = false;
+		
+		if (!imagem .isEmpty()) {
+			String nomeArquivo = imagem.getOriginalFilename();
+			
+			try {
+				
+				String pastaUploadImagem = "C:\\Users\\Théo Nicoleli\\Desktop\\BookStore FullStack\\BookStore-Angular\\Bookstore_Ang\\src\\assets\\img";
+				
+				File dir = new File(pastaUploadImagem);
+				
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+				
+				File serverFile = new File(dir.getAbsolutePath() + File.separator + nomeArquivo);
+				
+				
+			} catch (Exception e) {
+				
+			}
+		}
+		return succesUpload;
+	}
+
+}

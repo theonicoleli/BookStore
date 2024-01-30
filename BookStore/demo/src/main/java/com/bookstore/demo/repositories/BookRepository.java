@@ -16,5 +16,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     
     @Query("SELECT b FROM Book b WHERE b.theme = :theme")
     List<Book> findAllByTheme(BooksTheme theme);
+    
+    @Query("SELECT b FROM Book b WHERE b.status = :status")
+    List<Book> findAllByStatus(boolean status);
 
 }

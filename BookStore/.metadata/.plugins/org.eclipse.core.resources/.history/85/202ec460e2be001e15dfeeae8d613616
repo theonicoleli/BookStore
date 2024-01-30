@@ -1,0 +1,7 @@
+package com.bookstore.demo.util;
+
+public class UploadUtil {
+	
+	public static boolean fazerUploadImagem;
+
+}
