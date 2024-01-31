@@ -13,10 +13,16 @@ import { HomeComponent } from './views/home/home.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { BooksComponent } from './views/books/books.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { BookinfoComponent } from './components/template/bookinfo/bookinfo.component';
+import { LoginComponent } from './views/login/login.component';
+
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -25,7 +31,8 @@ import { BookinfoComponent } from './components/template/bookinfo/bookinfo.compo
     FooterComponent,
     HomeComponent,
     BooksComponent,
-    BookinfoComponent
+    BookinfoComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +42,11 @@ import { BookinfoComponent } from './components/template/bookinfo/bookinfo.compo
     MatSidenavModule,
     MatListModule,
     MatCardModule,
-    HttpClientModule
+    HttpClientModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    ReactiveFormsModule
   ],
   providers: [
     provideClientHydration()

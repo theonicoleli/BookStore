@@ -1,35 +1,80 @@
-.books {
+body, h1, h2, h3, p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f5f9;
 }
 
 mat-card {
-    width: 200px;
-    margin: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
+    width: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 mat-card:hover {
     transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+mat-card-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: linear-gradient(90deg, #3F88C5 0%, #6FA3D6 100%);
+    color: #fff;
+}
+
+.example-header-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.7;
+}
+
+mat-card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+mat-card-subtitle {
+    font-size: 14px;
+    margin-left: 10px;
 }
 
 mat-card-content {
-    max-height: 100px;
-    overflow: hidden;
+    padding: 15px;
+    background-color: #f0f5f9;
+}
+
+mat-card-content p {
+    margin-bottom: 10px;
+    line-height: 1.4;
 }
 
 mat-card-actions {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-around;
+    padding: 15px;
+    background-color: #f0f5f9;
 }
 
 mat-card-footer {
-    background-color: #f2f2f2;
-    padding: 8px;
-    border-radius: 0 0 8px 8px;
+    background: linear-gradient(90deg, #6FA3D6 0%, #3F88C5 100%);
+    color: #fff;
+    padding: 15px;
+    border-radius: 0 0 15px 15px;
+}
+
+mat-card-footer div {
+    font-size: 14px;
 }

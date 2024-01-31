@@ -37,6 +37,18 @@ public class UserController {
 	 public List<User> getAllUsers() {
 	     return userService.getAllUsers();
 	 }
+	 
+	 @GetMapping("/{userEmail}/{userPassword}")
+	 public ResponseEntity<User> getUserByEmailAndPassword(@PathVariable String userEmail, @PathVariable String userPassword) {
+	     try {
+	         User user = userService.getUserByEmailAndPassword(userEmail, userPassword);
+	         return ResponseEntity.ok(user);
+	     } catch (EntityNotFoundException e) {
+	         return ResponseEntity.notFound().build();
+	     } catch (Exception e) {
+	         throw new UserException("Erro ao obter o usuário com o email: " + userEmail, e);
+	     }
+	 }
 	
 	 @GetMapping("/{userId}")
 	 public ResponseEntity<User> getUserById(@PathVariable Long userId) {

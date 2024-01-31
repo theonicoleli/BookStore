@@ -1,6 +1,6 @@
 <mat-card>
     <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
+        <div mat-card-avatar class="example-header-image" [ngStyle]="{'background-color': status ? 'green' : 'red'}"></div>
         <mat-card-title>{{ bookName }}</mat-card-title>
         <mat-card-subtitle>Status: {{ status ? 'Active' : 'Inactive' }}</mat-card-subtitle>
     </mat-card-header>

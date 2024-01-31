@@ -31,7 +31,17 @@ public class UserService {
 	     return userRepository.findById(userId)
 	             .orElseThrow(() -> new EntityNotFoundException("Usuário com ID " + userId + " não encontrado."));
 	 }
-	
+	 
+	 public User getUserByEmailAndPassword(String userEmail, String userPassword) {
+	    Optional<User> userOptional = Optional.ofNullable(userRepository.findByEmailPassword(userEmail, userPassword));
+
+	    if (userOptional.isPresent()) {
+	        return userOptional.get();
+	    } else {
+	        throw new EntityNotFoundException("Usuário com email " + userEmail + " e senha fornecida não encontrado.");
+	    }
+	}
+
 	 public User addUser(User user) {
 	     return userRepository.save(user);
 	 }
