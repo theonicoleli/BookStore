@@ -3,9 +3,23 @@
         <div mat-card-avatar class="example-header-image" [ngStyle]="{'background-color': status ? 'green' : 'red'}"></div>
         <mat-card-title>{{ bookName }}</mat-card-title>
         <mat-card-subtitle>Status: {{ status ? 'Active' : 'Inactive' }}</mat-card-subtitle>
+        <mat-card-subtitle>
+            <a routerLink="edit/{{ edit }}">
+                <i class="material-icons">
+                    edit
+                </i>
+            </a>
+        </mat-card-subtitle>
+        <mat-card-subtitle>
+            <a (click)="deleteOnClick()">
+                <i class="material-icons">
+                    delete
+                </i>
+            </a>
+        </mat-card-subtitle>
     </mat-card-header>
 
-    <img mat-card-image [src]="imagePath" alt="Book Image">
+    <img mat-card-image [src]="imagePath" id="image-link" alt="Book Image">
 
     <mat-card-content>
         <p><strong>Description:</strong> {{ description }}</p>

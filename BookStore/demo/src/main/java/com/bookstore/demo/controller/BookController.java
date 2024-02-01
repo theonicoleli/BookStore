@@ -81,6 +81,21 @@ public class BookController {
         }
     }
     
+    @GetMapping("/{bookId}")
+    public ResponseEntity<Optional<Book>> getBookById(@PathVariable long bookId) {
+        try {
+            Optional<Book> book = bookService.getBookById(bookId);
+
+            if (book.isPresent()) {
+                return ResponseEntity.ok(book);
+            }
+
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+    
     @PostMapping
     public ResponseEntity<Book> addBook(@ModelAttribute BookRequest bookRequest, @RequestParam("image") MultipartFile image) {
         try {
@@ -120,12 +135,12 @@ public class BookController {
     }
 
     @PutMapping("/{bookId}")
-    public ResponseEntity<Book> updateBook(@PathVariable Long bookId, @ModelAttribute BookRequest bookRequest, @RequestParam(name = "image", required = false) MultipartFile image) {
+    public Book updateBook(@PathVariable long bookId, BookRequest bookRequest, MultipartFile image) {
         try {
-            Optional<Book> bookOptional = bookRepository.findById(bookId);
+            Optional<Book> optionalBook = bookRepository.findById(bookId);
 
-            if (bookOptional.isPresent()) {
-                Book existingBook = bookOptional.get();
+            if (optionalBook.isPresent()) {
+                Book existingBook = optionalBook.get();
 
                 existingBook.setName(bookRequest.getName());
                 existingBook.setStatus(bookRequest.isStatus());
@@ -165,12 +180,9 @@ public class BookController {
                     existingBook.setImagePath(null);
                 }
 
-                bookRepository.save(existingBook);
-                Book updated = bookService.updateBook(bookId, bookRequest);
-                
-                return ResponseEntity.ok(updated);
+                return bookRepository.save(existingBook);
             } else {
-                return ResponseEntity.notFound().build();
+                throw new EntityNotFoundException("Livro com ID " + bookId + " não encontrado.");
             }
         } catch (Exception e) {
             throw new BookException("Erro ao atualizar o livro com ID: " + bookId, e);

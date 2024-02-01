@@ -1,5 +1,10 @@
 <mat-card class="adding-book">
-    <h2>Adding a New Book</h2>
+    <h2 *ngIf="bookId === undefined; else editBookHeader">Adding a New Book</h2>
+
+    <ng-template #editBookHeader>
+        <h2>Edit Book</h2>
+    </ng-template>
+
 
     <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
 

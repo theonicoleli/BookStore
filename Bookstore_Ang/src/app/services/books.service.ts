@@ -23,4 +23,12 @@ export class BooksService {
   putBook(link: string, book: any): Observable<any> {
     return this.http.put(link, book);
   }
+
+  getBookById(bookId: number): Observable<any> {
+    return this.http.get<any>(this.url + "/" + bookId);
+  }
+
+  deleteBookById(bookId?: number): Observable<any> {
+    return this.http.delete(this.url + "/" + bookId);
+  }
 }

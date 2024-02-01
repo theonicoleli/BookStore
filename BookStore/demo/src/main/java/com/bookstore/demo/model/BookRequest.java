@@ -1,14 +1,12 @@
 package com.bookstore.demo.model;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.bookstore.demo.enums.BooksTheme;
 
 public class BookRequest {
 	
     private String name;
     private boolean status;
-    private MultipartFile imagePath;
+    private String imagePath;
     private Long userId;
     private String description;
     private BooksTheme theme;
@@ -25,10 +23,10 @@ public class BookRequest {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
-	public MultipartFile getImagePath() {
+	public String getImagePath() {
 		return imagePath;
 	}
-	public void setImagePath(MultipartFile imagePath) {
+	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
 	public Long getUserId() {

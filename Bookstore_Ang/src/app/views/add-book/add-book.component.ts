@@ -1,18 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BooksService } from '../../services/books.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-book',
   templateUrl: './add-book.component.html',
-  styleUrls: ['./add-book.component.css'] 
+  styleUrls: ['./add-book.component.css']
 })
 export class AddBookComponent implements OnInit {
   bookForm: FormGroup;
+  bookId?: number;
   url: string = "http://localhost:8080/api/books";
 
-  constructor(private fb: FormBuilder, private bookService: BooksService, private router: Router) { 
+  constructor(
+    private fb: FormBuilder,
+    private bookService: BooksService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.bookForm = this.fb.group({
       name: ['', Validators.required],
       status: [true, Validators.required],
@@ -20,9 +27,36 @@ export class AddBookComponent implements OnInit {
       description: ['', Validators.required],
       theme: ['', Validators.required],
     });
+
+    const segments = this.route.snapshot.url.map(segment => segment.path);
+    if (segments.includes("edit")) {
+      this.route.params.subscribe(params => {
+        this.bookId = +params['id'];
+
+        this.bookService.getBookById(this.bookId).subscribe(
+          (data: any) => {
+            this.bookForm.patchValue({
+              name: data.name,
+              status: data.status,
+              description: data.description,
+              theme: data.theme,
+            });
+          },
+          (error: any) => {
+            console.log("Error fetching book details: " + error);
+          }
+        );
+      });
+    }
   }
 
   ngOnInit() {
+    const segments = this.route.snapshot.url.map(segment => segment.path);
+    if (segments.includes("edit")) {
+      this.route.params.subscribe(params => {
+        this.bookId = +params['id'];
+      });
+    }
   }
 
   onFileChange(event: any) {
@@ -39,15 +73,27 @@ export class AddBookComponent implements OnInit {
         formData.append(key, this.bookForm.value[key]);
       });
 
-      this.bookService.postNewBook(this.url, formData).subscribe(
-        (data: any) => { 
-          console.log("Enviado: " + data);
-          this.router.navigate(['/books']);
-        },
-        (error: any) => {
-          console.log("Error: " + error)
-        }
-      );
+      if (this.bookId === undefined) {
+        this.bookService.postNewBook(this.url, formData).subscribe(
+          (data: any) => {
+            console.log("Enviado: " + data);
+            this.router.navigate(['/books']);
+          },
+          (error: any) => {
+            console.log("Error: " + error);
+          }
+        );
+      } else {
+        this.bookService.putBook('http://localhost:8080/api/books/' + this.bookId, formData).subscribe(
+          (data: any) => {
+            console.log("Enviado: " + data);
+            this.router.navigate(['/books']);
+          },
+          (error: any) => {
+            console.log("Error: " + error);
+          }
+        );
+      }
     }
   }
 }

@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { BooksService } from '../../../services/books.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-bookinfo',
@@ -11,11 +13,26 @@ export class BookinfoComponent {
   @Input() imagePath: string = '';
   @Input() description: string = '';
   @Input() theme: string = '';
+  @Input() edit?: number = 0;
 
-  constructor() {}
+  constructor(private bookService: BooksService, private location: Location) {}
 
   ngOnInit() {
     console.log(this.imagePath);
     this.imagePath = `assets/img/${this.imagePath}`;
+  }
+
+  deleteOnClick(): void {
+    if (confirm("Realmente deseja excluir o livro: " + this.bookName)) {
+      this.bookService.deleteBookById(this.edit).subscribe(
+        (data: any) => {
+          console.log("Book deletado: " + data);
+          window.location.reload();
+        },
+        (error: any) => {
+          console.log("Error: " + error);
+        }
+      );
+    }
   }
 }
