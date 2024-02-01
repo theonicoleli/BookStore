@@ -8,6 +8,7 @@ import com.bookstore.demo.repositories.BookRepository;
 import com.bookstore.demo.repositories.UserRepository;
 import com.bookstore.demo.services.BookService;
 import com.bookstore.demo.services.UserService;
+import com.bookstore.demo.util.UploadUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,19 +82,18 @@ public class BookController {
     }
     
     @PostMapping
-    public ResponseEntity<Book> addBook(@RequestBody BookRequest bookRequest) {
+    public ResponseEntity<Book> addBook(@ModelAttribute BookRequest bookRequest, @RequestParam("image") MultipartFile image) {
         try {
             Book newBook = new Book();
             newBook.setName(bookRequest.getName());
             newBook.setStatus(bookRequest.isStatus());
-            newBook.setImagePath(bookRequest.getImagePath());
             newBook.setDescription(bookRequest.getDescription());
             newBook.setTheme(bookRequest.getTheme());
-            
-        	if (bookRequest.getUserId() != null) {
+
+            if (bookRequest.getUserId() != null) {
                 User user = userRepository.findById(bookRequest.getUserId())
                         .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + bookRequest.getUserId()));
-                
+
                 newBook.setUser(user);
 
                 if (user.getBookList() == null) {
@@ -101,29 +102,33 @@ public class BookController {
                 user.getBookList().add(newBook);
 
                 userRepository.save(user);
-                
-        	}
-        	
-        	bookRepository.save(newBook);
+            }
+
+            if (UploadUtil.fazerUploadImagem(image)) {
+                newBook.setImagePath(image.getOriginalFilename());
+            } else {
+                throw new Exception("Falha ao fazer upload da imagem");
+            }
+
+            bookRepository.save(newBook);
 
             return new ResponseEntity<>(newBook, HttpStatus.CREATED);
         } catch (Exception e) {
-        	e.printStackTrace();
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-
     @PutMapping("/{bookId}")
-    public ResponseEntity<Book> updateBook(@PathVariable Long bookId, @RequestBody BookRequest bookRequest) {
+    public ResponseEntity<Book> updateBook(@PathVariable Long bookId, @ModelAttribute BookRequest bookRequest, @RequestParam(name = "image", required = false) MultipartFile image) {
         try {
             Optional<Book> bookOptional = bookRepository.findById(bookId);
 
             if (bookOptional.isPresent()) {
                 Book existingBook = bookOptional.get();
+
                 existingBook.setName(bookRequest.getName());
                 existingBook.setStatus(bookRequest.isStatus());
-                existingBook.setImagePath(bookRequest.getImagePath());
                 existingBook.setDescription(bookRequest.getDescription());
                 existingBook.setTheme(bookRequest.getTheme());
 
@@ -139,7 +144,6 @@ public class BookController {
                     user.getBookList().add(existingBook);
 
                     userRepository.save(user);
-
                 } else {
                     if (existingBook.getUser() != null) {
                         userService.deleteBookFromUser(existingBook.getUser().getId(), bookId);
@@ -148,14 +152,26 @@ public class BookController {
                     existingBook.setUser(null);
                 }
 
-                bookRepository.save(existingBook);
+                if (image != null && !image.isEmpty()) {
+                    if (UploadUtil.fazerUploadImagem(image)) {
+                        if (existingBook.getImagePath() != null) {
+                            UploadUtil.deleteImage(existingBook.getImagePath());
+                        }
+                        existingBook.setImagePath(image.getOriginalFilename());
+                    } else {
+                        throw new Exception("Falha ao fazer upload da nova imagem");
+                    }
+                } else {
+                    existingBook.setImagePath(null);
+                }
 
+                bookRepository.save(existingBook);
                 Book updated = bookService.updateBook(bookId, bookRequest);
+                
                 return ResponseEntity.ok(updated);
             } else {
                 return ResponseEntity.notFound().build();
             }
-
         } catch (Exception e) {
             throw new BookException("Erro ao atualizar o livro com ID: " + bookId, e);
         }

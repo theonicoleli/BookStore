@@ -1,0 +1,47 @@
+<mat-card class="adding-book">
+    <h2>Adding a New Book</h2>
+
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+            <mat-error *ngIf="bookForm.get('name')?.hasError('required')">Name is required</mat-error>
+        </mat-form-field>
+
+        <mat-checkbox formControlName="status">Status: </mat-checkbox>
+        <small *ngIf="bookForm.get('status')?.value"> Book is available</small>
+        <small *ngIf="!bookForm.get('status')?.value"> Book is not available</small>
+
+        <input type="file" (change)="onFileChange($event)" accept="image/*">
+
+        <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <textarea id="text-input" matInput formControlName="description"></textarea>
+            <mat-error *ngIf="bookForm.get('description')?.hasError('required')">Description is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Theme</mat-label>
+            <mat-select formControlName="theme">
+                <mat-option value="AVENTURA">Aventura</mat-option>
+                <mat-option value="FICCAO">Ficção</mat-option>
+                <mat-option value="DRAMA">Drama</mat-option>
+                <mat-option value="ROMANCE">Romance</mat-option>
+                <mat-option value="MISTERIO">Mistério</mat-option>
+                <mat-option value="FANTASIA">Fantasia</mat-option>
+                <mat-option value="SUSPENSE">Suspense</mat-option>
+                <mat-option value="POLICIAL">Policial</mat-option>
+                <mat-option value="COMEDIA">Comédia</mat-option>
+                <mat-option value="BIOGRAFIA">Biografia</mat-option>
+                <mat-option value="HISTORIA">História</mat-option>
+                <mat-option value="CIENCIA">Ciência</mat-option>
+                <mat-option value="TECNOLOGIA">Tecnologia</mat-option>
+            </mat-select>
+            <mat-error *ngIf="bookForm.get('theme')?.hasError('required')">Theme is required</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Add Book</button>
+
+    </form>
+</mat-card>

@@ -1,6 +1,12 @@
 <div class="books">
     <h1>Whole books</h1>
 
+    <button>
+        <a routerLink="add">
+            Add Books
+        </a>
+    </button>
+
     <ul *ngIf="books">
         <li *ngFor="let book of books">
             <app-bookinfo [bookName]="book.name" [status]="book.status" [imagePath]="book.imagePath"

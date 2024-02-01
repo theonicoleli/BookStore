@@ -46,7 +46,7 @@ public class BookService {
             Book existingBook = optionalBook.get();
             existingBook.setName(bookRequest.getName());
             existingBook.setStatus(bookRequest.isStatus());
-            existingBook.setImagePath(bookRequest.getImagePath());
+            existingBook.setImagePath(bookRequest.getImagePath().getOriginalFilename());
             existingBook.setDescription(bookRequest.getDescription());
 
             return bookRepository.save(existingBook);

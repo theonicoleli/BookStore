@@ -7,37 +7,45 @@ import java.io.FileOutputStream;
 import org.springframework.web.multipart.MultipartFile;
 
 public class UploadUtil {
-	
-	public static boolean fazerUploadImagem(MultipartFile imagem) {
-		
-		boolean succesUpload = false;
-		
-		if (!imagem .isEmpty()) {
-			String nomeArquivo = imagem.getOriginalFilename();
-			
-			try {
-				
-				String pastaUploadImagem = "C:\\Users\\Théo Nicoleli\\Desktop\\BookStore FullStack\\BookStore-Angular\\Bookstore_Ang\\src\\assets\\img";
-				
-				File dir = new File(pastaUploadImagem);
-				
-				if (!dir.exists()) {
-					dir.mkdirs();
-				}
-				
-				File serverFile = new File(dir.getAbsolutePath() + File.separator + nomeArquivo);
-				
-				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
-				
-				stream.write(imagem.getBytes());
-				stream.close();
-				
-				
-			} catch (Exception e) {
-				
-			}
-		}
-		return succesUpload;
-	}
+
+    public static boolean fazerUploadImagem(MultipartFile imagem) {
+
+        boolean successUpload = false;
+
+        if (!imagem.isEmpty()) {
+            String nomeArquivo = imagem.getOriginalFilename();
+
+            try {
+
+                String pastaUploadImagem = "C:\\Users\\Théo Nicoleli\\Desktop\\BookStore FullStack\\BookStore-Angular\\Bookstore_Ang\\src\\assets\\img";
+
+                File dir = new File(pastaUploadImagem);
+
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+
+                File serverFile = new File(dir.getAbsolutePath() + File.separator + nomeArquivo);
+
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+
+                stream.write(imagem.getBytes());
+                stream.close();
+
+                successUpload = true;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return successUpload;
+    }
+    
+    public static void deleteImage(String filename) {
+        File fileToDelete = new File("C:\\Users\\Théo Nicoleli\\Desktop\\BookStore FullStack\\BookStore-Angular\\Bookstore_Ang\\src\\assets\\img" + File.separator + filename);
+        if (fileToDelete.exists()) {
+            fileToDelete.delete();
+        }
+    }
 
 }

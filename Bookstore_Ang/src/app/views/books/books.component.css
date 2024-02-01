@@ -1,3 +1,7 @@
+.books {
+    text-align: center;
+}
+
 .books ul {
     list-style-type: none;
     padding: 0;
@@ -9,3 +13,23 @@
 .books li {
     margin: 5px;
 }
+
+.books button {
+    background-color: #3F88C5;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.books button a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.books button:hover {
+    background-color: #005cb3;
+    transform: scale(1.07);
+}
+

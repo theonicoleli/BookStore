@@ -17,12 +17,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { BooksComponent } from './views/books/books.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 
 import { HttpClientModule } from '@angular/common/http';
 import { BookinfoComponent } from './components/template/bookinfo/bookinfo.component';
 import { LoginComponent } from './views/login/login.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
+import { AddBookComponent } from './views/add-book/add-book.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     HomeComponent,
     BooksComponent,
     BookinfoComponent,
-    LoginComponent
+    LoginComponent,
+    AddBookComponent
   ],
   imports: [
     BrowserModule,
@@ -46,6 +51,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    MatButtonModule,
     ReactiveFormsModule
   ],
   providers: [

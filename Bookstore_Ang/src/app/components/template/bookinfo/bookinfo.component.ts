@@ -11,4 +11,11 @@ export class BookinfoComponent {
   @Input() imagePath: string = '';
   @Input() description: string = '';
   @Input() theme: string = '';
+
+  constructor() {}
+
+  ngOnInit() {
+    console.log(this.imagePath);
+    this.imagePath = `assets/img/${this.imagePath}`;
+  }
 }

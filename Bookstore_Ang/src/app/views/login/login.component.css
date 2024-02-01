@@ -76,3 +76,13 @@ mat-form-field {
     font-size: 14px;
     margin-top: 5px;
 }
+
+.erro-geral {
+    color: #d9534f;
+    font-size: 14px;
+    margin-top: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column-reverse;
+}
+

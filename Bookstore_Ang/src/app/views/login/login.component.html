@@ -21,7 +21,7 @@
                 <mat-error *ngIf="password.hasError('required') && password.touched">A senha é obrigatória.</mat-error>
             </mat-form-field>
 
-            <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
+            <mat-error class="erro-geral" *ngIf="errorMessage">{{ errorMessage }}</mat-error>
 
             <button class="post-login" type="submit">Entrar</button>
         </form>
