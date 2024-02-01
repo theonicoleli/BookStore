@@ -176,8 +176,6 @@ public class BookController {
                     } else {
                         throw new Exception("Falha ao fazer upload da nova imagem");
                     }
-                } else {
-                    existingBook.setImagePath(null);
                 }
 
                 return bookRepository.save(existingBook);
