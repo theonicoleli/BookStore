@@ -16,6 +16,10 @@ export class BooksService {
     return this.http.get<Book[]>(this.url);
   }
 
+  getAllBooksByUserId(userId: number | undefined): Observable<Book[]> {
+    return this.http.get<Book[]>(this.url + "/user/" + userId);
+  }
+
   postNewBook(link: string, book: any): Observable<any> {
     return this.http.post(link, book);
   }

@@ -27,6 +27,7 @@ import { LoginComponent } from './views/login/login.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddBookComponent } from './views/add-book/add-book.component';
+import { BorrowedComponent } from './views/borrowed/borrowed.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { AddBookComponent } from './views/add-book/add-book.component';
     BooksComponent,
     BookinfoComponent,
     LoginComponent,
-    AddBookComponent
+    AddBookComponent,
+    BorrowedComponent
   ],
   imports: [
     BrowserModule,

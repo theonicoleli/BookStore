@@ -17,7 +17,7 @@
                 Books
             </a>
         </span>
-        <span class="title-group borrowed">
+        <span class="title-group borrowed" routerLink="/borrowed" routerLinkActive="active-link">
             <a>
                 <i class="material-icons">
                     folder
@@ -25,14 +25,23 @@
                 Borrowed
             </a>
         </span>
+
         <span class="title-group login-logout" routerLink="/login" routerLinkActive="active-link">
-            <a>
-                <i class="material-icons">
-                    exit_to_app
-                </i>
-                Login
-            </a>
+            <ng-container *ngIf="sessionIs(); else Logout">
+                <a>
+                    <i class="material-icons">login</i>
+                    Login
+                </a>
+            </ng-container>
         </span>
+
+        <ng-template #Logout>
+            <a (click)="outSession()">
+                <i class="material-icons">exit_to_app</i>
+                Logout
+            </a>
+        </ng-template>
+
     </div>
 
 </mat-toolbar>

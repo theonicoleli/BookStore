@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
+import { AuthenticationService } from '../../services/authentication.service';
+import { User } from '../../services/models/User';
+import { Router } from '@angular/router';
 
-@Component({
+@Component({ 
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
@@ -13,7 +16,8 @@ export class LoginComponent {
   hide: boolean = true;
   errorMessage: string = '';
 
-  constructor(private fb: FormBuilder, private usersService: UsersService) {
+  constructor(private fb: FormBuilder, private usersService: UsersService, private session: AuthenticationService,
+    private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -37,9 +41,11 @@ export class LoginComponent {
       const userPassword = this.loginForm.controls['password'].value;
   
       this.usersService.getUserByEmailAndPassword(userEmail, userPassword).subscribe(
-        (data) => {
+        (data: User) => {
           console.log(data);
+          this.session.setAuthenticatedUser(data);
           this.errorMessage = '';
+          this.router.navigate(['/']);
         },
         (error) => {
           console.error("Error fetching user:", error);

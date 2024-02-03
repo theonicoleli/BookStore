@@ -1,8 +1,10 @@
 <mat-card>
     <mat-card-header>
         <div mat-card-avatar class="example-header-image" [ngStyle]="{'background-color': status ? 'green' : 'red'}"></div>
-        <mat-card-title>{{ bookName }}</mat-card-title>
-        <mat-card-subtitle>Status: {{ status ? 'Active' : 'Inactive' }}</mat-card-subtitle>
+        <div class="about-book">
+            <mat-card-title>{{ bookName }}</mat-card-title>
+            <mat-card-subtitle>Status: {{ status ? 'Active' : 'Inactive' }}</mat-card-subtitle>
+        </div>
         <mat-card-subtitle>
             <a routerLink="edit/{{ edit }}">
                 <i class="material-icons">

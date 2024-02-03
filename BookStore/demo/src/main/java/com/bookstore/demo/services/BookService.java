@@ -3,6 +3,7 @@ package com.bookstore.demo.services;
 import com.bookstore.demo.enums.BooksTheme;
 import com.bookstore.demo.model.Book;
 import com.bookstore.demo.model.BookRequest;
+import com.bookstore.demo.model.User;
 import com.bookstore.demo.repositories.BookRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -17,16 +18,22 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final UserService userService;
 
     @Autowired
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, UserService userService) {
         this.bookRepository = bookRepository;
+        this.userService = userService;
     }
 
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
-
+    
+    public List<Book> getAllBooksByUserId(User user){
+    	return bookRepository.findAllByUser(user);
+    }
+    
     public Book addBook(Book book) {
         return bookRepository.save(book);
     }
@@ -52,6 +59,10 @@ public class BookService {
             existingBook.setStatus(bookRequest.isStatus());
             existingBook.setImagePath(bookRequest.getImagePath());
             existingBook.setDescription(bookRequest.getDescription());
+            
+            if (bookRequest.getUserId() != null ) {
+            	existingBook.setUser(userService.getUserById(bookRequest.getUserId()));
+            }
 
             return bookRepository.save(existingBook);
         } else {
@@ -63,12 +74,14 @@ public class BookService {
         bookRepository.deleteById(bookId);
     }
     
-    public Book updateStatus(Long bookId, boolean newStatus) {
+    public Book updateStatus(Long bookId, long userId, boolean newStatus) {
+    	User user = userService.getUserById(userId);
         Optional<Book> optionalBook = bookRepository.findById(bookId);
 
         if (optionalBook.isPresent()) {
             Book existingBook = optionalBook.get();
             existingBook.setStatus(newStatus);
+            existingBook.setUser(user);
 
             return bookRepository.save(existingBook);
         } else {

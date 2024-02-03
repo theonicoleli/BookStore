@@ -51,6 +51,16 @@ public class BookController {
         }
     }
     
+    @GetMapping("/user/{userId}")
+    public List<Book> getAllBooksByUserId(@PathVariable long userId) {
+    	try {
+    		User user = userService.getUserById(userId);
+    		return bookService.getAllBooksByUserId(user);
+    	} catch (Exception e) {
+            throw new BookException("Erro ao obter todos os livros", e);
+        }
+    }
+    
     @GetMapping("/theme/{booksTheme}")
     public ResponseEntity<List<Book>> getAllBooksByTheme(@PathVariable String booksTheme) {
         try {
@@ -104,6 +114,12 @@ public class BookController {
             newBook.setStatus(bookRequest.isStatus());
             newBook.setDescription(bookRequest.getDescription());
             newBook.setTheme(bookRequest.getTheme());
+            
+            if (UploadUtil.fazerUploadImagem(image)) {
+                newBook.setImagePath(image.getOriginalFilename());
+            } else {
+                throw new Exception("Falha ao fazer upload da imagem");
+            }
 
             if (bookRequest.getUserId() != null) {
                 User user = userRepository.findById(bookRequest.getUserId())
@@ -117,12 +133,6 @@ public class BookController {
                 user.getBookList().add(newBook);
 
                 userRepository.save(user);
-            }
-
-            if (UploadUtil.fazerUploadImagem(image)) {
-                newBook.setImagePath(image.getOriginalFilename());
-            } else {
-                throw new Exception("Falha ao fazer upload da imagem");
             }
 
             bookRepository.save(newBook);
@@ -147,6 +157,17 @@ public class BookController {
                 existingBook.setDescription(bookRequest.getDescription());
                 existingBook.setTheme(bookRequest.getTheme());
 
+                if (image != null && !image.isEmpty()) {
+                    if (UploadUtil.fazerUploadImagem(image)) {
+                        if (existingBook.getImagePath() != null) {
+                            UploadUtil.deleteImage(existingBook.getImagePath());
+                        }
+                        existingBook.setImagePath(image.getOriginalFilename());
+                    } else {
+                        throw new Exception("Falha ao fazer upload da nova imagem");
+                    }
+                }
+                
                 if (bookRequest.getUserId() != null) {
                     User user = userRepository.findById(bookRequest.getUserId())
                             .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + bookRequest.getUserId()));
@@ -165,17 +186,6 @@ public class BookController {
                     }
 
                     existingBook.setUser(null);
-                }
-
-                if (image != null && !image.isEmpty()) {
-                    if (UploadUtil.fazerUploadImagem(image)) {
-                        if (existingBook.getImagePath() != null) {
-                            UploadUtil.deleteImage(existingBook.getImagePath());
-                        }
-                        existingBook.setImagePath(image.getOriginalFilename());
-                    } else {
-                        throw new Exception("Falha ao fazer upload da nova imagem");
-                    }
                 }
 
                 return bookRepository.save(existingBook);
@@ -197,10 +207,10 @@ public class BookController {
         }
     }
     
-    @PatchMapping("/{bookId}/status")
-    public ResponseEntity<Book> updateStatus(@PathVariable Long bookId, @RequestParam boolean newStatus) {
+    @PatchMapping("/status/{bookId}/{userId}")
+    public ResponseEntity<Book> updateStatus(@PathVariable Long bookId, @PathVariable long userId, @RequestParam boolean newStatus) {
         try {
-            Book updatedBook = bookService.updateStatus(bookId, newStatus);
+            Book updatedBook = bookService.updateStatus(bookId, userId, newStatus);
             return ResponseEntity.ok(updatedBook);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();

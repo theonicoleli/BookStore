@@ -16,11 +16,11 @@ mat-card {
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s, opacity 0.3s;
 }
 
 mat-card:hover {
-    transform: scale(1.05);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
 
@@ -79,9 +79,8 @@ mat-card-footer div {
     font-size: 14px;
 }
 
-.image-link {
-    max-width: 150px;
-    max-height: 150px;
+#image-link {
+    aspect-ratio: 5/4;
 }
 
 a {

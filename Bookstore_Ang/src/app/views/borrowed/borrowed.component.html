@@ -1,11 +1,5 @@
-<div class="books">
-    <h1>Whole books</h1>
-
-    <button>
-        <a routerLink="add">
-            Add Books
-        </a>
-    </button>
+<div class="borrowed-activate">
+    <h1>Livros emprestados</h1>
 
     <ul *ngIf="books.length > 0; else NoBooks">
         <li *ngFor="let book of books">
@@ -16,7 +10,7 @@
 
     <ng-template #NoBooks>
         <p>
-            No momento estamos sem livros disponíveis.
+            No momento você não emprestou nenhum livro!
         </p>
     </ng-template>
 </div>

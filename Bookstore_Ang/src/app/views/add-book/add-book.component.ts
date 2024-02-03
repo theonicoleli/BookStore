@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BooksService } from '../../services/books.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-book',
