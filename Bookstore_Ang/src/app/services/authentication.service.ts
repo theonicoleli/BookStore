@@ -13,23 +13,27 @@ export class AuthenticationService {
 
   setAuthenticatedUser(user: User): void {
     this.authenticatedUser = user;
-    sessionStorage.setItem('user', JSON.stringify(user));
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem('user', JSON.stringify(user));
+    }
   }
 
-  getAuthenticatedUser(): User {
-    const storedUser = sessionStorage.getItem('user');
-    return storedUser ? JSON.parse(storedUser) : null;
+  getAuthenticatedUser(): User | null {
+    if (typeof sessionStorage !== 'undefined') {
+      const storedUser = sessionStorage.getItem('user');
+      return storedUser ? JSON.parse(storedUser) : null;
+    }
+    return null;
   }
 
   logout(): void {
     this.authenticatedUser = undefined;
-    sessionStorage.removeItem('user');
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.removeItem('user');
+    }
   }
 
   isAuthenticated(): boolean {
-    if (this.getAuthenticatedUser() == null) {
-      return false;
-    }
-    return true;
+    return this.getAuthenticatedUser() !== null;
   }
 }

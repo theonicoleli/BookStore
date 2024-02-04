@@ -21,4 +21,22 @@ export class UsersService {
     
     return this.http.get<User>(this.url + linkGetUser);
   }
+
+  getUserById(userId: number): Observable<User> {
+    return this.http.get<User>(this.url + "/" + userId);
+  }
+
+  getUserByBookId(bookId?: number): Observable<User> {
+    return this.http.get<User>(this.url + "/book/" + bookId);
+  }
+
+  countUserByEmail(userEmail: string): Observable<number> {
+    return this.http.get<number>(`${this.url}/count/${userEmail}`);
+  }
+
+  postUser(name: string, email: string, password: string): Observable<any> {
+    const user = { name, email, password };
+    return this.http.post(this.url, user);
+  }
+  
 }

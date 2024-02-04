@@ -61,10 +61,39 @@ public class UserController {
 	         throw new UserException("Erro ao obter o usuário com ID: " + userId, e);
 	     }
 	 }
+	 
+	 @GetMapping("/count/{email}")
+	 public ResponseEntity<Integer> countUserByEmail(@PathVariable String email) {
+		 try {
+			 Integer userEmails = userService.countUserByEmail(email);
+			 return ResponseEntity.ok(userEmails);
+		 } catch (Exception e) {
+			 throw new UserException("Nenhum usuário adicionado com o email: " + email);
+		 }
+	 }
+	 
+	    @GetMapping("/book/{bookId}")
+	    public ResponseEntity<User> getUserByBookId(@PathVariable String bookId) {
+	        try {
+	            long id = Long.parseLong(bookId);
+	            User user = userService.getUserByBookId(id);
+	            return ResponseEntity.ok(user);
+	        } catch (NumberFormatException e) {
+	            return ResponseEntity.badRequest().build();
+	        } catch (EntityNotFoundException e) {
+	            return ResponseEntity.notFound().build();
+	        } catch (Exception e) {
+	            throw new UserException("Erro ao obter o usuário com o livro: " + bookId, e);
+	        }
+	    }
 	
 	 @PostMapping
 	 public ResponseEntity<User> addUser(@RequestBody User user) {
 	     try {
+	    	 if (userService.countUserByEmail(user.getEmail()) > 0) {
+	    		 throw new UserException("Email já cadastrado, faça seu login!");
+	    	 }
+	    	 
 	         User addedUser = userService.addUser(user);
 
 	         List<Book> books = addedUser.getBookList();

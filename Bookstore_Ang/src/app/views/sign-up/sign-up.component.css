@@ -7,7 +7,7 @@ body {
     background-color: #f5f5f5;
 }
 
-.login {
+.sign-up {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,7 +86,7 @@ mat-form-field {
     flex-direction: column-reverse;
 }
 
-.sign-up {
+.login {
     text-decoration: none;
     color: black;
     padding-top: 20px;

@@ -26,6 +26,10 @@ public class UserService {
 	 public List<User> getAllUsers() {
 	     return userRepository.findAll();
 	 }
+	 
+	 public Integer countUserByEmail(String email) {
+		 return userRepository.countByEmail(email);
+	 }
 	
 	 public User getUserById(Long userId) {
 	     return userRepository.findById(userId)
@@ -93,5 +97,11 @@ public class UserService {
 	        }
 	    }
 	 }
+	 
+	 public User getUserByBookId(Long bookId) {
+		 Optional<User> userOptional = Optional.of(userRepository.findByBookId(bookId));
+
+		 return userOptional.orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+	}
 
 }

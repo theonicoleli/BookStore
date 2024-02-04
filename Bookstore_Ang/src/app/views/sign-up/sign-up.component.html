@@ -1,0 +1,39 @@
+<div class="sign-up">
+    <mat-card>
+
+        <h1>Sign-up</h1>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+            <mat-form-field appearance="fill">
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="name" type="text" id="name" name="name">
+                <mat-error *ngIf="name?.hasError('required') && name?.touched">
+                    O nome é obrigatório.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email" id="email" name="email">
+                <mat-error *ngIf="email?.hasError('required') && email?.touched">O email é obrigatório.</mat-error>
+                <mat-error *ngIf="email?.hasError('email') && email?.touched">O email não é válido.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Enter your password</mat-label>
+                <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="togglePasswordVisibility()"
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" class="visibilityIcon">
+                    <mat-icon>{{ getVisibilityIcon() }}</mat-icon>
+                </button>
+                <mat-error *ngIf="password?.hasError('required') && password?.touched">A senha é obrigatória.</mat-error>
+            </mat-form-field>
+
+            <mat-error class="erro-geral" *ngIf="errorMessage">{{ errorMessage }}</mat-error>
+
+            <button class="post-login" type="submit">Submit</button>
+        </form>
+        <a class="login" routerLink="/login" routerLinkActive="active-link">Login</a>
+    </mat-card>
+</div>

@@ -81,7 +81,7 @@ public class BookService {
         if (optionalBook.isPresent()) {
             Book existingBook = optionalBook.get();
             
-            if (newStatus == false) {
+            if(!newStatus) {
             	existingBook.setUser(null);
             } else {
             	existingBook.setUser(user);

@@ -21,14 +21,18 @@ export class BorrowedComponent {
     {}
 
   ngOnInit() {
-    this.bookService.getAllBooksByUserId(this.session.getAuthenticatedUser().id).subscribe(
-      (data) => {
-        this.books = data;
-      },
-      (error) => {
-        console.error("Erro ao encontrar livros com o usuário desta id:", error);
-      }
-    );
+    const authenticatedUser = this.session.getAuthenticatedUser();
+  
+    if (typeof sessionStorage !== 'undefined' && authenticatedUser !== null) {
+      this.bookService.getAllBooksByUserId(authenticatedUser.id).subscribe(
+        (data) => {
+          this.books = data;
+        },
+        (error) => {
+          console.error("Erro ao encontrar livros com o usuário desta id:", error);
+        }
+      );
+    }
   }
 
   lendBook(bookId?: number) {
