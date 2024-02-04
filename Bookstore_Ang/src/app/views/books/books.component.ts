@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { BooksService } from '../../services/books.service';
 import { Book } from '../../services/models/Book';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-books',
@@ -12,7 +13,7 @@ export class BooksComponent implements OnInit {
 
   books: Book[] = [];
 
-  constructor(private bookService: BooksService) { 
+  constructor(private bookService: BooksService, private router: Router) { 
   }
 
   ngOnInit() {
@@ -24,5 +25,9 @@ export class BooksComponent implements OnInit {
         console.error("Error fetching books:", error);
       }
     );
+  }
+
+  lendBook(bookId?: number) {
+    this.router.navigate(['/lend/' + bookId])
   }
 }

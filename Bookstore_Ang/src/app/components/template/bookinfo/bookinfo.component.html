@@ -32,6 +32,14 @@
     </mat-card-actions>
 
     <mat-card-footer>
-        <div>Additional Footer Content</div>
+        <div *ngIf="status then loanFooter; else otherFooter">
+        </div>
+        <ng-template #loanFooter>
+            Livro disponível
+        </ng-template>
+        <ng-template #otherFooter>
+            Não disponível no momento
+        </ng-template>
     </mat-card-footer>
+    
 </mat-card>

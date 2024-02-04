@@ -1,0 +1,15 @@
+<div class="lend-book">
+    <ng-container *ngIf="book.status; then emprestarLivro else devolverLivro"></ng-container>
+    
+    <ng-template #emprestarLivro>
+        <button (click)="lend()">
+            Emprestar livro
+        </button>
+    </ng-template>
+
+    <ng-template #devolverLivro>
+        <button (click)="giveBack()">
+            Devolver livro
+        </button>
+    </ng-template>
+</div>

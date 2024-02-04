@@ -80,8 +80,14 @@ public class BookService {
 
         if (optionalBook.isPresent()) {
             Book existingBook = optionalBook.get();
-            existingBook.setStatus(newStatus);
-            existingBook.setUser(user);
+            
+            if (newStatus == false) {
+            	existingBook.setUser(null);
+            } else {
+            	existingBook.setUser(user);
+            }
+            
+            existingBook.setStatus(!newStatus);
 
             return bookRepository.save(existingBook);
         } else {

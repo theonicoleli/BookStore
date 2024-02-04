@@ -208,7 +208,7 @@ public class BookController {
     }
     
     @PatchMapping("/status/{bookId}/{userId}")
-    public ResponseEntity<Book> updateStatus(@PathVariable Long bookId, @PathVariable long userId, @RequestParam boolean newStatus) {
+    public ResponseEntity<?> updateStatus(@PathVariable Long bookId, @PathVariable long userId, @RequestParam boolean newStatus) {
         try {
             Book updatedBook = bookService.updateStatus(bookId, userId, newStatus);
             return ResponseEntity.ok(updatedBook);

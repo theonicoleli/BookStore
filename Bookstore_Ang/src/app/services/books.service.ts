@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Book } from './models/Book';
 
@@ -35,4 +35,12 @@ export class BooksService {
   deleteBookById(bookId?: number): Observable<any> {
     return this.http.delete(this.url + "/" + bookId);
   }
+
+  patchStatusBook(bookId?: number, userId?: number, newStatus?: boolean): Observable<any> {
+    const params = new HttpParams()
+      .set('newStatus', newStatus?.toString() || 'false');
+  
+    return this.http.patch(this.url + `/status/${bookId}/${userId}`, null, { params });
+  }
+  
 }

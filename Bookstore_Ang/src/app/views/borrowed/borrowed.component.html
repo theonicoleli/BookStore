@@ -4,7 +4,7 @@
     <ul *ngIf="books.length > 0; else NoBooks">
         <li *ngFor="let book of books">
             <app-bookinfo [bookName]="book.name" [status]="book.status" [imagePath]="book.imagePath"
-                [description]="book.description" [theme]="book.theme" [edit]="book.id"></app-bookinfo>
+                [description]="book.description" [theme]="book.theme" [edit]="book.id" (click)="lendBook(book.id)"></app-bookinfo>
         </li>
     </ul>
 

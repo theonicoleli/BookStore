@@ -13,8 +13,11 @@ export class HomeComponent {
   constructor(private session: AuthenticationService) {}
 
   ngOnInit() {
-    console.log("Oi - ", this.session.getAuthenticatedUser());
-    this.name = this.session.getAuthenticatedUser().name;
+    const sessionStart = this.session.getAuthenticatedUser();
+
+    if (sessionStart) {
+      this.name = sessionStart.name;
+    }
   }
 
 }
