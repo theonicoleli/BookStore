@@ -2,7 +2,6 @@
     cursor: pointer;
 }
 
-/* Add this style to your component's CSS file */
 mat-card.comment-info {
     width: 300px;
     margin-bottom: 16px;
