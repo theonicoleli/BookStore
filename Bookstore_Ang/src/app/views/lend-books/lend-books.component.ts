@@ -4,7 +4,11 @@ import { BooksService } from '../../services/books.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Book } from '../../services/models/Book';
 import { User } from '../../services/models/User';
+import { Comment } from '../../services/models/Comment';
 import { UsersService } from '../../services/users.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommentService } from '../../services/comment.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-lend-books',
@@ -16,15 +20,25 @@ export class LendBooksComponent {
   bookId: number = 0;
   book: Book = {} as Book;
   user: User = {} as User;
+  comments: Comment[] = [];
+
+  commentForm: FormGroup;
+  newCommentText: string = '';
 
   constructor(
     private session: AuthenticationService, 
     private bookService: BooksService,
     private userService: UsersService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private commentService: CommentService
     ) 
-    {}
+    {
+      this.commentForm = this.formBuilder.group({
+        comment: ['', Validators.required],
+      });
+    }
 
   ngOnInit() {
     const segments = this.route.snapshot.url.map(segment => segment.path);
@@ -52,6 +66,7 @@ export class LendBooksComponent {
       }
     );
     
+    this.getBookComments()
   }
 
   lend() {
@@ -86,8 +101,30 @@ export class LendBooksComponent {
     return "Livro já emprestado";
   }
 
+  getBookComments() {
+    this.commentService.getBookComments(this.bookId).subscribe(
+      (data) => {
+        this.comments = (data as any) as Comment[];
+        
+        for (const comment of this.comments) {
+          this.commentService.getUserByCommentId(comment.id).subscribe(
+            (user: User) => {
+              comment.user = user;
+            },
+            (error) => {
+              console.log("Error ao achar usuário do comentário.")
+            }
+          );
+        }
+      },
+      (error) => {
+        console.error("Comentários do livro " + this.bookId + " não foram encontrados.");
+      }
+    );
+  }
+  
   giveBack() {
-    if (this.book.status === false && this.user == this.session.getAuthenticatedUser()) {
+    if (this.book.status === false && this.user.id == this.session.getAuthenticatedUser()?.id) {
       const authenticatedUser = this.session.getAuthenticatedUser();
 
       if (!authenticatedUser) {
@@ -113,4 +150,35 @@ export class LendBooksComponent {
     }
   }
 
+  onSubmit() {
+    if (this.commentForm.valid) {
+      const commentText = this.commentForm.get('comment')?.value;
+  
+      if (commentText) {
+        const newComment: any = {
+          text: commentText,
+          bookId: this.book.id,
+          userId: this.session.getAuthenticatedUser()?.id
+        };
+  
+        console.log('New Comment:', newComment);
+  
+        this.commentService.postComment(newComment).subscribe(
+          (createdComment) => {
+            console.log('Comment added successfully', createdComment);
+            this.getBookComments();
+            this.commentForm.reset();
+          },
+          (error) => {
+            console.error('Error adding comment:', error);
+            if (error instanceof HttpErrorResponse) {
+              console.error('Status:', error.status);
+              console.error('Response body:', error.error);
+            }
+          }
+        );
+      }
+    }
+  }
+  
 }

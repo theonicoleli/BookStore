@@ -30,6 +30,7 @@ import { AddBookComponent } from './views/add-book/add-book.component';
 import { BorrowedComponent } from './views/borrowed/borrowed.component';
 import { LendBooksComponent } from './views/lend-books/lend-books.component';
 import { SignUpComponent } from './views/sign-up/sign-up.component';
+import { CommentinfoComponent } from './components/template/commentinfo/commentinfo.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { SignUpComponent } from './views/sign-up/sign-up.component';
     AddBookComponent,
     BorrowedComponent,
     LendBooksComponent,
-    SignUpComponent
+    SignUpComponent,
+    CommentinfoComponent
   ],
   imports: [
     BrowserModule,

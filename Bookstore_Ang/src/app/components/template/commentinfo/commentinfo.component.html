@@ -1,0 +1,17 @@
+<mat-card class="comment-info">
+    <mat-card-header>
+        <mat-card-title>
+            {{ commentUser?.name }}
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        {{ commentText }}
+    </mat-card-content>
+
+    <mat-card-actions>
+        <i class="material-icons" (click)="deleteComment()" id="delete-button">
+            delete
+        </i>
+    </mat-card-actions>
+</mat-card>

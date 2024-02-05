@@ -1,6 +1,21 @@
 <div class="lend-book">
     <h1>{{ book.name }}</h1>
 
+    <div class="comments-section">
+        <h2>Comentários</h2>
+    
+        <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+            <textarea formControlName="comment" placeholder="Adicione um comentário"></textarea>
+            <button type="submit">Adicionar Comentário</button>
+        </form>
+    
+        <div *ngFor="let comment of comments">
+            <app-commentinfo [commentId]="comment.id" [commentText]="comment.text" [commentUser]="comment.user" 
+                [commentListComments]="comment.replies">
+            </app-commentinfo>
+        </div>
+    </div>
+
     <ng-container *ngIf="book.status; then emprestarLivro else devolverLivro"></ng-container>
     
     <ng-template #emprestarLivro>

@@ -3,6 +3,7 @@ export interface Book {
     name: string,
     status: boolean,
     imagePath: string,
-    description: string
-    theme: string
+    description: string,
+    theme: string,
+    comments?: Comment
 }

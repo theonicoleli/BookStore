@@ -1,14 +1,19 @@
 package com.bookstore.demo.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.bookstore.demo.enums.BooksTheme;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,6 +38,9 @@ public class Book {
     @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
+    
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
 	public Long getId() {
 		return id;
@@ -92,6 +100,23 @@ public class Book {
         } catch (IllegalArgumentException e) {
             System.out.println("Tema inválido: " + theme);
         }
+    }
+    
+    public List<Comment> getComments() {
+        if (comments == null) {
+            comments = new ArrayList<>();
+        }
+        return comments;
+    }
+
+    public void addComment(Comment comment) {
+        getComments().add(comment);
+        comment.setBook(this);
+    }
+
+    public void removeComment(Comment comment) {
+        getComments().remove(comment);
+        comment.setBook(null);
     }
 
     

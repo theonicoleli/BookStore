@@ -82,7 +82,10 @@ public class UserController {
 	            return ResponseEntity.badRequest().build();
 	        } catch (EntityNotFoundException e) {
 	            return ResponseEntity.notFound().build();
-	        } catch (Exception e) {
+	        } catch (NullPointerException e) {
+	            return ResponseEntity.notFound().build();
+	        } 
+	        catch (Exception e) {
 	            throw new UserException("Erro ao obter o usuário com o livro: " + bookId, e);
 	        }
 	    }
