@@ -3,7 +3,9 @@ package com.bookstore.demo.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bookstore.demo.exceptions.CommentException;
 import com.bookstore.demo.model.Comment;
+import com.bookstore.demo.model.CommentRequest;
 import com.bookstore.demo.model.User;
 import com.bookstore.demo.repositories.CommentRepository;
 
@@ -17,10 +19,12 @@ import java.util.Optional;
 public class CommentService {
 	
     private final CommentRepository commentRepository;
+    private final UserService userService;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository) {
+    public CommentService(CommentRepository commentRepository, UserService userService) {
         this.commentRepository = commentRepository;
+        this.userService = userService;
     }
 
     public List<Comment> getAllBookComments(Long bookId) {
@@ -75,6 +79,31 @@ public class CommentService {
     		
     	} else {
             throw new EntityNotFoundException("Comentário com ID " + commentId + " não encontrado.");
+        }
+    }
+    
+    public Optional<Comment> addCommentToComment(Long parentId, CommentRequest newComment) {
+        Optional<Comment> parentComment = commentRepository.findById(parentId);
+
+        if (parentComment.isPresent()) {
+            Comment newCommentToComment = new Comment();
+            newCommentToComment.setParentComment(parentComment.get());
+            newCommentToComment.setBook(parentComment.get().getBook());
+            newCommentToComment.setText(newComment.getText());
+            newCommentToComment.setUser(userService.getUserById(newComment.getUserId()));
+
+            if (parentComment.get().getReplies() == null) {
+                parentComment.get().setReplies(new ArrayList<>());
+            }
+
+            parentComment.get().getReplies().add(newCommentToComment);
+
+            commentRepository.save(parentComment.get());
+            System.out.println(parentComment.get().getReplies().size());
+            Comment savedComment = commentRepository.save(newCommentToComment);
+            return Optional.of(savedComment);
+        } else {
+            throw new CommentException("Parent comment not found");
         }
     }
 

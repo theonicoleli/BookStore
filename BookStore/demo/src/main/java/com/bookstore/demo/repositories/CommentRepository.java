@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.bookstore.demo.model.Book;
 import com.bookstore.demo.model.Comment;
 import com.bookstore.demo.model.User;
 
@@ -29,5 +30,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("SELECT c.user FROM Comment c WHERE c.id = :commentId")
     Optional<User> findUserByCommentId(@Param("commentId") Long commentId);
+    
+    @Query("SELECT c.book FROM Comment c WHERE c.id = :commentId")
+    Optional<Book> findBookByComment(@Param("commentId") Long commentId);
 
 }

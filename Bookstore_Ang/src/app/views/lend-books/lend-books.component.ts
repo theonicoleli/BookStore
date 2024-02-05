@@ -122,6 +122,15 @@ export class LendBooksComponent {
       }
     );
   }
+
+  testingComment(commentTrue: Comment): boolean {
+    for (const comment of this.comments) {
+      if (comment.replies?.some(reply => reply.id === commentTrue.id)) {
+        return false;
+      }
+    }
+    return true;
+  }
   
   giveBack() {
     if (this.book.status === false && this.user.id == this.session.getAuthenticatedUser()?.id) {

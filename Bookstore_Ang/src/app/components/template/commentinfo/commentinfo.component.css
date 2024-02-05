@@ -1,3 +1,49 @@
 #delete-button {
     cursor: pointer;
 }
+
+/* Add this style to your component's CSS file */
+mat-card.comment-info {
+    width: 300px;
+    margin-bottom: 16px;
+}
+
+mat-form-field {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+textarea {
+    resize: none;
+    border: 1px solid #ccc;
+    width: calc(100% - 16px);
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.comments-section {
+    padding: 16px;
+}
+
+.comment-container {
+    border: 1px solid #ccc;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.child-comment-container {
+    border: 1px solid #eee;
+    padding: 8px;
+    margin-top: 8px;
+}

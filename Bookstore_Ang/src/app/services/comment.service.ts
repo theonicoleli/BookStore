@@ -36,6 +36,10 @@ export class CommentService {
     return this.http.post<Comment>(this.url, comment);
   }
 
+  postReplyToComment(parentCommentId: number, comment: any): Observable<Comment> {
+    return this.http.post<Comment>(this.url + "/reply/" + parentCommentId, comment);
+  }
+
   putComment(commentId: number, comment: any): Observable<any> {
     return this.http.put(this.url + "/" + commentId, comment);
   }

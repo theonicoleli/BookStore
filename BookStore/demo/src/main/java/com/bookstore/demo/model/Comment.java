@@ -35,7 +35,6 @@ public class Comment {
     private Book book;
 
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Comment> replies;
 
     @ManyToOne
@@ -81,6 +80,10 @@ public class Comment {
 
     public void setReplies(List<Comment> replies) {
         this.replies = replies;
+    }
+    
+    public void setReplies(Comment text) {
+    	this.replies.add(text);
     }
 
     public Comment getParentComment() {

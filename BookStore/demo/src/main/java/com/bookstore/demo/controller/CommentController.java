@@ -1,5 +1,6 @@
 package com.bookstore.demo.controller;
 
+import com.bookstore.demo.exceptions.CommentException;
 import com.bookstore.demo.model.Book;
 import com.bookstore.demo.model.Comment;
 import com.bookstore.demo.model.CommentRequest;
@@ -112,7 +113,19 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
+    
+    @PostMapping("/reply/{parentId}")
+    public ResponseEntity<Comment> addCommentToComment(@PathVariable Long parentId, @RequestBody CommentRequest newComment) {
+        try {
+            Optional<Comment> savedComment = commentService.addCommentToComment(parentId, newComment);
+            return savedComment.map(comment -> new ResponseEntity<>(comment, HttpStatus.CREATED))
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } catch (CommentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PutMapping("/{commentId}")
     public ResponseEntity<Comment> updateComment(@PathVariable Long commentId, @RequestBody Comment commentRequest) {

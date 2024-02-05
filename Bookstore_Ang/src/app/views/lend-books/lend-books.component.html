@@ -11,7 +11,7 @@
     
         <div *ngFor="let comment of comments">
             <app-commentinfo [commentId]="comment.id" [commentText]="comment.text" [commentUser]="comment.user" 
-                [commentListComments]="comment.replies">
+                [commentListComments]="comment.replies" [bookId]="bookId" [showComment]="testingComment(comment)">
             </app-commentinfo>
         </div>
     </div>
