@@ -1,7 +1,7 @@
 <div class="books">
     <h1>Whole books</h1>
 
-    <button>
+    <button *ngIf="isAdm(); else null">
         <a routerLink="add">
             Add Books
         </a>

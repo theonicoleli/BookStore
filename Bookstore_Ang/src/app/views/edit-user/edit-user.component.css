@@ -1,0 +1,16 @@
+mat-card {
+    max-width: 400px;
+    margin: auto;
+    margin-top: 20px;
+    padding: 20px;
+    text-align: center;
+}
+
+mat-form-field {
+    width: 100%;
+    margin-top: 15px;
+}
+
+button.visibilityIcon {
+    margin-top: 15px;
+}

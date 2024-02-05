@@ -94,5 +94,13 @@ public class BookService {
             throw new EntityNotFoundException("Livro com ID " + bookId + " não encontrado.");
         }
     }
+    
+    public void updateAllUserBookStatus(Long userId) {
+    	User user = userService.getUserById(userId);
+    	
+    	for (Book book: bookRepository.findAllByUser(user)) {
+    		updateStatus(book.getId(), user.getId(), false);
+    	}
+    }
 
 }

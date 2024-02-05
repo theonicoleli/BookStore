@@ -5,14 +5,14 @@
             <mat-card-title>{{ bookName }}</mat-card-title>
             <mat-card-subtitle>Status: {{ status ? 'Active' : 'Inactive' }}</mat-card-subtitle>
         </div>
-        <mat-card-subtitle>
+        <mat-card-subtitle *ngIf="isAdm(); else null">
             <a routerLink="edit/{{ edit }}">
                 <i class="material-icons">
                     edit
                 </i>
             </a>
         </mat-card-subtitle>
-        <mat-card-subtitle>
+        <mat-card-subtitle *ngIf="isAdm(); else null">
             <a (click)="deleteOnClick()">
                 <i class="material-icons">
                     delete

@@ -1,0 +1,26 @@
+<mat-card>
+    <h2>Editing Perfil</h2>
+
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+            <mat-error *ngIf="name?.hasError('required') && name?.touched">Name is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Enter your password</mat-label>
+            <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="togglePasswordVisibility()"
+                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" class="visibilityIcon">
+                <mat-icon>{{ getVisibilityIcon() }}</mat-icon>
+            </button>
+            <mat-error *ngIf="password?.hasError('required') && password?.touched">A senha é obrigatória.</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Salvar Alterações</button>
+
+    </form>
+
+</mat-card>

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { BooksService } from '../../../services/books.service';
 import { Location } from '@angular/common';
+import { AuthenticationService } from '../../../services/authentication.service';
 
 @Component({
   selector: 'app-bookinfo',
@@ -15,7 +16,12 @@ export class BookinfoComponent {
   @Input() theme: string = '';
   @Input() edit?: number = 0;
 
-  constructor(private bookService: BooksService, private location: Location) {}
+  constructor(
+    private bookService: BooksService, 
+    private location: Location,
+    private session: AuthenticationService
+    ) 
+    {}
 
   ngOnInit() {
     console.log(this.imagePath);
@@ -34,5 +40,12 @@ export class BookinfoComponent {
         }
       );
     }
+  }
+
+  isAdm(): boolean {
+    if (this.session.getAuthenticatedUser()?.email.includes("@bookstore.com")) {
+      return true;
+    }
+    return false;
   }
 }

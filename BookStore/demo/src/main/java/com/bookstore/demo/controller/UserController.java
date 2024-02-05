@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bookstore.demo.services.BookService;
+import com.bookstore.demo.services.CommentService;
 import com.bookstore.demo.services.UserService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -27,10 +29,14 @@ import com.bookstore.demo.model.*;
 public class UserController {
 
 	 private final UserService userService;
+	 private final CommentService commentService;
+	 private final BookService bookService;
 	
 	 @Autowired
-	 public UserController(UserService userService) {
+	 public UserController(UserService userService, CommentService commentService, BookService bookService) {
 	     this.userService = userService;
+	     this.commentService = commentService;
+	     this.bookService = bookService;
 	 }
 	
 	 @GetMapping
@@ -132,6 +138,8 @@ public class UserController {
 	 @DeleteMapping("/{userId}")
 	 public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
 	     try {
+	    	 bookService.updateAllUserBookStatus(userId);
+	    	 commentService.deleteCommentsByUserId(userId);
 	         userService.deleteUser(userId);
 	         return ResponseEntity.noContent().build();
 	     } catch (EntityNotFoundException e) {

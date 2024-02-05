@@ -26,9 +26,9 @@
             </a>
         </span>
 
-        <span class="title-group login-logout" routerLink="/login" routerLinkActive="active-link">
+        <span class="title-group login-logout">
             <ng-container *ngIf="sessionIs(); else Logout">
-                <a>
+                <a id="login-select" routerLink="/login" routerLinkActive="active-link">
                     <i class="material-icons">login</i>
                     Login
                 </a>
@@ -36,10 +36,21 @@
         </span>
 
         <ng-template #Logout>
-            <a (click)="outSession()">
-                <i class="material-icons">exit_to_app</i>
-                Logout
-            </a>
+            <mat-select id="logout-select" placeholder="Opções de cadastro">
+                <mat-option id="logout-option">
+                    <a id="select-cadastro" routerLink="/userconfig" routerLinkActive="active-link">
+                        <i class="material-icons">gear</i>
+                        Alterar cadastro
+                    </a>
+                </mat-option>
+
+                <mat-option id="logout-option">
+                    <a id="select-logout" (click)="outSession()">
+                        <i class="material-icons">exit_to_app</i>
+                        Logout
+                    </a>
+                </mat-option>
+            </mat-select>
         </ng-template>
 
     </div>

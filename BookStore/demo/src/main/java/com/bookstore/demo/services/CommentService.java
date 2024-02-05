@@ -81,5 +81,11 @@ public class CommentService {
     public Optional<User> getUserByCommentId(Long commentId) {
         return commentRepository.findUserByCommentId(commentId);
     }
+    
+    public void deleteCommentsByUserId(Long userId) {
+    	for (Comment comment: commentRepository.findAllUserComments(userId)) {
+    		deleteComment(comment.getId());
+    	}
+    }
 
 }

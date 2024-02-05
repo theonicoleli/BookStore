@@ -31,6 +31,8 @@ import { BorrowedComponent } from './views/borrowed/borrowed.component';
 import { LendBooksComponent } from './views/lend-books/lend-books.component';
 import { SignUpComponent } from './views/sign-up/sign-up.component';
 import { CommentinfoComponent } from './components/template/commentinfo/commentinfo.component';
+import { UserConfigComponent } from './views/user-config/user-config.component';
+import { EditUserComponent } from './views/edit-user/edit-user.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,9 @@ import { CommentinfoComponent } from './components/template/commentinfo/commenti
     BorrowedComponent,
     LendBooksComponent,
     SignUpComponent,
-    CommentinfoComponent
+    CommentinfoComponent,
+    UserConfigComponent,
+    EditUserComponent
   ],
   imports: [
     BrowserModule,

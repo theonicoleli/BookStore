@@ -1,0 +1,16 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Configurações</mat-card-title>
+        <mat-card-subtitle>Olá {{ returnSessionUser() }}</mat-card-subtitle>
+        <mat-card-subtitle>Aqui você pode alterar todos os seus dados ou excluir sua conta.</mat-card-subtitle>
+    </mat-card-header>
+
+    <button id="edit-user" (click)="editUser()">
+        Editar conta
+    </button>
+
+    <button (click)="deleteUser()">
+        Excluir conta
+    </button>
+
+</mat-card>

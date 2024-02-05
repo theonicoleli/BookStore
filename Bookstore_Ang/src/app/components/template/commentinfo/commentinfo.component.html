@@ -10,7 +10,7 @@
     </mat-card-content>
 
     <mat-card-actions>
-        <i class="material-icons" (click)="deleteComment()" id="delete-button">
+        <i *ngIf="commentSessionEquals(); else null" class="material-icons" (click)="deleteComment()" id="delete-button">
             delete
         </i>
     </mat-card-actions>

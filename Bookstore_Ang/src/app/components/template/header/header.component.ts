@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../../../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,10 @@ import { AuthenticationService } from '../../../services/authentication.service'
 })
 export class HeaderComponent {
 
-  constructor(private session: AuthenticationService) {}
+  constructor(
+    private session: AuthenticationService,
+    private router: Router
+    ) {}
 
   sessionIs(): boolean {
     return this.session.getAuthenticatedUser() == undefined;
@@ -17,6 +21,7 @@ export class HeaderComponent {
   outSession() {
     if (confirm("Realmente deseja sair da sua sessão atual?")) {
       this.session.logout();
+      this.router.navigate(["/"]);
     }
   }
 

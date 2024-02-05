@@ -38,5 +38,13 @@ export class UsersService {
     const user = { name, email, password };
     return this.http.post(this.url, user);
   }
+
+  putUser(name?: string, email?: string, password?: string, userId?: number): Observable<any> {
+    const user = { name, email, password };
+    return this.http.put<any>(`${this.url}/${userId}`, user)
+  }
   
+  deleteUser(userId?: number): Observable<number> {
+    return this.http.delete<number>(this.url + "/" + userId);
+  }
 }

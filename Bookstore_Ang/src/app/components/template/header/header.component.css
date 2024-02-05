@@ -29,3 +29,33 @@
 .header .links {
     gap: 40px;
 }
+
+#logout-select {
+    color: #000000;
+    background-color: #ffffff;
+    border: 1px solid #3F88C5;
+    border-radius: 4px;
+    padding: 5px 10px;
+}
+
+#logout-option a {
+    color: #000000;
+    text-decoration: none;
+}
+
+#select-cadastro {
+    display: flex;
+    flex-direction: column;
+}
+
+#select-cadastro a, #login-select, #select-logout {
+    text-decoration: none;
+}
+
+#login-select {
+    color: #F1FAFF;
+}
+
+#select-logout{
+    display: flex;
+}

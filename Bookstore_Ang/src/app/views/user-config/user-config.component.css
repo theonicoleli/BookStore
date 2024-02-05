@@ -1,0 +1,30 @@
+mat-card {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+mat-card-header {
+    background-color: #3F88C5;
+    color: #F1FAFF;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#edit-user {
+    background-color: green;
+}
+
+button:hover {
+    background-color: #c82333;
+}

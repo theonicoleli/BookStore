@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { User } from '../../../services/models/User';
 import { Comment } from '../../../services/models/Comment';
 import { CommentService } from '../../../services/comment.service';
+import { AuthenticationService } from '../../../services/authentication.service';
 
 @Component({
   selector: 'app-commentinfo',
@@ -16,10 +17,18 @@ export class CommentinfoComponent {
   @Input() commentListComments?: Comment[] = [];
 
   constructor(
-    private commentService: CommentService
+    private commentService: CommentService,
+    private session: AuthenticationService
   ) {}
 
   ngOnInit() {
+  }
+
+  commentSessionEquals(): boolean {
+    if (this.session.getAuthenticatedUser()?.id == this.commentUser?.id) {
+      return true;
+    }
+    return false;
   }
 
   deleteComment() {
