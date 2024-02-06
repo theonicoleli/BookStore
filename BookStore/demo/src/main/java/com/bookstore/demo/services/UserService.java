@@ -45,6 +45,10 @@ public class UserService {
 	        throw new EntityNotFoundException("Usuário com email " + userEmail + " e senha fornecida não encontrado.");
 	    }
 	}
+	 
+	 public User getUserByUserName(String userName) {
+		 return userRepository.findUserByUserName(userName);
+	 }
 
 	 public User addUser(User user) {
 	     return userRepository.save(user);

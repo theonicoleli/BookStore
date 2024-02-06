@@ -16,6 +16,7 @@ export class SignUpComponent {
   constructor(private fb: FormBuilder, private usersService: UsersService, private router: Router) {
     this.loginForm = this.fb.group({
       name: ['', Validators.required],
+      userName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
@@ -33,21 +34,26 @@ export class SignUpComponent {
     return this.loginForm.get('name');
   }
 
+  get userName() {
+    return this.loginForm.get("userName");
+  }
+
   onSubmit() {
     if (this.loginForm.valid) {
-      const userName = this.loginForm.controls['name'].value;
+      const name = this.loginForm.controls['name'].value;
       const userEmail = this.loginForm.controls['email'].value;
       const userPassword = this.loginForm.controls['password'].value;
-      let countEmail = 0;
+      const userName = this.loginForm.controls['userName'].value;
 
       this.usersService.countUserByEmail(userEmail).subscribe(
         (data: number) => {
-          countEmail = data;
+
           if (data > 0) {
             alert('Email já cadastrado, faça seu login!');
             return;
           }
-          this.usersService.postUser(userName, userEmail, userPassword).subscribe(
+
+          this.usersService.postUser(name, userName, userEmail, userPassword).subscribe(
             (response) => {
               alert('Cadastro realizado com sucesso!');
               this.router.navigate(['/login']);

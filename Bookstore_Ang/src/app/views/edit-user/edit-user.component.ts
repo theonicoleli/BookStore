@@ -23,6 +23,7 @@ export class EditUserComponent {
       const authenticatedUser = this.session.getAuthenticatedUser();
       
       this.userForm = this.fb.group({
+        userName: [authenticatedUser?.userName, Validators.required],
         name: [authenticatedUser?.name, Validators.required],
         password: [authenticatedUser?.password, Validators.required]
       });
@@ -34,6 +35,10 @@ export class EditUserComponent {
 
   get name() {
     return this.userForm.get('name');
+  }
+
+  get userName() {
+    return this.userForm.get('userName');
   }
   
   ngOnInit(){
@@ -55,9 +60,15 @@ export class EditUserComponent {
     if(confirm("Realmente deseja alterar seu cadastro?")) {
       const sessionConst = this.session.getAuthenticatedUser();
 
-      this.usersService.putUser(this.userForm.controls['name'].value, sessionConst?.email, 
-      this.userForm.controls['password'].value, sessionConst?.id).subscribe(
+      this.usersService.putUser(
+        this.userForm.controls['name'].value, 
+        this.userForm.controls['userName'].value , 
+        sessionConst?.email, 
+        this.userForm.controls['password'].value, 
+        sessionConst?.id
+      ).subscribe(
         (data) => {
+          console.log(this.userForm.controls['userName'].value);
           console.log("Alterado com sucesso!");
         },
         (error) => {

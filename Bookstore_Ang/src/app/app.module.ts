@@ -33,6 +33,7 @@ import { SignUpComponent } from './views/sign-up/sign-up.component';
 import { CommentinfoComponent } from './components/template/commentinfo/commentinfo.component';
 import { UserConfigComponent } from './views/user-config/user-config.component';
 import { EditUserComponent } from './views/edit-user/edit-user.component';
+import { UserProfileComponent } from './views/user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { EditUserComponent } from './views/edit-user/edit-user.component';
     SignUpComponent,
     CommentinfoComponent,
     UserConfigComponent,
-    EditUserComponent
+    EditUserComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,

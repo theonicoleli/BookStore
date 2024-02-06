@@ -37,6 +37,13 @@
 
         <ng-template #Logout>
             <mat-select id="logout-select" placeholder="Opções de cadastro">
+                <mat-option id="logout-option" (click)="routerProfile()">
+                    <a id="select-cadastro">
+                        <i class="material-icons">gear</i>
+                        Perfil
+                    </a>
+                </mat-option>
+
                 <mat-option id="logout-option">
                     <a id="select-cadastro" routerLink="/userconfig" routerLinkActive="active-link">
                         <i class="material-icons">gear</i>

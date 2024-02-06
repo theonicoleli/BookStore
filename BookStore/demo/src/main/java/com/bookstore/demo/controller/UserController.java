@@ -55,6 +55,18 @@ public class UserController {
 	         throw new UserException("Erro ao obter o usuário com o email: " + userEmail, e);
 	     }
 	 }
+	 
+	 @GetMapping("/profile/{userName}")
+	 public ResponseEntity<User> getUserByUserName(@PathVariable String userName) {
+	     try {
+	         User user = userService.getUserByUserName(userName);
+	         return ResponseEntity.ok(user);
+	     } catch (EntityNotFoundException e) {
+	         return ResponseEntity.notFound().build();
+	     } catch (Exception e) {
+	         throw new UserException("Erro ao obter o usuário com o userName: " + userName, e);
+	     }
+	 }
 	
 	 @GetMapping("/{userId}")
 	 public ResponseEntity<User> getUserById(@PathVariable Long userId) {
@@ -124,6 +136,7 @@ public class UserController {
 	         User existingUser = userService.getUserById(userId);
 	         
 	         existingUser.setName(updatedUser.getName());
+	         existingUser.setUserName(updatedUser.getUserName());
 	         existingUser.setEmail(updatedUser.getEmail());
 	         existingUser.setPassword(updatedUser.getPassword());
 	         

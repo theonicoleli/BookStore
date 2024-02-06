@@ -1,0 +1,10 @@
+<div class="user-profile">
+    <h1>{{ userProfile?.name }}</h1>
+    <p>Username: {{ userProfile?.userName }}</p>
+    <p>Email: {{ userProfile?.email }}</p>
+    <h2>Lend Books</h2>
+    <ul *ngFor="let book of books">
+        <app-bookinfo [bookName]="book.name" [status]="book.status" [imagePath]="book.imagePath"
+            [description]="book.description" [theme]="book.theme" [edit]="book.id"></app-bookinfo>
+    </ul>
+</div>

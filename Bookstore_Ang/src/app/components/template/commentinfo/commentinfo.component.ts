@@ -21,6 +21,7 @@ export class CommentinfoComponent {
   @Input() commentListComments?: Comment[] = [];
 
   showAddCommentForm: boolean = false;
+  linkUrlPerson: string = '';
   newCommentForm: FormGroup;
 
   constructor(
@@ -50,6 +51,8 @@ export class CommentinfoComponent {
         );
       });
     }
+
+    this.linkUrlPerson = `/userprofile/${this.commentUser?.userName}`;
 
   }
 

@@ -18,8 +18,11 @@ export class UsersService {
 
   getUserByEmailAndPassword(userEmail: string, userPassword: string): Observable<User> {
     const linkGetUser = "/" + userEmail + "/" + userPassword;
-    
     return this.http.get<User>(this.url + linkGetUser);
+  }
+
+  getUserByUserName(userName?: string) {
+    return this.http.get<User>(this.url + "/profile/" + userName);
   }
 
   getUserById(userId: number): Observable<User> {
@@ -34,13 +37,13 @@ export class UsersService {
     return this.http.get<number>(`${this.url}/count/${userEmail}`);
   }
 
-  postUser(name: string, email: string, password: string): Observable<any> {
-    const user = { name, email, password };
+  postUser(name: string, userName: string , email: string, password: string): Observable<any> {
+    const user = { name, userName , email, password };
     return this.http.post(this.url, user);
   }
 
-  putUser(name?: string, email?: string, password?: string, userId?: number): Observable<any> {
-    const user = { name, email, password };
+  putUser(name?: string, userName?: string,email?: string, password?: string, userId?: number): Observable<any> {
+    const user = { name, userName, email, password };
     return this.http.put<any>(`${this.url}/${userId}`, user)
   }
   

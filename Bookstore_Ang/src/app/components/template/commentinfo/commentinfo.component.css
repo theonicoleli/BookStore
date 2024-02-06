@@ -46,3 +46,26 @@ button:hover {
     padding: 8px;
     margin-top: 8px;
 }
+
+#text-user {
+    height: 70px;
+}
+
+#new-comment {
+    display: flex;
+    border-radius: 5px;
+    width: 20%;
+    height: 3rem;
+    font-size: 12px;
+    align-items: center;
+    justify-content: center;
+}
+
+#form-comment {
+    display: inline-flex;
+}
+
+#router-link-a {
+    text-decoration: none;
+    color: black;
+}

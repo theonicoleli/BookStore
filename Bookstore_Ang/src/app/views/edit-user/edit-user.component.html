@@ -9,6 +9,12 @@
             <mat-error *ngIf="name?.hasError('required') && name?.touched">Name is required</mat-error>
         </mat-form-field>
 
+        <mat-form-field appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="userName">
+            <mat-error *ngIf="userName?.hasError('required') && userName?.touched">Name is required</mat-error>
+        </mat-form-field>
+
         <mat-form-field>
             <mat-label>Enter your password</mat-label>
             <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">

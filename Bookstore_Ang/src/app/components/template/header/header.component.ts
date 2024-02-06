@@ -14,8 +14,18 @@ export class HeaderComponent {
     private router: Router
     ) {}
 
+  getSessionProfile() {
+    return this.session.getAuthenticatedUser()?.userName;
+  }
+
   sessionIs(): boolean {
     return this.session.getAuthenticatedUser() == undefined;
+  }
+
+  routerProfile() {
+    const url = "/userprofile/" + this.getSessionProfile();
+    console.log(url)
+    this.router.navigate([url]);
   }
 
   outSession() {

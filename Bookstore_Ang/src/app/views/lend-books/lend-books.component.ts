@@ -24,6 +24,7 @@ export class LendBooksComponent {
 
   commentForm: FormGroup;
   newCommentText: string = '';
+  getUserComplete: boolean = false;
 
   constructor(
     private session: AuthenticationService, 
@@ -57,7 +58,6 @@ export class LendBooksComponent {
             this.user = user;
           },
           (error: any) => {
-            console.log("Error ao encontrar usuário utilizando livro.")
           }
         );
       }, 
@@ -110,6 +110,7 @@ export class LendBooksComponent {
           this.commentService.getUserByCommentId(comment.id).subscribe(
             (user: User) => {
               comment.user = user;
+              this.getUserComplete = true;
             },
             (error) => {
               console.log("Error ao achar usuário do comentário.")

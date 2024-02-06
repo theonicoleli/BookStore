@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,6 +16,8 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype")
 public class User {
 	
 	@Id
@@ -20,6 +25,8 @@ public class User {
 	private Long id;
 	
 	private String name;
+	
+	private String userName;
 	
 	private String email;
 	
@@ -41,6 +48,10 @@ public class User {
 	
 	public String getEmail() {
 		return email;
+	}
+	
+	public String getUserName() {
+		return userName;
 	}
 	
 	public String getPassword() {
@@ -78,6 +89,10 @@ public class User {
 
 	public void setBooks(List<Book> userBooks) {
 		this.books = userBooks;
+	}
+	
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 }

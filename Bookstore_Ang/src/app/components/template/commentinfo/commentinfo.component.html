@@ -2,7 +2,9 @@
     <mat-card-header>
         <div class="mat-mdc-card-header-text">
             <mat-card-title>
-                {{ commentUser?.name }}
+                <a id="router-link-a" [routerLink]="linkUrlPerson">
+                    {{ commentUser?.name }}
+                </a>
             </mat-card-title>
         </div>
     </mat-card-header>
@@ -17,21 +19,23 @@
         </i>
     </mat-card-actions>
 
-    <form *ngIf="isReply" (submit)="addComment()" [formGroup]="newCommentForm">
-        <mat-form-field appearance="fill">
+    <form id="form-comment" *ngIf="isReply" (submit)="addComment()" [formGroup]="newCommentForm">
+        <mat-form-field appearance="fill" id="text-user">
             <textarea matInput placeholder="Add a comment" formControlName="newCommentText" required></textarea>
         </mat-form-field>
-        <button type="submit">Add Comment</button>
+        <button id="new-comment" type="submit">Add Comment</button>
     </form>
 
     <div *ngIf="commentListComments && commentListComments.length > 0">
-        <app-commentinfo *ngFor="let childComment of commentListComments"
-            [commentId]="childComment.id"
-            [commentText]="childComment.text"
-            [commentUser]="childComment.user"
-            [commentListComments]="childComment.replies"
-            [bookId]="bookId"
-            [isReply]="false">
-        </app-commentinfo>
+        <div *ngFor="let childComment of commentListComments">
+            <app-commentinfo *ngIf="childComment.user; else null"
+                [commentId]="childComment.id"
+                [commentText]="childComment.text"
+                [commentUser]="childComment.user"
+                [commentListComments]="childComment.replies"
+                [bookId]="bookId"
+                [isReply]="false">
+            </app-commentinfo>
+        </div>
     </div>
 </mat-card>

@@ -10,6 +10,7 @@ import { LendBooksComponent } from './views/lend-books/lend-books.component';
 import { SignUpComponent } from './views/sign-up/sign-up.component';
 import { UserConfigComponent } from './views/user-config/user-config.component';
 import { EditUserComponent } from './views/edit-user/edit-user.component';
+import { UserProfileComponent } from './views/user-profile/user-profile.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
@@ -21,7 +22,8 @@ const routes: Routes = [
   { path: "lend/:id", component: LendBooksComponent},
   { path: "signup", component: SignUpComponent},
   { path: "userconfig", component: UserConfigComponent},
-  { path: "userconfig/edit", component: EditUserComponent}
+  { path: "userconfig/edit", component: EditUserComponent},
+  { path: "userprofile/:username", component: UserProfileComponent}
 ];
 
 @NgModule({

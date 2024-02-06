@@ -14,6 +14,14 @@
             </mat-form-field>
 
             <mat-form-field appearance="fill">
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="userName" type="text" id="userName" name="userName">
+                <mat-error *ngIf="userName?.hasError('required') && userName?.touched">
+                    O UserName é obrigatório.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>
                 <input matInput formControlName="email" type="email" id="email" name="email">
                 <mat-error *ngIf="email?.hasError('required') && email?.touched">O email é obrigatório.</mat-error>

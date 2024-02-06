@@ -82,10 +82,6 @@ public class Comment {
         this.replies = replies;
     }
     
-    public void setReplies(Comment text) {
-    	this.replies.add(text);
-    }
-
     public Comment getParentComment() {
         return parentComment;
     }
