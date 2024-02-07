@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 .title-group, .header .links, .header a, .header {
     display: flex;
 }
@@ -6,9 +7,10 @@
     align-items: center;
     font-family: 'Poppins', sans-serif;
     padding: 20px;
-    justify-content: space-between;
-    background-color: #3F88C5;
-    color: #F1FAFF;
+    justify-content: space-around;
+    color: #000000d3;
+    background-color: #F1FAFF;
+    z-index: 10000;
 }
 
 .header a {
@@ -19,7 +21,7 @@
 
 .title-group a {
     gap: 6px;
-    font-size: 17px;
+    font-size: 16px;
 }
 
 .title-group a i {
@@ -53,9 +55,26 @@
 }
 
 #login-select {
-    color: #F1FAFF;
+    color: #000000;
 }
 
 #select-logout{
     display: flex;
+}
+
+#button-login {
+    background-color: #3F88C5;
+    color: #F0FAFF;
+    width: 90px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+
+.title-group.home {
+    cursor: pointer;
+}
+
+.title-group h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
 }
