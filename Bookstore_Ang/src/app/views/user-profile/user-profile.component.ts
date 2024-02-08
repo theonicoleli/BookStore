@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { User } from '../../services/models/User';
 import { Book } from '../../services/models/Book';
+import { BooksService } from '../../services/books.service';
+import { ReadbookService } from '../../services/readbook.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,9 +15,16 @@ export class UserProfileComponent implements OnInit {
 
   userName: string = '';
   userProfile: User | null = null;
-  books: Book[] = []; // Added a property to store the books
+  books: Book[] = [];
+  readBooks: Book[] = [];
 
-  constructor(private route: ActivatedRoute, private userService: UsersService) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private userService: UsersService, 
+    private bookService: BooksService,
+    private readBookService: ReadbookService
+    ) 
+    {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -30,14 +39,55 @@ export class UserProfileComponent implements OnInit {
     this.userService.getUserByUserName(this.userName).subscribe(
       (data: any) => {
         this.userProfile = data;
+
+        this.getBooksAlreadyRead();
         
         if (data.bookList != null) {
-          this.books = data.bookList;
+          for (const bookList of data.bookList) {
+            this.bookService.getBookById(bookList).subscribe(
+              (otherDatas) => {
+                this.books.push(otherDatas);
+              },
+              (error) => {
+                console.log("Infelizmente não conseguimos achar os livros do usuário.")
+              }
+            )
+          }
         }
+
+        if (this.userProfile && !this.userProfile.imagePath?.startsWith("assets/img/")) {
+          this.userProfile.imagePath = "assets/img/" + this.userProfile.imagePath;
+        }        
+
       },
       (error: any) => {
         console.log("Error trying to find person with userName: " + this.userName);
       }
     )
   }
+
+  getBooksAlreadyRead() {
+    if (this.userProfile?.id !== undefined) {
+      this.readBookService.getReadBooksByUser(this.userProfile.id).subscribe(
+        (data: any) => {
+          for(const book of data) {
+            this.bookService.getBookById(book.bookId).subscribe(
+              (readBook) => {
+                this.readBooks.push(readBook);
+              },
+              (error) => {
+                console.log("Erro ao tentar achar livros do usuário.");
+              }
+            )
+          }
+        },
+        (error) => {
+          console.log("Erro ao encontrar livros lidos do usuário.");
+        }
+      )
+    } else {
+      console.log("UserID está indefinido.");
+    }
+  }
 }
+

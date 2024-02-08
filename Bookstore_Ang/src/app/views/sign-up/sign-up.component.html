@@ -3,7 +3,7 @@
 
         <h1>Sign-up</h1>
 
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
 
             <mat-form-field appearance="fill">
                 <mat-label>Name</mat-label>
@@ -20,6 +20,8 @@
                     O UserName é obrigatório.
                 </mat-error>
             </mat-form-field>
+
+            <input type="file" (change)="onFileChange($event)" id="image" accept="image/*">
 
             <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>

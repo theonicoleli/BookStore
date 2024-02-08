@@ -1,4 +1,5 @@
 <div class="user-profile">
+    <img [src]="userProfile?.imagePath" alt="imagem usuário">
     <h1>{{ userProfile?.name }}</h1>
     <p>Username: {{ userProfile?.userName }}</p>
     <p>Email: {{ userProfile?.email }}</p>
@@ -6,5 +7,11 @@
     <ul *ngFor="let book of books">
         <app-bookinfo [bookName]="book.name" [status]="book.status" [imagePath]="book.imagePath"
             [description]="book.description" [theme]="book.theme" [edit]="book.id"></app-bookinfo>
+    </ul>
+
+    <h2>Books already read</h2>
+    <ul *ngFor="let readBook of readBooks">
+        <app-bookinfo [bookName]="readBook.name" [status]="readBook.status" [imagePath]="readBook.imagePath"
+        [description]="readBook.description" [theme]="readBook.theme" [edit]="readBook.id"></app-bookinfo>
     </ul>
 </div>

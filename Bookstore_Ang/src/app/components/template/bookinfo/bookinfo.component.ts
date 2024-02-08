@@ -25,7 +25,9 @@ export class BookinfoComponent {
 
   ngOnInit() {
     console.log(this.imagePath);
-    this.imagePath = `assets/img/${this.imagePath}`;
+    if (!this.imagePath.startsWith("assets/img/")) {
+      this.imagePath = "assets/img/" + this.imagePath;
+    }
   }
 
   deleteOnClick(): void {

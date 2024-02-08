@@ -94,3 +94,20 @@ mat-form-field {
     font-size: 12px;
 }
 
+input[type="file"] {
+    width: 95%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    cursor: pointer;
+    display: block;
+    font-size: 14px;
+    color: #777;
+}
+
+input[type="file"]:not(:placeholder-shown) {
+    background-color: #fff;
+    border-color: #2196F3;
+}
+

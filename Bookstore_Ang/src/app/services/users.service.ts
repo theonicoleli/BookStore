@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from './models/User';
 
@@ -37,13 +37,12 @@ export class UsersService {
     return this.http.get<number>(`${this.url}/count/${userEmail}`);
   }
 
-  postUser(name: string, userName: string , email: string, password: string): Observable<any> {
-    const user = { name, userName , email, password };
-    return this.http.post(this.url, user);
+  postUser(formData: FormData): Observable<any> {
+    const headers = new HttpHeaders();
+    return this.http.post(this.url, formData, { headers });
   }
 
-  putUser(name?: string, userName?: string,email?: string, password?: string, userId?: number): Observable<any> {
-    const user = { name, userName, email, password };
+  putUser(userId?: number, user?: FormData): Observable<any> {
     return this.http.put<any>(`${this.url}/${userId}`, user)
   }
   

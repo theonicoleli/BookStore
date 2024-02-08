@@ -72,7 +72,7 @@ export class LendBooksComponent {
   lend() {
     if (this.book.status) {
       const authenticatedUser = this.session.getAuthenticatedUser();
-
+  
       if (!authenticatedUser) {
         console.log("Usuário não autenticado. Não é possível emprestar o livro.");
         return;
@@ -81,15 +81,22 @@ export class LendBooksComponent {
       const confirmLend = confirm("Deseja realmente emprestar o livro?");
     
       if (confirmLend) {
-        this.bookService.patchStatusBook(this.bookId, authenticatedUser.id, true).subscribe(
-          (data) => {
-            console.log("Alteração concluída com sucesso!");
-            this.router.navigate(["/books"]);
-          },
-          (error) => {
-            console.error("Ocorreu uma falha com a alteração do status do livro:", error);
-          }
-        );
+        const bookId = this.bookId;
+        const userId = authenticatedUser?.id;
+        
+        if (bookId !== undefined && userId !== undefined) {
+          this.bookService.patchStatusBook(bookId, userId, true).subscribe(
+            (data) => {
+              console.log("Alteração concluída com sucesso!");
+              this.router.navigate(["/books"]);
+            },
+            (error) => {
+              console.error("Ocorreu uma falha com a alteração do status do livro:", error);
+            }
+          );
+        } else {
+          console.error("bookId ou userId não são números válidos.");
+        }
       }
     }
   }

@@ -19,11 +19,13 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final UserService userService;
+    private final ReadBookService readBookService;
 
     @Autowired
-    public BookService(BookRepository bookRepository, UserService userService) {
+    public BookService(BookRepository bookRepository, UserService userService, ReadBookService readBookService) {
         this.bookRepository = bookRepository;
         this.userService = userService;
+        this.readBookService = readBookService;
     }
 
     public List<Book> getAllBooks() {
@@ -53,40 +55,44 @@ public class BookService {
     public Book updateBook(Long bookId, BookRequest bookRequest) {
         Optional<Book> optionalBook = bookRepository.findById(bookId);
 
-        if (optionalBook.isPresent()) {
+        if (optionalBook.isPresent() && bookRequest != null) {
             Book existingBook = optionalBook.get();
             existingBook.setName(bookRequest.getName());
             existingBook.setStatus(bookRequest.isStatus());
             existingBook.setImagePath(bookRequest.getImagePath());
             existingBook.setDescription(bookRequest.getDescription());
             
-            if (bookRequest.getUserId() != null ) {
-            	existingBook.setUser(userService.getUserById(bookRequest.getUserId()));
+            Long userId = bookRequest.getUserId();
+            if (userId != null) {
+                User user = userService.getUserById(userId);
+                existingBook.setUser(user);
+                readBookService.addReadBook(user, existingBook);
             }
 
             return bookRepository.save(existingBook);
         } else {
-            throw new EntityNotFoundException("Livro com ID " + bookId + " não encontrado.");
+            throw new EntityNotFoundException("Livro com ID " + bookId + " não encontrado ou solicitação inválida.");
         }
     }
 
-    public void deleteBook(Long bookId) {
+    public void deleteBook(Long bookId) {	
         bookRepository.deleteById(bookId);
     }
     
     public Book updateStatus(Long bookId, long userId, boolean newStatus) {
-    	User user = userService.getUserById(userId);
+        User user = userService.getUserById(userId);
         Optional<Book> optionalBook = bookRepository.findById(bookId);
 
         if (optionalBook.isPresent()) {
             Book existingBook = optionalBook.get();
-            
-            if(!newStatus) {
-            	existingBook.setUser(null);
+
+            if (!newStatus) {
+                existingBook.setUser(null);
             } else {
-            	existingBook.setUser(user);
+                existingBook.setUser(user);
+                readBookService.addReadBook(user, existingBook);
             }
-            
+
             existingBook.setStatus(!newStatus);
 
             return bookRepository.save(existingBook);
@@ -94,6 +100,7 @@ public class BookService {
             throw new EntityNotFoundException("Livro com ID " + bookId + " não encontrado.");
         }
     }
+
     
     public void updateAllUserBookStatus(Long userId) {
     	User user = userService.getUserById(userId);

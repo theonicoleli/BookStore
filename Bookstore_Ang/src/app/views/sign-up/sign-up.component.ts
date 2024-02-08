@@ -18,7 +18,8 @@ export class SignUpComponent {
       name: ['', Validators.required],
       userName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      image: [null]
     });
   }
 
@@ -40,31 +41,23 @@ export class SignUpComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const name = this.loginForm.controls['name'].value;
-      const userEmail = this.loginForm.controls['email'].value;
-      const userPassword = this.loginForm.controls['password'].value;
-      const userName = this.loginForm.controls['userName'].value;
+      const formData = new FormData();
+      formData.append('name', this.loginForm.controls['name'].value);
+      formData.append('userName', this.loginForm.controls['userName'].value);
+      formData.append('email', this.loginForm.controls['email'].value);
+      formData.append('password', this.loginForm.controls['password'].value);
+      const fileInput = (document.getElementById('image') as HTMLInputElement);
+      if (fileInput.files?.length) {
+        formData.append('image', fileInput.files[0]);
+      }
 
-      this.usersService.countUserByEmail(userEmail).subscribe(
-        (data: number) => {
-
-          if (data > 0) {
-            alert('Email já cadastrado, faça seu login!');
-            return;
-          }
-
-          this.usersService.postUser(name, userName, userEmail, userPassword).subscribe(
-            (response) => {
-              alert('Cadastro realizado com sucesso!');
-              this.router.navigate(['/login']);
-            },
-            (error) => {
-              console.error('Error posting user:', error);
-            }
-          );
+      this.usersService.postUser(formData).subscribe(
+        (response) => {
+          alert('Cadastro realizado com sucesso!');
+          this.router.navigate(['/login']);
         },
-        (error: any) => {
-          console.log('Error checking email:', error);
+        (error) => {
+          console.error('Erro ao cadastrar usuário:', error);
         }
       );
     }
@@ -81,4 +74,12 @@ export class SignUpComponent {
   getVisibilityIcon() {
     return this.hide ? 'visibility' : 'visibility_off';
   }
+
+  onFileChange(event: any) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    this.loginForm.patchValue({
+      image: file
+    });
+  }  
+
 }

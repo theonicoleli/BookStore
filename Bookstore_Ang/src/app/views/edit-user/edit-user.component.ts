@@ -7,7 +7,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 @Component({
   selector: 'app-edit-user',
   templateUrl: './edit-user.component.html',
-  styleUrl: './edit-user.component.css'
+  styleUrls: ['./edit-user.component.css']
 })
 export class EditUserComponent {
 
@@ -19,14 +19,15 @@ export class EditUserComponent {
     private usersService: UsersService, 
     private session: AuthenticationService,
     private router: Router
-    ) {
-      const authenticatedUser = this.session.getAuthenticatedUser();
+  ) {
+    const authenticatedUser = this.session.getAuthenticatedUser();
       
-      this.userForm = this.fb.group({
-        userName: [authenticatedUser?.userName, Validators.required],
-        name: [authenticatedUser?.name, Validators.required],
-        password: [authenticatedUser?.password, Validators.required]
-      });
+    this.userForm = this.fb.group({
+      userName: [authenticatedUser?.userName, Validators.required],
+      name: [authenticatedUser?.name, Validators.required],
+      image: [null],
+      password: [authenticatedUser?.password, Validators.required]
+    });
   }
 
   get password() {
@@ -41,15 +42,19 @@ export class EditUserComponent {
     return this.userForm.get('userName');
   }
   
-  ngOnInit(){
-  }
-
   togglePasswordVisibility() {
     const passwordControl = this.userForm.get('password');
     if (passwordControl) {
       passwordControl.patchValue(passwordControl.value);
       this.hide = !this.hide;
     }
+  }
+
+  onFileChange(event: any) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    this.userForm.patchValue({
+      image: file
+    });
   }
 
   getVisibilityIcon() {
@@ -59,23 +64,29 @@ export class EditUserComponent {
   onSubmit() {
     if(confirm("Realmente deseja alterar seu cadastro?")) {
       const sessionConst = this.session.getAuthenticatedUser();
+  
+      const user = {
+        name: this.userForm.controls['name'].value,
+        userName: this.userForm.controls['userName'].value,
+        email: sessionConst?.email ?? '',
+        password: this.userForm.controls['password'].value,
+      };
 
-      this.usersService.putUser(
-        this.userForm.controls['name'].value, 
-        this.userForm.controls['userName'].value , 
-        sessionConst?.email, 
-        this.userForm.controls['password'].value, 
-        sessionConst?.id
-      ).subscribe(
+      const formData = new FormData();
+      
+      formData.append('user', JSON.stringify(user));
+      formData.append('image', this.userForm.controls['image'].value);
+
+      this.usersService.putUser(sessionConst?.id, formData).subscribe(
         (data) => {
-          console.log(this.userForm.controls['userName'].value);
+          this.session.setAuthenticatedUser(data);
           console.log("Alterado com sucesso!");
+          this.router.navigate(['/userconfig']);
         },
         (error) => {
           console.error("Erro na alteração, erro: ", error);
         }
-      )
+      );
     }
   }
-
 }

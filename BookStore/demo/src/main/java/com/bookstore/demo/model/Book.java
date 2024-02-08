@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bookstore.demo.enums.BooksTheme;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -18,6 +24,9 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "book")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Book {
 	
 	@Id
@@ -35,9 +44,12 @@ public class Book {
 	private BooksTheme theme;
 	
     @ManyToOne
-    @JsonIgnore
+    @JsonBackReference
     @JoinColumn(name = "user_id")
     private User user;
+    
+    @OneToMany(mappedBy = "book")
+    private List<ReadBook> readBooks;
     
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<Comment> comments;
@@ -118,6 +130,14 @@ public class Book {
         getComments().remove(comment);
         comment.setBook(null);
     }
+
+    @JsonIgnore
+	public List<ReadBook> getReadBooks() {
+		if (readBooks == null) {
+			readBooks = new ArrayList<>();
+		}
+		return readBooks;
+	}
 
     
 }

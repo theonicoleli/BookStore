@@ -15,11 +15,13 @@
             <mat-error *ngIf="userName?.hasError('required') && userName?.touched">Name is required</mat-error>
         </mat-form-field>
 
+        <input type="file" (change)="onFileChange($event)" accept="image/*">
+
         <mat-form-field>
             <mat-label>Enter your password</mat-label>
             <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
-            <button mat-icon-button matSuffix (click)="togglePasswordVisibility()"
-                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" class="visibilityIcon">
+            <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide" class="visibilityIcon">
                 <mat-icon>{{ getVisibilityIcon() }}</mat-icon>
             </button>
             <mat-error *ngIf="password?.hasError('required') && password?.touched">A senha é obrigatória.</mat-error>
@@ -28,5 +30,4 @@
         <button mat-raised-button color="primary" type="submit">Salvar Alterações</button>
 
     </form>
-
 </mat-card>

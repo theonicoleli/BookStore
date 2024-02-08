@@ -49,6 +49,13 @@ public class UserService {
 	 public User getUserByUserName(String userName) {
 		 return userRepository.findUserByUserName(userName);
 	 }
+	 
+	 public boolean existsUserName(String userName) {
+		 if (getUserByUserName(userName) != null) {
+			 return true;
+		 }
+		 return false;
+	 }
 
 	 public User addUser(User user) {
 	     return userRepository.save(user);

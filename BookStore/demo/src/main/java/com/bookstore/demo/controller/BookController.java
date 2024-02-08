@@ -3,10 +3,12 @@ package com.bookstore.demo.controller;
 import com.bookstore.demo.exceptions.BookException;
 import com.bookstore.demo.model.Book;
 import com.bookstore.demo.model.BookRequest;
+import com.bookstore.demo.model.ReadBook;
 import com.bookstore.demo.model.User;
 import com.bookstore.demo.repositories.BookRepository;
 import com.bookstore.demo.repositories.UserRepository;
 import com.bookstore.demo.services.BookService;
+import com.bookstore.demo.services.ReadBookService;
 import com.bookstore.demo.services.UserService;
 import com.bookstore.demo.util.UploadUtil;
 
@@ -22,13 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
 
     private final BookService bookService;
     private final BookRepository bookRepository;
+    private final ReadBookService readBookService;
     
     @Autowired
     private UserRepository userRepository;
@@ -37,9 +40,10 @@ public class BookController {
     private UserService userService;
 
     @Autowired
-    public BookController(BookService bookService, BookRepository bookRepository) {
+    public BookController(BookService bookService, BookRepository bookRepository, ReadBookService readBookService) {
         this.bookService = bookService;
 		this.bookRepository = bookRepository;
+		this.readBookService = readBookService;
     }
 
     @GetMapping
@@ -116,7 +120,8 @@ public class BookController {
             newBook.setTheme(bookRequest.getTheme());
             
             if (UploadUtil.fazerUploadImagem(image)) {
-                newBook.setImagePath(image.getOriginalFilename());
+            	String imagePath = "assets/img/" + image.getOriginalFilename();
+                newBook.setImagePath(imagePath);
             } else {
                 throw new Exception("Falha ao fazer upload da imagem");
             }
@@ -131,6 +136,7 @@ public class BookController {
                     user.setBooks(new ArrayList<>());
                 }
                 user.getBookList().add(newBook);
+                readBookService.addReadBook(user, newBook);
 
                 userRepository.save(user);
             }
@@ -162,7 +168,8 @@ public class BookController {
                         if (existingBook.getImagePath() != null) {
                             UploadUtil.deleteImage(existingBook.getImagePath());
                         }
-                        existingBook.setImagePath(image.getOriginalFilename());
+                        String imagePath = "assets/img/" + image.getOriginalFilename();
+                        existingBook.setImagePath(imagePath);
                     } else {
                         throw new Exception("Falha ao fazer upload da nova imagem");
                     }
@@ -178,6 +185,7 @@ public class BookController {
                         user.setBooks(new ArrayList<>());
                     }
                     user.getBookList().add(existingBook);
+                    readBookService.addReadBook(user, existingBook);
 
                     userRepository.save(user);
                 } else {
@@ -201,14 +209,23 @@ public class BookController {
     @DeleteMapping("/{bookId}")
     public void deleteBook(@PathVariable Long bookId) {
         try {
-        	bookService.deleteBook(bookId);
+            Book bookToDelete = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("Livro com ID " + bookId + " não encontrado."));
+
+            List<ReadBook> readBooks = bookToDelete.getReadBooks();
+            if (readBooks != null) {
+                readBooks.forEach(readBook -> readBookService.deleteReadBook(readBook.getId()));
+            }
+
+            bookService.deleteBook(bookId);
         } catch (Exception e) {
             throw new BookException("Erro ao excluir o livro com ID: " + bookId, e);
         }
     }
+
     
     @PatchMapping("/status/{bookId}/{userId}")
-    public ResponseEntity<?> updateStatus(@PathVariable Long bookId, @PathVariable long userId, @RequestParam boolean newStatus) {
+    public ResponseEntity<?> updateStatus(@PathVariable Long bookId, @PathVariable Long userId, @RequestParam boolean newStatus) {
         try {
             Book updatedBook = bookService.updateStatus(bookId, userId, newStatus);
             return ResponseEntity.ok(updatedBook);
