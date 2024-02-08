@@ -2,6 +2,8 @@ import { Component, Input } from '@angular/core';
 import { BooksService } from '../../../services/books.service';
 import { Location } from '@angular/common';
 import { AuthenticationService } from '../../../services/authentication.service';
+import { Router } from '@angular/router';
+import { SavebookService } from '../../../services/savebook.service';
 
 @Component({
   selector: 'app-bookinfo',
@@ -15,11 +17,14 @@ export class BookinfoComponent {
   @Input() description: string = '';
   @Input() theme: string = '';
   @Input() edit?: number = 0;
+  @Input() colorSave?: boolean = false;
 
   constructor(
-    private bookService: BooksService, 
+    private bookService: BooksService,
+    private saveBookService: SavebookService, 
     private location: Location,
-    private session: AuthenticationService
+    private session: AuthenticationService,
+    private router: Router
     ) 
     {}
 
@@ -50,4 +55,30 @@ export class BookinfoComponent {
     }
     return false;
   }
+
+  changeColorOnClick() {
+    if (this.colorSave) {
+      this.saveBookService.deleteSavedBook(this.session.getAuthenticatedUser()?.id, this.edit).subscribe(
+        (data) => {
+          console.log("Este livro não está mais salvo.");
+          this.colorSave = false;
+        }
+      );
+    } else {
+      this.saveBookService.addSavedBook(this.session.getAuthenticatedUser()?.id, this.edit).subscribe(
+        (data) => {
+          console.log("Livro salvo!");
+          this.colorSave = true;
+        },
+        (error) => {
+          console.log("Erro ao salvar livro.");
+        }
+      );
+    }
+  }
+
+  lendBook(bookId?: number) {
+    this.router.navigate(['/lend/' + bookId])
+  }
+  
 }

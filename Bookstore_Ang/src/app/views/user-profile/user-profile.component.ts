@@ -5,6 +5,7 @@ import { User } from '../../services/models/User';
 import { Book } from '../../services/models/Book';
 import { BooksService } from '../../services/books.service';
 import { ReadbookService } from '../../services/readbook.service';
+import { SavebookService } from '../../services/savebook.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -17,12 +18,14 @@ export class UserProfileComponent implements OnInit {
   userProfile: User | null = null;
   books: Book[] = [];
   readBooks: Book[] = [];
+  savedBooks: Book[] = [];
 
   constructor(
     private route: ActivatedRoute, 
     private userService: UsersService, 
     private bookService: BooksService,
-    private readBookService: ReadbookService
+    private readBookService: ReadbookService,
+    private savedBookService: SavebookService
     ) 
     {}
 
@@ -40,6 +43,7 @@ export class UserProfileComponent implements OnInit {
       (data: any) => {
         this.userProfile = data;
 
+        this.getAllSavedBooksByUserId();
         this.getBooksAlreadyRead();
         
         if (data.bookList != null) {
@@ -89,5 +93,32 @@ export class UserProfileComponent implements OnInit {
       console.log("UserID está indefinido.");
     }
   }
+
+  getAllSavedBooksByUserId() {
+    if (this.userProfile?.id !== undefined) {
+      this.savedBookService.getAllSavedBookByUserId(this.userProfile?.id).subscribe(
+        (data: any) => {
+          for(const book of data) {
+            this.bookService.getBookById(book.bookId).subscribe(
+              (readBook) => {
+                this.savedBooks.push(readBook);
+              },
+              (error) => {
+                console.log("Erro ao tentar achar livros salvos do usuário.");
+              }
+            );
+          }
+        },
+        (error: any) =>  {
+          console.log("Erro ao achar livros salvos.")
+        }
+      )
+    }
+  }
+
+  saveBookContains(book: Book): boolean {
+    return this.savedBooks.some(savedBook => savedBook.id === book.id);
+  }
+
 }
 

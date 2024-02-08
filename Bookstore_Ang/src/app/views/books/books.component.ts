@@ -4,6 +4,7 @@ import { BooksService } from '../../services/books.service';
 import { Book } from '../../services/models/Book';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
+import { SavebookService } from '../../services/savebook.service';
 
 @Component({
   selector: 'app-books',
@@ -17,7 +18,8 @@ export class BooksComponent implements OnInit {
   constructor(
     private bookService: BooksService,
     private router: Router,
-    private session: AuthenticationService
+    private session: AuthenticationService,
+    private saveBookService: SavebookService
     ) 
     {}
 
@@ -32,8 +34,19 @@ export class BooksComponent implements OnInit {
     );
   }
 
-  lendBook(bookId?: number) {
-    this.router.navigate(['/lend/' + bookId])
+  isBookSavedUser(book: Book): boolean {
+    this.saveBookService.getAllSavedBookByUserId(this.session.getAuthenticatedUser()?.id).subscribe(
+      (savedBooks: any) => {
+        if (savedBooks && savedBooks.length > 0) {
+          return savedBooks.some((savedBook: any) => savedBook.book === book.id);
+        }
+        return false;
+      },
+      (error) => {
+        console.log("Erro ao procurar livro salvo pelo usuário.")
+      }
+    );
+    return false;
   }
 
   isAdm(): boolean {

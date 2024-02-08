@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { User } from './models/User';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
+
   private authenticatedUser?: User;
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   setAuthenticatedUser(user: User): void {
     this.authenticatedUser = user;
@@ -36,4 +35,5 @@ export class AuthenticationService {
   isAuthenticated(): boolean {
     return this.getAuthenticatedUser() !== null;
   }
+
 }
