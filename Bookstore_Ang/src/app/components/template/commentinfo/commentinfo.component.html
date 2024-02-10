@@ -10,10 +10,15 @@
     </mat-card-header>
 
     <mat-card-content>
-        {{ commentText }}
+        {{ commentText }}<br><br>
+        Likes:
+        {{likesNumber}}
     </mat-card-content>
 
     <mat-card-actions>
+        <i *ngIf="this.session.getAuthenticatedUser() !== null" [id]="color" (click)="likeComment()" class="material-icons">
+            favorite
+        </i>
         <i *ngIf="commentSessionEquals(); else null" class="material-icons" (click)="deleteComment()" id="delete-button">
             delete
         </i>

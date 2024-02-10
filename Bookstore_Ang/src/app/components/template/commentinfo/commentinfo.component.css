@@ -69,3 +69,14 @@ button:hover {
     text-decoration: none;
     color: black;
 }
+
+#grey{
+    color: black;
+    opacity: 0.2;
+    cursor: pointer;
+}
+
+#red {
+    color: red;
+    cursor: pointer;
+}

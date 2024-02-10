@@ -47,4 +47,20 @@ export class CommentService {
   deleteComment(commentId: number): Observable<any> {
     return this.http.delete(this.url + "/" + commentId);
   }
+
+  patchComment(commentId?: number, userId?: number): Observable<any> {
+    return this.http.patch<any>(`${this.url}/${commentId}/like/${userId}`, null);
+  }  
+
+  getCommentLikes(commentId?: number): Observable<any> {
+    return this.http.get(`${this.url}/likes/${commentId}`);
+  }
+
+  getUserCommentLikes(commentId?:number): Observable<any> {
+    return this.http.get(`${this.url}/liked-users/${commentId}`);
+  }
+
+  hasUserLikedComment(commentId?: number, userId?: number): Observable<any> {
+    return this.http.get(`${this.url}/comments/${commentId}/likedBy/${userId}`)
+  }
 }

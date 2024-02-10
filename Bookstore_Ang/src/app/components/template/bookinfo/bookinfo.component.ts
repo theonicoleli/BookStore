@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { BooksService } from '../../../services/books.service';
-import { Location } from '@angular/common';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { Router } from '@angular/router';
 import { SavebookService } from '../../../services/savebook.service';
@@ -17,19 +16,17 @@ export class BookinfoComponent {
   @Input() description: string = '';
   @Input() theme: string = '';
   @Input() edit?: number = 0;
-  @Input() colorSave?: boolean = false;
+  @Input() withoutColor?: boolean = false;
 
   constructor(
     private bookService: BooksService,
     private saveBookService: SavebookService, 
-    private location: Location,
     private session: AuthenticationService,
     private router: Router
     ) 
     {}
 
   ngOnInit() {
-    console.log(this.imagePath);
     if (!this.imagePath.startsWith("assets/img/")) {
       this.imagePath = "assets/img/" + this.imagePath;
     }
@@ -56,22 +53,22 @@ export class BookinfoComponent {
     return false;
   }
 
-  changeColorOnClick() {
-    if (this.colorSave) {
+  changeSavedBook() {
+    if (this.withoutColor) {
       this.saveBookService.deleteSavedBook(this.session.getAuthenticatedUser()?.id, this.edit).subscribe(
         (data) => {
-          console.log("Este livro não está mais salvo.");
-          this.colorSave = false;
+          alert("Este livro não está mais salvo.");
+          this.withoutColor = false;
         }
       );
     } else {
       this.saveBookService.addSavedBook(this.session.getAuthenticatedUser()?.id, this.edit).subscribe(
         (data) => {
-          console.log("Livro salvo!");
-          this.colorSave = true;
+          alert("Livro salvo!");
+          this.withoutColor = true;
         },
         (error) => {
-          console.log("Erro ao salvar livro.");
+          alert("Erro ao salvar livro.");
         }
       );
     }
@@ -80,5 +77,6 @@ export class BookinfoComponent {
   lendBook(bookId?: number) {
     this.router.navigate(['/lend/' + bookId])
   }
-  
+
 }
+  

@@ -6,6 +6,7 @@ import { Book } from '../../services/models/Book';
 import { BooksService } from '../../services/books.service';
 import { ReadbookService } from '../../services/readbook.service';
 import { SavebookService } from '../../services/savebook.service';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -25,7 +26,8 @@ export class UserProfileComponent implements OnInit {
     private userService: UsersService, 
     private bookService: BooksService,
     private readBookService: ReadbookService,
-    private savedBookService: SavebookService
+    private savedBookService: SavebookService,
+    protected session: AuthenticationService
     ) 
     {}
 

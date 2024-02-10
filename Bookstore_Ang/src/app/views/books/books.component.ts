@@ -13,17 +13,17 @@ import { SavebookService } from '../../services/savebook.service';
 })
 export class BooksComponent implements OnInit {
 
+  timePass: number = 0;
   books: Book[] = [];
 
   constructor(
     private bookService: BooksService,
-    private router: Router,
-    private session: AuthenticationService,
-    private saveBookService: SavebookService
+    protected session: AuthenticationService,
     ) 
     {}
 
   ngOnInit() {
+    this.timePass = 0;
     this.bookService.getAllBooks().subscribe(
       (data) => {
         this.books = data;
@@ -32,21 +32,6 @@ export class BooksComponent implements OnInit {
         console.error("Error fetching books:", error);
       }
     );
-  }
-
-  isBookSavedUser(book: Book): boolean {
-    this.saveBookService.getAllSavedBookByUserId(this.session.getAuthenticatedUser()?.id).subscribe(
-      (savedBooks: any) => {
-        if (savedBooks && savedBooks.length > 0) {
-          return savedBooks.some((savedBook: any) => savedBook.book === book.id);
-        }
-        return false;
-      },
-      (error) => {
-        console.log("Erro ao procurar livro salvo pelo usuário.")
-      }
-    );
-    return false;
   }
 
   isAdm(): boolean {

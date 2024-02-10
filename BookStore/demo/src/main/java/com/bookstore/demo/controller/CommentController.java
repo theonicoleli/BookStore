@@ -86,6 +86,36 @@ public class CommentController {
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     
+    @GetMapping("/likes/{commentId}")
+    public ResponseEntity<Long> getCommentLikes(@PathVariable Long commentId) {
+        try {
+            Long likesCount = commentService.getCommentLikes(commentId);
+            return ResponseEntity.ok(likesCount);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/liked-users/{commentId}")
+    public ResponseEntity<List<User>> getUserCommentLikes(@PathVariable Long commentId) {
+        try {
+            List<User> likedUsers = commentService.getUserCommentLikes(commentId);
+            return ResponseEntity.ok(likedUsers);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
+    @GetMapping("/comments/{commentId}/likedBy/{userId}")
+    public ResponseEntity<Boolean> hasUserLikedComment(@PathVariable Long commentId, @PathVariable Long userId) {
+    	try {
+	        boolean hasLiked = commentService.hasUserLikedComment(userId, commentId);
+	        return ResponseEntity.ok(hasLiked);
+    	} catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PostMapping
     public ResponseEntity<Comment> addComment(@RequestBody CommentRequest commentRequest) {
         try {
@@ -148,6 +178,19 @@ public class CommentController {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
+    @PatchMapping("/{commentId}/like/{userId}")
+    public ResponseEntity<Comment> likeComment(@PathVariable Long commentId, @PathVariable Long userId) {
+        try {
+            Optional<Comment> updatedComment = commentService.userCommentLike(userId, commentId);
+            return updatedComment.map(comment -> new ResponseEntity<>(comment, HttpStatus.OK))
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } catch (CommentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

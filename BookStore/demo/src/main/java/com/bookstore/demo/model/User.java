@@ -12,6 +12,7 @@ import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -53,6 +54,13 @@ public class User {
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
+    
+    @ManyToMany(mappedBy = "likedByUsers")
+    private List<Comment> likedComments;
+    
+    @ManyToMany(mappedBy = "likedByUsers")
+    private List<Comment> likedByUsers;
+
     
     public Long getId() {
         return id;

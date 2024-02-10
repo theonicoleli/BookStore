@@ -47,6 +47,18 @@ public class CommentService {
     	return commentRepository.findById(commentId);
     }
     
+    public Long getCommentLikes(Long commentId) {
+    	return commentRepository.countLikesByCommentId(commentId);
+    }
+    
+    public List<User> getUserCommentLikes(Long commentId) {
+    	return commentRepository.findUsersWhoLikedComment(commentId);
+    }
+    
+    public boolean hasUserLikedComment(Long userId, Long commentId) {
+        return commentRepository.existsUserLikeByCommentId(commentId, userId);
+    }
+    
     public Comment addComment(Comment comment) {
     	return commentRepository.save(comment);
     }
@@ -99,11 +111,41 @@ public class CommentService {
             parentComment.get().getReplies().add(newCommentToComment);
 
             commentRepository.save(parentComment.get());
-            System.out.println(parentComment.get().getReplies().size());
             Comment savedComment = commentRepository.save(newCommentToComment);
             return Optional.of(savedComment);
         } else {
             throw new CommentException("Parent comment not found");
+        }
+    }
+    
+    public Optional<Comment> userCommentLike(Long userId, Long commentId) {
+        Optional<Comment> optionalComment = commentRepository.findById(commentId);
+
+        if (optionalComment.isPresent()) {
+            Comment comment = optionalComment.get();
+            List<User> likedByUsers = comment.getLikedByUsers();
+            User user = userService.getUserById(userId);
+            
+            if (likedByUsers == null) {
+                likedByUsers = new ArrayList<>();
+            }
+
+            boolean alreadyLiked = likedByUsers.stream().anyMatch(userLiked -> userLiked.getId().equals(userId));
+            if (!alreadyLiked) {
+                likedByUsers.add(user);
+                comment.setLikedByUsers(likedByUsers);
+                Comment savedComment = commentRepository.save(comment);
+                
+                return Optional.of(savedComment);
+            } else {
+                likedByUsers.remove(user);
+                comment.setLikedByUsers(likedByUsers);
+                Comment savedComment = commentRepository.save(comment);
+                
+                return Optional.of(savedComment);
+            }
+        } else {
+            throw new CommentException("Comment not found");
         }
     }
 

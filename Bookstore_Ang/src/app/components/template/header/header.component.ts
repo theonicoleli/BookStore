@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
 
   constructor(
-    private session: AuthenticationService,
+    protected session: AuthenticationService,
     private router: Router
     ) {}
 
