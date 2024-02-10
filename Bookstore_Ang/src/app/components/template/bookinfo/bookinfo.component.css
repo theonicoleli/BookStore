@@ -86,3 +86,14 @@ mat-card-footer div {
 a {
     cursor: pointer;
 }
+
+#grey{
+    color: black;
+    opacity: 0.2;
+    cursor: pointer;
+}
+
+#yellow {
+    color: yellow;
+    cursor: pointer;
+}

@@ -118,9 +118,5 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  saveBookContains(book: Book): boolean {
-    return this.savedBooks.some(savedBook => savedBook.id === book.id);
-  }
-
 }
 

@@ -29,6 +29,11 @@ public class SavedBookService {
         return savedBookRepository.findByUserId(user.getId());
     }
     
+    public boolean isBookSavedByUser(Long userId, Long bookId) {
+        Optional<SavedBook> savedBook = savedBookRepository.findByUserIdAndBookId(userId, bookId);
+        return savedBook.isPresent();
+    }
+    
     public void deleteSavedBook(User user, Long bookId) {
         Optional<SavedBook> savedBook = user.getSavedBooks()
                                             .stream()

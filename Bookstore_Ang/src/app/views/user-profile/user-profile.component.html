@@ -6,19 +6,19 @@
     <h2>Lend Books</h2>
     <ul *ngFor="let book of books">
         <app-bookinfo [bookName]="book.name" [status]="book.status" [imagePath]="book.imagePath"
-            [description]="book.description" [theme]="book.theme" [edit]="book.id" [withoutColor]="saveBookContains(book)"></app-bookinfo>
+            [description]="book.description" [theme]="book.theme" [edit]="book.id"></app-bookinfo>
     </ul>
 
     <h2>Books that {{ userProfile?.name }} saved</h2>
     <ul *ngFor="let savedBook of savedBooks">
         <app-bookinfo [bookName]="savedBook.name" [status]="savedBook.status" [imagePath]="savedBook.imagePath"
-        [description]="savedBook.description" [theme]="savedBook.theme" [edit]="savedBook.id" [withoutColor]="true"></app-bookinfo>
+        [description]="savedBook.description" [theme]="savedBook.theme" [edit]="savedBook.id"></app-bookinfo>
     </ul>
 
     <h2>Books already read</h2>
     <ul *ngFor="let readBook of readBooks">
         <app-bookinfo [bookName]="readBook.name" [status]="readBook.status" [imagePath]="readBook.imagePath"
-        [description]="readBook.description" [theme]="readBook.theme" [edit]="readBook.id" [withoutColor]="saveBookContains(readBook)">
+        [description]="readBook.description" [theme]="readBook.theme" [edit]="readBook.id">
         </app-bookinfo>
     </ul>
 

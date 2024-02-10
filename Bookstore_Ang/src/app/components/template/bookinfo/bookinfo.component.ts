@@ -16,7 +16,8 @@ export class BookinfoComponent {
   @Input() description: string = '';
   @Input() theme: string = '';
   @Input() edit?: number = 0;
-  @Input() withoutColor?: boolean = false;
+
+  savedColor: String = "grey";
 
   constructor(
     private bookService: BooksService,
@@ -27,8 +28,26 @@ export class BookinfoComponent {
     {}
 
   ngOnInit() {
-    if (!this.imagePath.startsWith("assets/img/")) {
-      this.imagePath = "assets/img/" + this.imagePath;
+    this.checkUserSavedBook();
+    if (this.imagePath) {
+      if (!this.imagePath.startsWith("assets/img/")) {
+        this.imagePath = "assets/img/" + this.imagePath;
+      }
+    }
+  }
+
+  checkUserSavedBook() {
+    if (this.session.isAuthenticated()) {
+      this.saveBookService.hasUserSavedBook(this.session.getAuthenticatedUser()?.id, this.edit).subscribe(
+        (data: boolean) => {
+          if (data) {
+            this.savedColor = "yellow";
+          }
+        },
+        (error) => {
+          console.error("Falha ao achar livro salvo.")
+        }
+      )
     }
   }
 
@@ -54,18 +73,18 @@ export class BookinfoComponent {
   }
 
   changeSavedBook() {
-    if (this.withoutColor) {
+    if (this.savedColor === "yellow") {
       this.saveBookService.deleteSavedBook(this.session.getAuthenticatedUser()?.id, this.edit).subscribe(
         (data) => {
-          alert("Este livro não está mais salvo.");
-          this.withoutColor = false;
+          console.log("Este livro não está mais salvo.");
+          this.changeId();
         }
       );
     } else {
       this.saveBookService.addSavedBook(this.session.getAuthenticatedUser()?.id, this.edit).subscribe(
         (data) => {
-          alert("Livro salvo!");
-          this.withoutColor = true;
+          console.log("Livro salvo!");
+          this.changeId();
         },
         (error) => {
           alert("Erro ao salvar livro.");
@@ -74,9 +93,12 @@ export class BookinfoComponent {
     }
   }
 
+  changeId() {
+    this.savedColor = (this.savedColor === "yellow") ? "grey" : "yellow";
+  }
+
   lendBook(bookId?: number) {
     this.router.navigate(['/lend/' + bookId])
   }
 
 }
-  

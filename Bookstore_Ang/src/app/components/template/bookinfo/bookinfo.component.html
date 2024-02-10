@@ -40,7 +40,7 @@
         <ng-template #otherFooter>
             Não disponível no momento
         </ng-template>
-        <i class="material-icons" (click)="changeSavedBook()">
+        <i class="material-icons" [id]="savedColor" (click)="changeSavedBook()">
             bookmark
         </i>        
     </mat-card-footer>

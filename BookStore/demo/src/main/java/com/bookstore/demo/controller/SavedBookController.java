@@ -63,6 +63,15 @@ public class SavedBookController {
         }
     }
 
+    @GetMapping("/users/{userId}/books/{bookId}/isSaved")
+    public ResponseEntity<Boolean> isBookSavedByUser(@PathVariable Long userId, @PathVariable Long bookId) {
+    	try {
+            boolean isSaved = savedBookService.isBookSavedByUser(userId, bookId);
+            return ResponseEntity.ok(isSaved);
+    	} catch (Exception e) {
+    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    	}
+    }
 
     @DeleteMapping("/delete")
     public ResponseEntity<Map<String, String>> deleteSavedBook(@RequestParam Long userId, @RequestParam Long bookId) {

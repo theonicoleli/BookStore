@@ -16,4 +16,6 @@ public interface SavedBookRepository extends JpaRepository<SavedBook, Long> {
 	void deleteByUserIdAndBookId(Long userId, Long bookId);
 	
 	List<SavedBook> findByUserId(Long userId);
+	
+	boolean existsByUserIdAndBookId(Long userId, Long bookId);
 }

@@ -22,4 +22,8 @@ export class SavebookService {
   addSavedBook(userId?: number, bookId?: number): Observable<any> {
     return this.http.post(`${this.url}/add?userId=${userId}&bookId=${bookId}`, {});
   }
+
+  hasUserSavedBook(userId?:number, bookId?: number): Observable<any> {
+    return this.http.get(`${this.url}/users/${userId}/books/${bookId}/isSaved`);
+  }
 }
