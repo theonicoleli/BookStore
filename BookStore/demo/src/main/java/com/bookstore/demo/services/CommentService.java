@@ -55,6 +55,10 @@ public class CommentService {
     	return commentRepository.findUsersWhoLikedComment(commentId);
     }
     
+    public List<Long> getUserIdsWhoLikedComment(Long commentId) {
+    	return commentRepository.findUserIdsWhoLikedComment(commentId);
+    }
+    
     public boolean hasUserLikedComment(Long userId, Long commentId) {
         return commentRepository.existsUserLikeByCommentId(commentId, userId);
     }

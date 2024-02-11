@@ -19,5 +19,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     
     @Query("SELECT b FROM Book b WHERE b.status = :status")
     List<Book> findAllByStatus(boolean status);
+    
+    @Query("SELECT b.id FROM Book b")
+    List<Long> findAllBookIds();
 
 }

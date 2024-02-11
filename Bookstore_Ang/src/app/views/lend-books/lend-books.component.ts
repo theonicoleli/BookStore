@@ -66,7 +66,11 @@ export class LendBooksComponent {
       }
     );
     
-    this.getBookComments()
+    this.getBookComments();
+
+    this.commentService.commentChange.subscribe(() => {
+      this.getBookComments();
+    });
   }
 
   lend() {

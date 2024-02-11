@@ -16,6 +16,10 @@ export class BooksService {
     return this.http.get<Book[]>(this.url);
   }
 
+  getAllBooksId(): Observable<any> {
+    return this.http.get(`${this.url}/id-book`);
+  }
+
   getAllBooksByUserId(userId: number | undefined): Observable<Book[]> {
     return this.http.get<Book[]>(this.url + "/user/" + userId);
   }
@@ -30,6 +34,10 @@ export class BooksService {
 
   getBookById(bookId: number): Observable<any> {
     return this.http.get<any>(this.url + "/" + bookId);
+  }
+
+  getBookByTheme(bookTheme?: string): Observable<any> {
+    return this.http.get<any>(`${this.url}/theme/${bookTheme}`);
   }
 
   deleteBookById(bookId?: number): Observable<any> {

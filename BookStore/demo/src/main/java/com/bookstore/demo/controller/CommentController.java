@@ -100,6 +100,17 @@ public class CommentController {
     public ResponseEntity<List<User>> getUserCommentLikes(@PathVariable Long commentId) {
         try {
             List<User> likedUsers = commentService.getUserCommentLikes(commentId);
+            likedUsers.forEach(user -> System.out.println(user));
+            return ResponseEntity.ok(likedUsers);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
+    @GetMapping("/liked-id/{commentId}")
+    public ResponseEntity<List<Long>> getUserIdsCommentLikes(@PathVariable Long commentId) {
+        try {
+            List<Long> likedUsers = commentService.getUserIdsWhoLikedComment(commentId);
             return ResponseEntity.ok(likedUsers);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

@@ -32,6 +32,10 @@ public class BookService {
         return bookRepository.findAll();
     }
     
+    public List<Long> getAllBooksId() {
+    	return bookRepository.findAllBookIds();
+    }
+    
     public List<Book> getAllBooksByUserId(User user){
     	return bookRepository.findAllByUser(user);
     }

@@ -2,12 +2,12 @@
     <h1>Whole books</h1>
 
     <button *ngIf="isAdm(); else null">
-        <a routerLink="add">
+        <a routerLink="/books/add">
             Add Books
         </a>
     </button>
 
-    <ul *ngIf="books.length > 0; else NoBooks">
+    <ul *ngIf="books && books.length > 0; else NoBooks">
         <li *ngFor="let book of books">
             <app-bookinfo [bookName]="book.name" [status]="book.status" [imagePath]="book.imagePath"
                 [description]="book.description" [theme]="book.theme" [edit]="book.id">

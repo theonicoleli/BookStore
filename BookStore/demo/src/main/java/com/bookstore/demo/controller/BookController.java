@@ -55,6 +55,15 @@ public class BookController {
         }
     }
     
+    @GetMapping("/id-book")
+    public List<Long> getAllBooksId() {
+        try {
+            return bookService.getAllBooksId();
+        } catch (Exception e) {
+            throw new BookException("Erro ao obter todos os livros", e);
+        }
+    }
+    
     @GetMapping("/user/{userId}")
     public List<Book> getAllBooksByUserId(@PathVariable long userId) {
     	try {

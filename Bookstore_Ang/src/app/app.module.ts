@@ -35,6 +35,11 @@ import { UserConfigComponent } from './views/user-config/user-config.component';
 import { EditUserComponent } from './views/edit-user/edit-user.component';
 import { UserProfileComponent } from './views/user-profile/user-profile.component';
 
+import { FormsModule } from '@angular/forms';
+import { ProfileComponent } from './views/profile/profile.component';
+import { UserinfoComponent } from './components/template/userinfo/userinfo.component';
+import { LikesUsersComponent } from './components/template/likes-users/likes-users.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +56,10 @@ import { UserProfileComponent } from './views/user-profile/user-profile.componen
     CommentinfoComponent,
     UserConfigComponent,
     EditUserComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    ProfileComponent,
+    UserinfoComponent,
+    LikesUsersComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +76,8 @@ import { UserProfileComponent } from './views/user-profile/user-profile.componen
     MatCheckboxModule,
     MatSelectModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
     provideClientHydration()

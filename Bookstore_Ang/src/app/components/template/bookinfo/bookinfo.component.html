@@ -6,7 +6,7 @@
             <mat-card-subtitle>Status: {{ status ? 'Active' : 'Inactive' }}</mat-card-subtitle>
         </div>
         <mat-card-subtitle *ngIf="isAdm(); else null">
-            <a routerLink="edit/{{ edit }}">
+            <a routerLink="/books/edit/{{ edit }}">
                 <i class="material-icons">
                     edit
                 </i>

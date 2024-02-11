@@ -3,16 +3,37 @@
         <h1>Between The Lines</h1>
     </span>
 
-    <div class="links">
-        <span class="title-group book" routerLink="/books" routerLinkActive="active-link">
+    <div class="links">  
+        
+        <span class="title-group profiles" routerLink="/userprofile" routerLinkActive="active-link">
             <a>
-                Books
+                Profiles
             </a>
         </span>
+        
         <span class="title-group borrowed" routerLink="/borrowed" routerLinkActive="active-link">
             <a>
                 Borrowed
             </a>
+        </span>
+
+        <span class="title-group book">
+            <mat-select placeholder="Books" (selectionChange)="onGenreChange($event)">
+                <mat-option [value]="'TODOS'" [routerLink]="['/books/genre/TODOS']">TODOS</mat-option>
+                <mat-option [value]="'AVENTURA'">AVENTURA</mat-option>
+                <mat-option [value]="'FICCAO'">FICÇÃO</mat-option>
+                <mat-option [value]="'DRAMA'">DRAMA</mat-option>
+                <mat-option [value]="'ROMANCE'">ROMANCE</mat-option>
+                <mat-option [value]="'MISTERIO'">MISTÉRIO</mat-option>
+                <mat-option [value]="'FANTASIA'">FANTASIA</mat-option>
+                <mat-option [value]="'SUSPENSE'">SUSPENSE</mat-option>
+                <mat-option [value]="'POLICIAL'">POLICIAL</mat-option>
+                <mat-option [value]="'COMEDIA'">COMÉDIA</mat-option>
+                <mat-option [value]="'BIOGRAFIA'">BIOGRAFIA</mat-option>
+                <mat-option [value]="'HISTORIA'">HISTÓRIA</mat-option>
+                <mat-option [value]="'CIENCIA'">CIÊNCIA</mat-option>
+                <mat-option [value]="'TECNOLOGIA'">TECNOLOGIA</mat-option>
+            </mat-select>
         </span>
 
         <span class="title-group login-logout">

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from './models/User';
 
@@ -9,6 +9,7 @@ import { User } from './models/User';
 export class CommentService {
 
   url: string = 'http://localhost:8080/api/comments'
+  @Output() commentChange: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(private http: HttpClient) { }
 
@@ -58,6 +59,10 @@ export class CommentService {
 
   getUserCommentLikes(commentId?:number): Observable<any> {
     return this.http.get(`${this.url}/liked-users/${commentId}`);
+  }
+
+  getUserIdsCommentLikes(commentId?: number): Observable<any> {
+    return this.http.get(`${this.url}/liked-id/${commentId}`);
   }
 
   hasUserLikedComment(commentId?: number, userId?: number): Observable<any> {

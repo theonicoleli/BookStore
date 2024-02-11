@@ -1,0 +1,12 @@
+<div class="modal-container" *ngIf="showLikesUsersModal">
+    <div class="modal-content">
+        <div class="container-users">
+            <span *ngIf="users !== null" class="user-info-container">
+                <p *ngFor="let user of users" class="user-info">
+                    <app-userinfo [user]="user"></app-userinfo>
+                </p>
+            </span>
+        </div>
+        <button class="close-button" (click)="closeModal()">X</button>
+    </div>
+</div>

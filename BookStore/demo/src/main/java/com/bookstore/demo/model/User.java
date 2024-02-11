@@ -149,4 +149,8 @@ public class User {
     public void setSavedBooks(List<SavedBook> savedBooks) {
         this.savedBooks = savedBooks;
     }
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

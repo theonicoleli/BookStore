@@ -38,6 +38,10 @@ export class UserProfileComponent implements OnInit {
         this.loadUserProfile();
       }
     });
+
+    this.savedBookService.saveBookChange.subscribe(() => {
+      this.getAllSavedBooksByUserId();
+    });
   }
 
   loadUserProfile(): void {
@@ -46,7 +50,6 @@ export class UserProfileComponent implements OnInit {
         this.userProfile = data;
 
         this.getAllSavedBooksByUserId();
-        this.getBooksAlreadyRead();
         
         if (data.bookList != null) {
           for (const bookList of data.bookList) {
@@ -74,6 +77,7 @@ export class UserProfileComponent implements OnInit {
 
   getBooksAlreadyRead() {
     if (this.userProfile?.id !== undefined) {
+      this.readBooks = [];
       this.readBookService.getReadBooksByUser(this.userProfile.id).subscribe(
         (data: any) => {
           for(const book of data) {
@@ -100,21 +104,28 @@ export class UserProfileComponent implements OnInit {
     if (this.userProfile?.id !== undefined) {
       this.savedBookService.getAllSavedBookByUserId(this.userProfile?.id).subscribe(
         (data: any) => {
+          const savedBookBefore = this.savedBooks;
+          this.savedBooks = [];
           for(const book of data) {
             this.bookService.getBookById(book.bookId).subscribe(
-              (readBook) => {
-                this.savedBooks.push(readBook);
+              (readBook: Book) => {
+                if (!this.savedBooks.some(savedBook => savedBook.id === readBook.id)) {
+                  this.savedBooks.push(readBook);
+                }
               },
               (error) => {
                 console.log("Erro ao tentar achar livros salvos do usuário.");
               }
             );
           }
+          if (savedBookBefore !== this.savedBooks) {
+            this.getBooksAlreadyRead();
+          }
         },
         (error: any) =>  {
           console.log("Erro ao achar livros salvos.")
         }
-      )
+      );
     }
   }
 

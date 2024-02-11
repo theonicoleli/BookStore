@@ -11,8 +11,13 @@
 
     <mat-card-content>
         {{ commentText }}<br><br>
-        Likes:
-        {{likesNumber}}
+        <p id="show-users-likes" (click)="openContainerUsers()">
+            Likes: {{likesNumber}}
+        </p>
+
+        <div class="container-users" *ngIf="showContainer && showLikesUsersModal">
+        </div>
+        
     </mat-card-content>
 
     <mat-card-actions>
@@ -44,3 +49,5 @@
         </div>
     </div>
 </mat-card>
+
+<app-likes-users *ngIf="showLikesUsersModal" [commentId]="commentId" (close)="closeLikesUsersModal()"></app-likes-users>

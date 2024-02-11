@@ -1,5 +1,7 @@
 <div class="user-profile">
-    <img [src]="userProfile?.imagePath" alt="imagem usuário">
+    <img *ngIf="userProfile?.imagePath !== 'assets/img/null'; else null" 
+    [src]="userProfile?.imagePath" alt="imagem usuário">
+    
     <h1>{{ userProfile?.name }}</h1>
     <p>Username: {{ userProfile?.userName }}</p>
     <p>Email: {{ userProfile?.email }}</p>

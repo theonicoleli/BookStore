@@ -26,6 +26,9 @@ export class CommentinfoComponent {
   color: string = "grey";
   likesNumber: number = 0;
 
+  showContainer: boolean = false;
+  showLikesUsersModal: boolean = false;
+
   constructor(
     private commentService: CommentService,
     protected session: AuthenticationService,
@@ -60,6 +63,15 @@ export class CommentinfoComponent {
 
   }
 
+  openContainerUsers() {
+    this.showContainer = true;
+    this.showLikesUsersModal = true;
+  }
+
+  closeLikesUsersModal() {
+    this.showLikesUsersModal = false;
+  }
+
   commentSessionEquals(): boolean {
     return this.session.getAuthenticatedUser()?.id === this.commentUser?.id;
   }
@@ -73,7 +85,7 @@ export class CommentinfoComponent {
       this.commentService.deleteComment(this.commentId).subscribe(
         (data) => {
           console.log("Comment deleted successfully!");
-          window.location.reload();
+          this.commentService.commentChange.emit();
         },
         (error) => {
           console.error("Could not delete this comment.")
@@ -113,6 +125,7 @@ export class CommentinfoComponent {
       this.commentService.patchComment(this.commentId, this.session.getAuthenticatedUser()?.id).subscribe(
         (data) => {
           console.log("Like do comentário alterado.");
+          this.commentService.commentChange.emit();
           this.changeId();
         },
         (error) => {
@@ -124,11 +137,6 @@ export class CommentinfoComponent {
 
   changeId() {
     this.color = (this.color === "red") ? "grey" : "red";
-    if (this.color === "red") {
-      this.likesNumber++;
-    } else {
-      this.likesNumber--;
-    }
   }
 
   addComment() {
@@ -143,7 +151,7 @@ export class CommentinfoComponent {
       this.commentService.postReplyToComment(this.commentId, newComment).subscribe(
         (data) => {
           console.log("Comment added successfully!");
-          window.location.reload();
+          this.commentService.commentChange.emit();
         },
         (error) => {
           console.error("Could not add this comment.")

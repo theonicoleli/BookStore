@@ -1,0 +1,16 @@
+<div class="profiles">
+    
+    <form [formGroup]="searchProfile" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+            <input matInput formControlName="userName" type="name" id="userName" name="userName" placeholder="UserName">
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Enviar</button>
+    </form>
+
+    <span *ngIf="searchUsers !== null" class="user-info-container">
+        <p *ngFor="let user of searchUsers" class="user-info">
+            <app-userinfo [user]="user"></app-userinfo>
+        </p>
+    </span>
+
+</div>

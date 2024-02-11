@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { Router } from '@angular/router';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-header',
@@ -13,6 +14,15 @@ export class HeaderComponent {
     protected session: AuthenticationService,
     private router: Router
     ) {}
+
+  onGenreChange(event: MatSelectChange) {
+    const selectedGenre = event.value;
+    if (selectedGenre === 'TODOS') {
+      this.router.navigate(['/books']);
+    } else {
+      this.router.navigate(['/books/genre', selectedGenre]);
+    }
+  }
 
   getSessionProfile() {
     return this.session.getAuthenticatedUser()?.userName;

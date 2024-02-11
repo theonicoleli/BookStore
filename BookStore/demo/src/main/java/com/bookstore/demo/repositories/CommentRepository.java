@@ -40,6 +40,11 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("SELECT u FROM Comment c JOIN c.likedByUsers u WHERE c.id = :commentId")
     List<User> findUsersWhoLikedComment(@Param("commentId") Long commentId);
     
+    @Query("SELECT u.id FROM Comment c JOIN c.likedByUsers u WHERE c.id = :commentId")
+    List<Long> findUserIdsWhoLikedComment(@Param("commentId") Long commentId);
+    
     @Query("SELECT COUNT(u) > 0 FROM Comment c JOIN c.likedByUsers u WHERE c.id = :commentId AND u.id = :userId")
     boolean existsUserLikeByCommentId(@Param("commentId") Long commentId, @Param("userId") Long userId);
+    
+    List<User> findAllByIdIn(List<Long> userIds);
 }
