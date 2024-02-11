@@ -76,7 +76,7 @@ export class AddBookComponent implements OnInit {
         this.bookService.postNewBook(this.url, formData).subscribe(
           (data: any) => {
             console.log("Enviado: " + data);
-            this.router.navigate(['/books']);
+            this.router.navigate(['/books/genre/TODOS']);
           },
           (error: any) => {
             console.log("Error: " + error);
@@ -86,7 +86,7 @@ export class AddBookComponent implements OnInit {
         this.bookService.putBook('http://localhost:8080/api/books/' + this.bookId, formData).subscribe(
           (data: any) => {
             console.log("Enviado: " + data);
-            this.router.navigate(['/books']);
+            this.router.navigate(['/books/genre/TODOS']);
           },
           (error: any) => {
             console.log("Error: " + error);

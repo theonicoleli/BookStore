@@ -33,7 +33,9 @@ export class ProfileComponent implements OnInit {
 
   onSubmit() {
     const searchTerm = this.searchProfile.controls['userName'].value.toLowerCase();
-    this.searchUsers = this.allUsers.filter(user => user.userName.toLowerCase().startsWith(searchTerm));
+    this.searchUsers = this.allUsers.filter(user => 
+      user.userName && user.userName.toLowerCase().startsWith(searchTerm)
+    );
   }
   
 }

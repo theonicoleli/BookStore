@@ -92,7 +92,7 @@ export class LendBooksComponent {
           this.bookService.patchStatusBook(bookId, userId, true).subscribe(
             (data) => {
               console.log("Alteração concluída com sucesso!");
-              this.router.navigate(["/books"]);
+              this.router.navigate(["/books/genre/TODOS"]);
             },
             (error) => {
               console.error("Ocorreu uma falha com a alteração do status do livro:", error);
@@ -159,7 +159,7 @@ export class LendBooksComponent {
         this.bookService.patchStatusBook(this.bookId, authenticatedUser.id, false).subscribe(
           (data) => {
             console.log("Alteração concluída com sucesso!");
-            this.router.navigate(["/books"]);
+            this.router.navigate(["/books/genre/TODOS"]);
           },
           (error) => {
             console.error("Ocorreu uma falha com a alteração do status do livro:", error);

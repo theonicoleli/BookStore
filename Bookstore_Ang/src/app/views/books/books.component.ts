@@ -42,17 +42,19 @@ export class BooksComponent implements OnInit {
           if (datas) {
             for (const data of datas) {
               this.bookService.getBookById(data).subscribe(
-                (book) => {
-                  this.books.push(book);
+                (book: Book) => {
+                  if (!this.books.some(bk => bk.id === book.id)) {
+                    this.books.push(book);
+                  }
                 }
               );
             }
           }
         },
         (error) => {
-          console.error("Error fetching books:", error);
+          console.log("Falha ao achar livros.")
         }
-      );
+      );      
     } else {
       this.bookService.getBookByTheme(this.genreName).subscribe(
         (data) => {
