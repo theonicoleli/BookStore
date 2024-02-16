@@ -22,6 +22,14 @@ public class FriendShipService {
     public List<Friendship> getAllFriendships() {
         return friendshipRepository.findAll();
     }
+    
+    public int countUserFriends(User user) {
+    	return friendshipRepository.countFriendsForUser(user);
+    }
+    
+    public boolean existsFriendShip(User user1, User user2) {
+    	return friendshipRepository.existsByUser1AndUser2(user1, user2);
+    }
 
     public void sendFriendshipRequest(User sender, User receiver) {
         Notification notification = new Notification();
@@ -75,7 +83,23 @@ public class FriendShipService {
         notificationService.deleteNotification(notificationService.getNotificationById(notificationId));
         return friendshipRepository.save(friendship);
     }
+    
+    public boolean deleteFriendship(User user1, User user2) {
+        List<Friendship> friendships = friendshipRepository.findByUser1OrUser2(user1, user2);
+        if (!friendships.isEmpty()) {
+            Friendship friendshipToDelete = friendships.stream()
+                    .filter(friendship -> (friendship.getUser1().getId().equals(user1.getId()) && friendship.getUser2().getId().equals(user2.getId()))
+                            || (friendship.getUser1().getId().equals(user2.getId()) && friendship.getUser2().getId().equals(user1.getId())))
+                    .findFirst()
+                    .orElse(null);
 
+            if (friendshipToDelete != null) {
+                friendshipRepository.delete(friendshipToDelete);
+                return true;
+            }
+        }
+        return false;
+    }
 
     public List<Friendship> getFriendshipsByUser(User user) {
         return friendshipRepository.findByUser1OrUser2(user, user);

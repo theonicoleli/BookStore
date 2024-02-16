@@ -16,8 +16,16 @@ export class FriendshipService {
     return this.http.get<any>(this.url);
   }
 
-  getFriendShipsByUser(userId: number): Observable<any> {
+  getFriendShipsByUser(userId?: number): Observable<any> {
     return this.http.get<any>(`${this.url}/${userId}`);
+  }
+
+  countUserFriends(userId?: number): Observable<any> {
+    return this.http.get<any>(`${this.url}/countUserFriends/${userId}`);
+  }
+
+  existsFriendShip(user1Id?: number, user2Id?: number): Observable<any> {
+    return this.http.get<any>(`${this.url}/existsFriendShip/${user1Id}/${user2Id}`);
   }
 
   sendFriendShipRequest(sender: User | null, receiver: User | null): Observable<any> {
@@ -38,6 +46,10 @@ export class FriendshipService {
 
   rejectFriendship(notificationId: number): Observable<any> {
     return this.http.delete<any>(`${this.url}/${notificationId}`);
+  }
+
+  deleteFriendShip(user1Id?: number, user2Id?: number): Observable<any> {
+    return this.http.delete<any>(`${this.url}/deleteFriendShip/${user1Id}/${user2Id}`);
   }
   
 }

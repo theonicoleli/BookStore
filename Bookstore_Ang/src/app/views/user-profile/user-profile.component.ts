@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { User } from '../../services/models/User';
 import { Book } from '../../services/models/Book';
@@ -22,6 +22,10 @@ export class UserProfileComponent implements OnInit {
   readBooks: Book[] = [];
   savedBooks: Book[] = [];
 
+  friends: User[] = [];
+
+  showFriendsModal: boolean = false;
+
   constructor(
     private route: ActivatedRoute, 
     private userService: UsersService, 
@@ -37,6 +41,7 @@ export class UserProfileComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params['username']) {
         this.userName = params['username'];
+        this.friends = [];
         this.loadUserProfile();
       }
     });
@@ -51,6 +56,7 @@ export class UserProfileComponent implements OnInit {
       (data: any) => {
         this.userProfile = data;
 
+        this.getUserFriends();
         this.getAllSavedBooksByUserId();
         
         if (data.bookList != null) {
@@ -151,5 +157,56 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
+  getUserFriends() {
+    if (this.userProfile?.id !== undefined) {
+      this.friendShipService.getFriendShipsByUser(this.userProfile?.id).subscribe(
+        (friendsId) => {
+          if (friendsId) {
+            for (const friendId of friendsId) {
+              this.userService.getUserById(friendId).subscribe(
+                (user) => {
+                  if (!this.friends.some(friend => friend.id === user.id)) {
+                    this.friends.push(user);
+                  }
+                },
+                (error) => {
+                  console.log("Falha ao encontrar userFriends");
+                }
+              );
+            }
+          }
+        },
+        (error) => {
+          console.log("Falha ao encontrar userFriends");
+        }
+      )
+    }
+  }
+
+  existsFriendShip(): boolean {
+    return !this.friends.some(friend => friend?.id === this.session.getAuthenticatedUser()?.id);
+  }
+
+  openFriendsModal() {
+    this.showFriendsModal = true;
+  }
+
+  closeFriendsModal() {
+    this.showFriendsModal = false;
+  }
+
+  deleteFriendShip() {
+    if (this.userProfile !== undefined && this.session.isAuthenticated()) {
+      if (!this.existsFriendShip() && confirm(`Você realmente deseja excluir a amizade com ${this.userProfile?.name}`)) {
+        this.friendShipService.deleteFriendShip(this.session.getAuthenticatedUser()?.id, this.userProfile?.id).subscribe(
+          (data) => {
+            console.log("Amizade excluida com sucesso.");
+            this.friends = this.friends.filter(friend => friend?.id !== this.userProfile?.id);
+          }
+        );
+      }
+    }
+  }
+  
 }
 

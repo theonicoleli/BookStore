@@ -6,9 +6,36 @@
     <p>Username: {{ userProfile?.userName }}</p>
     <p>Email: {{ userProfile?.email }}</p>
 
-    <button *ngIf="!isUserSessionProfile()" (click)="sendFriendShipRequest()" id="friendship">
-        Solicitar amizade
+    <button id="friends" (click)="openFriendsModal()">
+        Friends: {{friends.length}}
     </button>
+
+    <div class="modal-container" *ngIf="showFriendsModal">
+        <div class="modal-content">
+            <p>Amigos de {{userProfile?.name}}</p>
+            <div class="container-users">
+                <span *ngIf="friends !== null && friends.length > 0" class="user-info-container">
+                    <p *ngFor="let friend of friends" class="user-info" (click)="closeFriendsModal()">
+                        <app-userinfo [user]="friend"></app-userinfo>
+                    </p>
+                </span>
+                <div *ngIf="friends === null || friends.length === 0" class="no-friends-message">
+                    {{userProfile?.name}} não possui nenhum amigo no momento.
+                </div>
+            </div>
+            <button class="close-button" (click)="closeFriendsModal()">X</button>
+        </div>
+    </div>
+
+    <div class="verification" *ngIf="!isUserSessionProfile()">
+        <button *ngIf="existsFriendShip(); else amigos" (click)="sendFriendShipRequest()" id="friendship">
+            Solicitar amizade
+        </button>
+    
+        <ng-template #amigos>
+            <button id="friendship other-button" (click)="deleteFriendShip()">Seu amigo</button>
+        </ng-template>
+    </div>
 
     <h2>Lend Books</h2>
     <ul *ngFor="let book of books">

@@ -47,18 +47,94 @@
     aspect-ratio: 5/4;
 }
 
-#friendship {
-    border-radius: 20px;
-    cursor: pointer;
-    width: 100px;
-    padding: 10px;
-    height: auto;
-    background-color: cadetblue;
-    color: white;
-    border: white;
-    transition: 0.25s;
+.verification {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    margin-top: 20px;
 }
 
-#friendship:hover{
-    transform: scale(1.05);
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
 }
+
+#friendship {
+    background-color: #3498db;
+    color: white;
+}
+
+#friendship.other-button {
+    background-color: #2ecc71;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.close-button {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    width: 50px;
+    height: 50px;
+    padding: 8px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.close-button:hover {
+    background-color: #e0e0e0;
+}
+
+.comment-info {
+    opacity: 0.3;
+}
+
+#friends {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 10px 20px;
+}
+
+#friends:hover {
+    background-color: #45a049;
+}
+
