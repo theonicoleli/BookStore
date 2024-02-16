@@ -46,3 +46,19 @@
     border-radius: 50%;
     aspect-ratio: 5/4;
 }
+
+#friendship {
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100px;
+    padding: 10px;
+    height: auto;
+    background-color: cadetblue;
+    color: white;
+    border: white;
+    transition: 0.25s;
+}
+
+#friendship:hover{
+    transform: scale(1.05);
+}

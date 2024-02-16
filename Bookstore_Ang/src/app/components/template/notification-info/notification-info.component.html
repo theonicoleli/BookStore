@@ -1,0 +1,13 @@
+<div *ngIf="notification" id="notification-container">
+    <div class="notification-header">
+        <img *ngIf="notification.sender.imagePath" [src]="notification.sender.imagePath" alt="Imagem do remetente" id="sender-image">
+        <div>
+            <div id="sender-name">{{ notification.sender.name }}</div>
+            <div id="message">{{ notification.message }}</div>
+        </div>
+    </div>
+    <div class="notification-buttons">
+        <button (click)="acceptFriendship()" id="accept-button">Aceitar</button>
+        <button (click)="rejectFriendship()" id="reject-button">Recusar</button>
+    </div>
+</div>

@@ -12,6 +12,7 @@ import { UserConfigComponent } from './views/user-config/user-config.component';
 import { EditUserComponent } from './views/edit-user/edit-user.component';
 import { UserProfileComponent } from './views/user-profile/user-profile.component';
 import { ProfileComponent } from './views/profile/profile.component';
+import { NotificationComponent } from './views/notification/notification.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
@@ -26,7 +27,8 @@ const routes: Routes = [
   { path: "userconfig", component: UserConfigComponent },
   { path: "userconfig/edit", component: EditUserComponent },
   { path: "userprofile", component: ProfileComponent },
-  { path: "userprofile/:username", component: UserProfileComponent }
+  { path: "userprofile/:username", component: UserProfileComponent },
+  { path: "notification", component: NotificationComponent}
 ];
 
 @NgModule({

@@ -1,0 +1,57 @@
+#notification-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.notification-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#sender-name {
+    font-weight: bold;
+    color: #333;
+    margin-right: 10px;
+}
+
+#message {
+    color: #333;
+}
+
+#sender-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.notification-buttons {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+#accept-button,
+#reject-button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+#accept-button {
+    background-color: #28a745;
+}
+
+#reject-button {
+    background-color: #dc3545;
+    margin-left: 10px;
+}

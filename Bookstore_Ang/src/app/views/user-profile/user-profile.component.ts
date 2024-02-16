@@ -7,6 +7,7 @@ import { BooksService } from '../../services/books.service';
 import { ReadbookService } from '../../services/readbook.service';
 import { SavebookService } from '../../services/savebook.service';
 import { AuthenticationService } from '../../services/authentication.service';
+import { FriendshipService } from '../../services/friendship.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -27,7 +28,8 @@ export class UserProfileComponent implements OnInit {
     private bookService: BooksService,
     private readBookService: ReadbookService,
     private savedBookService: SavebookService,
-    protected session: AuthenticationService
+    protected session: AuthenticationService,
+    private friendShipService: FriendshipService
     ) 
     {}
 
@@ -75,7 +77,7 @@ export class UserProfileComponent implements OnInit {
     )
   }
 
-  getBooksAlreadyRead() {
+  getBooksAlreadyRead(): void {
     if (this.userProfile?.id !== undefined) {
       this.readBooks = [];
       this.readBookService.getReadBooksByUser(this.userProfile.id).subscribe(
@@ -100,7 +102,7 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  getAllSavedBooksByUserId() {
+  getAllSavedBooksByUserId(): void {
     if (this.userProfile?.id !== undefined) {
       this.savedBookService.getAllSavedBookByUserId(this.userProfile?.id).subscribe(
         (data: any) => {
@@ -124,6 +126,26 @@ export class UserProfileComponent implements OnInit {
         },
         (error: any) =>  {
           console.log("Erro ao achar livros salvos.")
+        }
+      );
+    }
+  }
+
+  isUserSessionProfile(): boolean {
+    if (this.session.getAuthenticatedUser()?.id === this.userProfile?.id) {
+      return true;
+    }
+    return false;
+  }
+
+  sendFriendShipRequest(): void {
+    if (confirm(`Tem certeza de que deseja adicionar ${this.userProfile?.name}?`)) {
+      this.friendShipService.sendFriendShipRequest(this.session.getAuthenticatedUser(), this.userProfile).subscribe(
+        (data) => {
+          console.log("Foi enviado uma notificação ao usuário");
+        },
+        (error) => {
+          console.error("Falha ao enviar notificação");
         }
       );
     }

@@ -1,0 +1,10 @@
+<div class="notification">
+    <ng-container *ngIf="notifications.length > 0; else noNotifications">
+        Suas notificações:
+        <app-notification-info *ngFor="let notification of notifications" [notification]="notification"></app-notification-info>
+    </ng-container>
+</div>
+
+<ng-template #noNotifications>
+    <p>Você não possui nenhuma notificação.</p>
+</ng-template>

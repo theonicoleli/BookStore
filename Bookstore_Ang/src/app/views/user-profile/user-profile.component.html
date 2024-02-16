@@ -5,6 +5,11 @@
     <h1>{{ userProfile?.name }}</h1>
     <p>Username: {{ userProfile?.userName }}</p>
     <p>Email: {{ userProfile?.email }}</p>
+
+    <button *ngIf="!isUserSessionProfile()" (click)="sendFriendShipRequest()" id="friendship">
+        Solicitar amizade
+    </button>
+
     <h2>Lend Books</h2>
     <ul *ngFor="let book of books">
         <app-bookinfo [bookName]="book.name" [status]="book.status" [imagePath]="book.imagePath"

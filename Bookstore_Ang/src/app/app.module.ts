@@ -39,6 +39,8 @@ import { FormsModule } from '@angular/forms';
 import { ProfileComponent } from './views/profile/profile.component';
 import { UserinfoComponent } from './components/template/userinfo/userinfo.component';
 import { LikesUsersComponent } from './components/template/likes-users/likes-users.component';
+import { NotificationComponent } from './views/notification/notification.component';
+import { NotificationInfoComponent } from './components/template/notification-info/notification-info.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,9 @@ import { LikesUsersComponent } from './components/template/likes-users/likes-use
     UserProfileComponent,
     ProfileComponent,
     UserinfoComponent,
-    LikesUsersComponent
+    LikesUsersComponent,
+    NotificationComponent,
+    NotificationInfoComponent
   ],
   imports: [
     BrowserModule,

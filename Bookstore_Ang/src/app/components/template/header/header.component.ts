@@ -2,17 +2,22 @@ import { Component } from '@angular/core';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { Router } from '@angular/router';
 import { MatSelectChange } from '@angular/material/select';
+import { NotificationService } from '../../../services/notification.service';
+import { Notification } from '../../../services/models/Notification';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
 
+  notifications: Notification[] = [];
+
   constructor(
     protected session: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
     ) {}
 
   onGenreChange(event: MatSelectChange) {
@@ -42,6 +47,28 @@ export class HeaderComponent {
     if (confirm("Realmente deseja sair da sua sessão atual?")) {
       this.session.logout();
       this.router.navigate(["/"]);
+    }
+  }
+
+  getNotifications() {
+    if (this.session.isAuthenticated()) {
+      const userId = this.session.getAuthenticatedUser()?.id;
+      if (userId) {
+        this.notificationService.getUserReceiverNotifications(userId).subscribe(
+          (datas: any[]) => {
+            if (datas && datas.length > 0) {
+              for (const data of datas) {
+                if (!this.notifications.some(notification => notification.id === data.id)) {
+                  this.notifications.push(data);
+                }
+              }
+            }
+          },
+          (error) => {
+            console.error("Falha ao obter notificações do usuário.", error);
+          }
+        );
+      }
     }
   }
 
