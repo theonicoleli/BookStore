@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
+import { User } from '../../services/models/User';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +9,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class HomeComponent {
 
-  name: string = '';
+  userSession: User = {} as User;
 
   constructor(private session: AuthenticationService) {}
 
@@ -16,7 +17,7 @@ export class HomeComponent {
     const sessionStart = this.session.getAuthenticatedUser();
 
     if (sessionStart) {
-      this.name = sessionStart.name;
+      this.userSession = sessionStart;
     }
   }
 

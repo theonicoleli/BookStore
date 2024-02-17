@@ -17,7 +17,7 @@ public class UploadUtil {
 
             try {
 
-                String pastaUploadImagem = "C:\\Users\\Théo Nicoleli\\Desktop\\BookStore FullStack\\BookStore-Angular\\Bookstore_Ang\\src\\assets\\img";
+                String pastaUploadImagem = "C:\\Users\\diogo\\OneDrive\\Documentos\\GitHub\\BookStore\\Bookstore_Ang\\src\\assets\\img";
 
                 File dir = new File(pastaUploadImagem);
 
@@ -42,7 +42,7 @@ public class UploadUtil {
     }
     
     public static void deleteImage(String filename) {
-        File fileToDelete = new File("C:\\Users\\Théo Nicoleli\\Desktop\\BookStore FullStack\\BookStore-Angular\\Bookstore_Ang\\src\\assets\\img" + File.separator + filename);
+        File fileToDelete = new File("C:\\Users\\diogo\\OneDrive\\Documentos\\GitHub\\BookStore\\Bookstore_Ang\\src\\assets\\img" + File.separator + filename);
         if (fileToDelete.exists()) {
             fileToDelete.delete();
         }

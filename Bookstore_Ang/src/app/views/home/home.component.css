@@ -1,13 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+body, .continue-text, .continue-text h1, .home, .book .book-infos h2 {
+    font-family: 'Poppins', sans-serif; /* FONTE POPPINS */
+}
+
+.continue-text h1, .book .book-infos h2, .book .book-infos p {
+    margin: 0;
+}
+
 .home {
     display: flex;
 }
 
-.home .title {
-    font-size: 3rem;
-    font-weight: 300;
-    line-height: 1.2;
+.continue-main {
+    padding: 60px;
+    max-width: 700px;
 }
 
-.home .subtitle {
-    font-size: 1.1rem;
+.continue-text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.continue-text h1 {
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.continue-text a {
+    color: #3F88C5;
+    text-decoration: none;
+}
+
+.book {
+    display: flex;
+}
+
+.book img {
+    aspect-ratio: 5/4;
+    max-width: 120px;
+    height: 120px;
+    display: block;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.book .book-infos {
+    padding: 15px 10px 15px 25px;
+    background-color: #F1FAFF;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+.book .book-infos div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.book .book-infos span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    color: #3F88C5;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.book .book-infos h2 {
+    font-size: 17px;
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+}
+
+.book .book-infos p {
+    font-size: 13px;
+}
+
+.book icon {
+    text-align: center;
 }

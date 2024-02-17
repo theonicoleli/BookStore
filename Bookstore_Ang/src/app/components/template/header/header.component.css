@@ -86,8 +86,13 @@ mat-select {
     border-radius: 4px;
     border: 1px solid #ccc;
     padding: 8px 12px;
-    background-color: #fff;
+    background-color: #F1FAFF;
     outline: none; 
+}
+
+mat-select span {
+    color: #000000d3;
+    font-family: 'Poppins', sans-serif;
 }
 
 mat-option {
