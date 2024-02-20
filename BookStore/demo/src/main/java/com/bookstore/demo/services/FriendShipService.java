@@ -1,6 +1,7 @@
 package com.bookstore.demo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,13 +86,9 @@ public class FriendShipService {
     }
     
     public boolean deleteFriendship(User user1, User user2) {
-        List<Friendship> friendships = friendshipRepository.findByUser1OrUser2(user1, user2);
+        Optional<Friendship> friendships = friendshipRepository.findFriendship(user1, user2);
         if (!friendships.isEmpty()) {
-            Friendship friendshipToDelete = friendships.stream()
-                    .filter(friendship -> (friendship.getUser1().getId().equals(user1.getId()) && friendship.getUser2().getId().equals(user2.getId()))
-                            || (friendship.getUser1().getId().equals(user2.getId()) && friendship.getUser2().getId().equals(user1.getId())))
-                    .findFirst()
-                    .orElse(null);
+            Friendship friendshipToDelete = friendships.get();
 
             if (friendshipToDelete != null) {
                 friendshipRepository.delete(friendshipToDelete);
@@ -102,6 +99,6 @@ public class FriendShipService {
     }
 
     public List<Friendship> getFriendshipsByUser(User user) {
-        return friendshipRepository.findByUser1OrUser2(user, user);
+        return friendshipRepository.findFriendshipsByUser(user);
     }
 }

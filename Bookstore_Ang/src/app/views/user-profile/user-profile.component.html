@@ -28,12 +28,17 @@
     </div>
 
     <div class="verification" *ngIf="!isUserSessionProfile()">
-        <button *ngIf="existsFriendShip(); else amigos" (click)="sendFriendShipRequest()" id="friendship">
-            Solicitar amizade
-        </button>
+        <ng-container *ngIf="existsFriendShip(); else amigos" >
+            <button (click)="sendFriendShipRequest()" id="friendship">
+                Solicitar amizade
+            </button>
+        </ng-container>
     
         <ng-template #amigos>
             <button id="friendship other-button" (click)="deleteFriendShip()">Seu amigo</button>
+            <button id="friendship send-message" [routerLink]="urlChat" routerLinkActive="active-link">
+                Send message
+            </button>
         </ng-template>
     </div>
 

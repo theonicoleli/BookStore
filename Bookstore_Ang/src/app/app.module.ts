@@ -41,6 +41,7 @@ import { UserinfoComponent } from './components/template/userinfo/userinfo.compo
 import { LikesUsersComponent } from './components/template/likes-users/likes-users.component';
 import { NotificationComponent } from './views/notification/notification.component';
 import { NotificationInfoComponent } from './components/template/notification-info/notification-info.component';
+import { ChatComponentComponent } from './views/chat-component/chat-component.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { NotificationInfoComponent } from './components/template/notification-in
     UserinfoComponent,
     LikesUsersComponent,
     NotificationComponent,
-    NotificationInfoComponent
+    NotificationInfoComponent,
+    ChatComponentComponent
   ],
   imports: [
     BrowserModule,

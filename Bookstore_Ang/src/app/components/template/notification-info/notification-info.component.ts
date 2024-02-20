@@ -18,6 +18,7 @@ export class NotificationInfoComponent {
     if (confirm(`Você realmente quer aceitar ser amigo de ${this.notification.sender.name}?`)) {
       this.friendShipService.acceptFriendShipRequest(this.notification.id, true).subscribe(
         (data) => {
+          console.log(data);
           console.log("Amizade aceita com sucesso.");
         },
         (error) => {
@@ -28,14 +29,17 @@ export class NotificationInfoComponent {
   }
 
   rejectFriendship(): void {
-    this.friendShipService.rejectFriendship(this.notification.id).subscribe(
-      (data) => {
-        console.log("Amizade recusada com sucesso.");
-      },
-      (error) => {
-        console.error("Falha ao recusar amizade.", error);
-      }
-    );
+    if (confirm(`Você realmente quer recusar ser amigo de ${this.notification.sender.name}?`)) {
+      this.friendShipService.rejectFriendship(this.notification.id).subscribe(
+        (data) => {
+          console.log(data);
+          console.log("Amizade recusada com sucesso.");
+        },
+        (error) => {
+          console.error("Falha ao recusar amizade.", error);
+        }
+      );
+    }
   }
 
 }

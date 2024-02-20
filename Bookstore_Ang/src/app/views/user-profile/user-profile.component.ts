@@ -26,6 +26,8 @@ export class UserProfileComponent implements OnInit {
 
   showFriendsModal: boolean = false;
 
+  urlChat: string = "";
+
   constructor(
     private route: ActivatedRoute, 
     private userService: UsersService, 
@@ -56,8 +58,7 @@ export class UserProfileComponent implements OnInit {
       (data: any) => {
         this.userProfile = data;
 
-        this.getUserFriends();
-        this.getAllSavedBooksByUserId();
+        this.loadUserData();
         
         if (data.bookList != null) {
           for (const bookList of data.bookList) {
@@ -65,7 +66,7 @@ export class UserProfileComponent implements OnInit {
               (otherDatas) => {
                 this.books.push(otherDatas);
               },
-              (error) => {
+              () => {
                 console.log("Infelizmente não conseguimos achar os livros do usuário.")
               }
             )
@@ -77,7 +78,7 @@ export class UserProfileComponent implements OnInit {
         }        
 
       },
-      (error: any) => {
+      () => {
         console.log("Error trying to find person with userName: " + this.userName);
       }
     )
@@ -93,13 +94,13 @@ export class UserProfileComponent implements OnInit {
               (readBook) => {
                 this.readBooks.push(readBook);
               },
-              (error) => {
+              () => {
                 console.log("Erro ao tentar achar livros do usuário.");
               }
             )
           }
         },
-        (error) => {
+        () => {
           console.log("Erro ao encontrar livros lidos do usuário.");
         }
       )
@@ -121,7 +122,7 @@ export class UserProfileComponent implements OnInit {
                   this.savedBooks.push(readBook);
                 }
               },
-              (error) => {
+              () => {
                 console.log("Erro ao tentar achar livros salvos do usuário.");
               }
             );
@@ -130,7 +131,7 @@ export class UserProfileComponent implements OnInit {
             this.getBooksAlreadyRead();
           }
         },
-        (error: any) =>  {
+        () =>  {
           console.log("Erro ao achar livros salvos.")
         }
       );
@@ -147,10 +148,10 @@ export class UserProfileComponent implements OnInit {
   sendFriendShipRequest(): void {
     if (confirm(`Tem certeza de que deseja adicionar ${this.userProfile?.name}?`)) {
       this.friendShipService.sendFriendShipRequest(this.session.getAuthenticatedUser(), this.userProfile).subscribe(
-        (data) => {
+        () => {
           console.log("Foi enviado uma notificação ao usuário");
         },
-        (error) => {
+        () => {
           console.error("Falha ao enviar notificação");
         }
       );
@@ -199,13 +200,22 @@ export class UserProfileComponent implements OnInit {
     if (this.userProfile !== undefined && this.session.isAuthenticated()) {
       if (!this.existsFriendShip() && confirm(`Você realmente deseja excluir a amizade com ${this.userProfile?.name}`)) {
         this.friendShipService.deleteFriendShip(this.session.getAuthenticatedUser()?.id, this.userProfile?.id).subscribe(
-          (data) => {
+          () => {
             console.log("Amizade excluida com sucesso.");
             this.friends = this.friends.filter(friend => friend?.id !== this.userProfile?.id);
           }
         );
       }
     }
+  }
+
+  async loadUserData() {
+    await Promise.all([
+        this.getUserFriends(),
+        this.getAllSavedBooksByUserId()
+    ]);
+
+    this.urlChat = `/chat/${this.userProfile?.userName}`;
   }
   
 }

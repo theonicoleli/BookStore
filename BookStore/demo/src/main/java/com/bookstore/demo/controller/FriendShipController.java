@@ -1,6 +1,9 @@
 package com.bookstore.demo.controller;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,73 +51,80 @@ public class FriendShipController {
     }
     
     @GetMapping("/existsFriendShip/{user1Id}/{user2Id}")
-    public boolean existsFriendShip(@PathVariable("user1Id") Long user1Id, @PathVariable("user2Id") Long user2Id) {
-    	try {
-    		User user1 = userService.getUserById(user1Id);
-    		User user2 = userService.getUserById(user2Id);
-    		
-    		if (user1 == null || user2 == null) {
-    			return false;
-    		}
-    		
-    		return friendshipService.existsFriendShip(user1, user2);
-    	} catch (Exception e) {
-    		return false;
-    	}
+    public ResponseEntity<Boolean> existsFriendShip(@PathVariable("user1Id") Long user1Id, @PathVariable("user2Id") Long user2Id) {
+        try {
+            User user1 = userService.getUserById(user1Id);
+            User user2 = userService.getUserById(user2Id);
+
+            if (user1 == null || user2 == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            boolean exists = friendshipService.existsFriendShip(user1, user2);
+            return ResponseEntity.ok(exists);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-    
+
     @GetMapping("/countUserFriends/{userId}")
-    public Integer countUserFriends(@PathVariable("userId") Long userId) {
-    	try {
-        	User user = userService.getUserById(userId);
-        	
-        	if (user == null) {
-        		return 0;
-        	}
-        	return friendshipService.countUserFriends(user);
-    	} catch (Exception e) {
-    		return 0;
-    	}
+    public ResponseEntity<Integer> countUserFriends(@PathVariable("userId") Long userId) {
+        try {
+            User user = userService.getUserById(userId);
+
+            if (user == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            int count = friendshipService.countUserFriends(user);
+            return ResponseEntity.ok(count);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping("/request")
-    public ResponseEntity<String> sendFriendshipRequest(@RequestBody FriendShipRequest friendshipRequest) {
+    public ResponseEntity<Map<String, String>> sendFriendshipRequest(@RequestBody FriendShipRequest friendshipRequest) {
         try {
             User sender = userService.getUserById(friendshipRequest.getSenderId());
             User receiver = userService.getUserById(friendshipRequest.getReceiverId());
 
             friendshipService.sendFriendshipRequest(sender, receiver);
-            return new ResponseEntity<>("Friendship request sent successfully", HttpStatus.CREATED);
+            return ResponseEntity.ok(Collections.singletonMap("message", "Friendship request sent successfully"));
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("message", "Failed to send friendship request"));
         }
     }
 
     @PostMapping("/accept/{notificationId}")
-    public ResponseEntity<String> acceptFriendship(@PathVariable Long notificationId, @RequestBody AcceptanceResponse acceptanceResponse) {
+    public ResponseEntity<Map<String, String>> acceptFriendship(@PathVariable Long notificationId, @RequestBody AcceptanceResponse acceptanceResponse) {
         try {
             boolean answer = acceptanceResponse.isAcceptance();
 
             if (friendshipService.acceptFriendship(notificationId, answer)) {
-                return new ResponseEntity<>("Friendship accepted successfully", HttpStatus.OK);
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "Friendship accepted successfully");
+                return ResponseEntity.ok(response);
             } else {
-                return new ResponseEntity<>("Failed to accept friendship", HttpStatus.BAD_REQUEST);
+                return ResponseEntity.badRequest().build();
             }
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> rejectFriendship(@PathVariable Long id) {
+    public ResponseEntity<Map<String, String>> rejectFriendship(@PathVariable Long id) {
         try {
             if (friendshipService.rejectFriendship(id)) {
-                return new ResponseEntity<>("Friendship request rejected successfully", HttpStatus.OK);
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "Friendship request rejected successfully");
+                return ResponseEntity.ok(response);
             } else {
-                return new ResponseEntity<>("Notification not found", HttpStatus.NOT_FOUND);
+                return ResponseEntity.notFound().build();
             }
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -140,7 +150,7 @@ public class FriendShipController {
     }
     
     @DeleteMapping("/deleteFriendShip/{userId1}/{userId2}")
-    public ResponseEntity<String> deleteFriendship(@PathVariable Long userId1, @PathVariable Long userId2) {
+    public ResponseEntity<Map<String, String>> deleteFriendship(@PathVariable Long userId1, @PathVariable Long userId2) {
         try {
             User user1 = userService.getUserById(userId1);
             User user2 = userService.getUserById(userId2);
@@ -150,17 +160,18 @@ public class FriendShipController {
                 boolean deleted = friendshipService.deleteFriendship(user1, user2);
 
                 if (deleted) {
-                    return ResponseEntity.ok("Friendship deleted successfully");
+                    Map<String, String> response = new HashMap<>();
+                    response.put("message", "Friendship deleted successfully");
+                    return ResponseEntity.ok(response);
                 } else {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Friendship not found");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("message", "Friendship not found"));
                 }
             } else {
-            	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Friendship not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("message", "Friendship not found"));
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete friendship");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("message", "Failed to delete friendship"));
         }
     }
-
 }

@@ -18,7 +18,7 @@ export class NotificationComponent {
 
   ngOnInit(): void {
     const userId = (this.session.getAuthenticatedUser()?.id ?? '').toString();
-    this.pollingSubscription = this.notificationService.startPolling(userId, 5000).subscribe(
+    this.pollingSubscription = this.notificationService.startPolling(userId, 3000).subscribe(
       (notifications: any[]) => {
         this.notifications = notifications;
       },

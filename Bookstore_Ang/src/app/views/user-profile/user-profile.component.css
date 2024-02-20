@@ -49,8 +49,7 @@
 
 .verification {
     display: flex;
-    justify-content: left;
-    align-items: left;
+    justify-content: space-between;
     margin-top: 20px;
 }
 
@@ -60,15 +59,12 @@ button {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.3);
 }
 
 #friendship {
     background-color: #3498db;
     color: white;
-}
-
-#friendship.other-button {
-    background-color: #2ecc71;
 }
 
 button:hover {
