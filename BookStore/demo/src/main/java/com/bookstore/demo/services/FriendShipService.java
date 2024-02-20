@@ -101,4 +101,9 @@ public class FriendShipService {
     public List<Friendship> getFriendshipsByUser(User user) {
         return friendshipRepository.findFriendshipsByUser(user);
     }
+    
+    public Optional<Long> findFriendshipIdByUsers(User user1, User user2) {
+        return friendshipRepository.findFriendshipIdByUser1AndUser2(user1, user2);
+    }
+    
 }

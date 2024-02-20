@@ -1,1 +1,22 @@
-<p>chat-component works!</p>
+<div class="chat">
+    <div class="user-info">
+        <img [src]="userChat.imagePath" alt="User Image" class="user-image">
+        <span>{{ userChat.name }}</span>
+    </div>
+    <div class="messages">
+        <div *ngFor="let message of messages" class="message" [ngClass]="{'user-message': message.senderId === this.session.getAuthenticatedUser()?.id, 'other-message': message.senderId !== this.session.getAuthenticatedUser()?.id}">
+            <div class="message-header">
+                <span class="message-username">{{ getUserMessage(message) }}</span>
+                <span class="message-timestamp">{{ formatTimestamp(message.timestamp) }}</span>
+            </div>
+            <div class="message-content">
+                <img *ngIf="message.senderId !== this.session.getAuthenticatedUser()?.id" [src]="this.userChat.imagePath" alt="User Image" class="user-image">
+                <span>{{ message.content }}</span>
+            </div>
+        </div>
+    </div>
+    <form (ngSubmit)="sendMessage()" #messageForm="ngForm">
+        <input type="text" name="message" placeholder="Type your message..." [(ngModel)]="newMessageText" required>
+        <button type="submit">Send</button>
+    </form>
+</div>

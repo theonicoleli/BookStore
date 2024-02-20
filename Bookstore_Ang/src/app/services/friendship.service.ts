@@ -16,6 +16,10 @@ export class FriendshipService {
     return this.http.get<any>(this.url);
   }
 
+  getFriendshipId(username1?: string, username2?: string): Observable<number> {
+    return this.http.get<number>(`${this.url}/friendshipId/${username1}/${username2}`);
+  }
+
   getFriendShipsByUser(userId?: number): Observable<any> {
     return this.http.get<any>(`${this.url}/${userId}`);
   }

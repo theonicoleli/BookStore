@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,6 +81,24 @@ public class FriendShipController {
             return ResponseEntity.ok(count);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
+    @GetMapping("/friendshipId/{username1}/{username2}")
+    public ResponseEntity<Long> getFriendshipId(@PathVariable String username1, @PathVariable String username2) {
+        User user1 = userService.getUserByUserName(username1);
+        User user2 = userService.getUserByUserName(username2);
+
+        if (user1 == null || user2 == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<Long> friendshipId = friendshipService.findFriendshipIdByUsers(user1, user2);
+
+        if (friendshipId.isPresent()) {
+            return ResponseEntity.ok(friendshipId.get());
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 

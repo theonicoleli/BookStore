@@ -54,9 +54,15 @@ public class MessageController {
     @PostMapping
     public ResponseEntity<Message> createMessage(@RequestBody Message message) {
         try {
+            System.out.println("Content: " + message.getContent() +
+                ", FriendshipId: " + message.getFriendshipId() +
+                ", ReceiverId: " + message.getReceiverId() +
+                ", SenderId: " + message.getSenderId() +
+                ", Timestamp: " + message.getTimestamp());
             Message newMessage = messageService.saveMessage(message);
             return new ResponseEntity<>(newMessage, HttpStatus.CREATED);
         } catch (Exception e) {
+        	System.out.println("Timestamp: " + message.getTimestamp());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
