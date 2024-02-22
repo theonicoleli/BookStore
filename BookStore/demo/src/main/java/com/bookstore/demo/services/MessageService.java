@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageService {
@@ -32,4 +33,11 @@ public class MessageService {
     public List<Message> findAllMessagesByFriendshipId(Long friendshipId) {
         return messageRepository.findAllByFriendshipId(friendshipId);
     }
+    
+    public void onDeleteFriendShip(Long friendshipId) {
+        List<Message> messages = messageRepository.findAllByFriendshipId(friendshipId);
+        List<Long> messageIds = messages.stream().map(Message::getId).collect(Collectors.toList());
+        messageRepository.deleteAllById(messageIds);
+    }
+
 }

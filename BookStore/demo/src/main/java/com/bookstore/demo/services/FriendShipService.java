@@ -106,4 +106,8 @@ public class FriendShipService {
         return friendshipRepository.findFriendshipIdByUser1AndUser2(user1, user2);
     }
     
+    public Optional<Friendship> findFriendshipByUsers(User user1, User user2) {
+    	return friendshipRepository.findFriendship(user1, user2);
+    }
+    
 }

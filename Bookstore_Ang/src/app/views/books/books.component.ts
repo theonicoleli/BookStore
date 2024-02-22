@@ -5,6 +5,7 @@ import { Book } from '../../services/models/Book';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
 import { SavebookService } from '../../services/savebook.service';
+import { concat } from 'rxjs';
 
 @Component({
   selector: 'app-books',
@@ -40,18 +41,18 @@ export class BooksComponent implements OnInit {
       this.bookService.getAllBooksId().subscribe(
         (datas) => {
           if (datas) {
-            for (const data of datas) {
-              this.bookService.getBookById(data).subscribe(
-                (book: Book) => {
-                  if (!this.books.some(bk => bk.id === book.id)) {
-                    this.books.push(book);
-                  }
+            const observables = datas.map((data: number) => this.bookService.getBookById(data));
+            concat(...observables).subscribe(
+              (book: any) => {
+                if (!this.books || !this.books.some(bk => bk.id === book.id)) {
+                  this.books = this.books || [];
+                  this.books.push(book);
                 }
-              );
-            }
+              }
+            );
           }
         },
-        (error) => {
+        () => {
           console.log("Falha ao achar livros.")
         }
       );      
@@ -66,7 +67,6 @@ export class BooksComponent implements OnInit {
       );
     }
   }
-  
 
   isAdm(): boolean {
     if (this.session.getAuthenticatedUser()?.email.includes("@bookstore.com")) {

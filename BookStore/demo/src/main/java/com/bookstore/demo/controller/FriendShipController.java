@@ -25,6 +25,7 @@ import com.bookstore.demo.model.Friendship;
 import com.bookstore.demo.model.FriendshipDTO;
 import com.bookstore.demo.model.User;
 import com.bookstore.demo.services.FriendShipService;
+import com.bookstore.demo.services.MessageService;
 import com.bookstore.demo.services.UserService;
 
 @CrossOrigin(origins = "*")
@@ -37,6 +38,9 @@ public class FriendShipController {
     
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private MessageService messageService;
 
     @GetMapping
     public ResponseEntity<List<FriendshipDTO>> getAllFriendships() {
@@ -173,9 +177,14 @@ public class FriendShipController {
         try {
             User user1 = userService.getUserById(userId1);
             User user2 = userService.getUserById(userId2);
-            
+
             if (friendshipService.existsFriendShip(user1, user2)) {
-            	
+                Optional<Long> friendshipId = friendshipService.findFriendshipIdByUsers(user1, user2);
+
+                if (friendshipId.isPresent()) {
+                    messageService.onDeleteFriendShip(friendshipId.get());
+                }
+
                 boolean deleted = friendshipService.deleteFriendship(user1, user2);
 
                 if (deleted) {
@@ -193,4 +202,5 @@ public class FriendShipController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("message", "Failed to delete friendship"));
         }
     }
+
 }
