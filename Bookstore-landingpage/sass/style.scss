@@ -1,0 +1,100 @@
+@import "../sass/fonts/fonts.scss";
+@mixin flex-column() {
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar.bg-body-tertiary {
+    padding: 15px 15px 5px 15px;
+    background-color: white !important;
+    font-family: $roboto;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    top: 0;
+
+    .navbar-nav, .navbar-collapse {
+        gap: 5px;
+    }
+}
+
+.container-fluid .navbar-collapse {
+    flex-grow: unset !important;
+}
+
+.container.main {
+    @include flex-column();
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    p {
+        text-align: center;
+        font-size: 19px;
+    }
+}
+
+.about-us {
+    .container {
+        display: flex; 
+        gap: 8px;
+    }
+
+    img {
+        width: 500px;
+    }
+
+    .aboutus-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        p {
+            font-size: 19px;
+        }
+    }
+
+    @media screen and (max-width: 1200px) {
+        .container {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        img{
+            width: 300px;
+        }
+        p {
+            font-size: 14px;
+        }
+    }
+}
+
+.btn {
+    font-family: $roboto;
+}
+
+h1 {
+    font-family: $roboto;
+    text-align: center;
+}
+
+.books-primary {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 20px;
+    .container.row {
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+        gap: 30px;
+    }
+    img {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    p {
+        font-size: 15px !important;
+    }
+}
