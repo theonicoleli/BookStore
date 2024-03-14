@@ -1,34 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+
 body {
     min-height: 100vh;
 }
 
-footer {
-    padding: 20px;
-    background-color: #F1FAFF;
-    color: #000000d3;
-    bottom: 0;
-    justify-content: flex-end;
-    font-family: 'Poppins', sans-serif;
-    height: 180px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: auto;
-}
-
-h1 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: bold;
-    font-size: 22px;
-}
-
-.devby {
-    text-align: center;
-}
-
-.devby a {
-    text-decoration: none;
-    color: #3F88C5;
+footer a {
+    font-family: "Roboto Mono", monospace;
 }
