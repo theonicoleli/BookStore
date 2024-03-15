@@ -29,6 +29,10 @@
     cursor: pointer;
 }
 
+.mat-toolbar a {
+    font-weight: 400;
+}
+
 .title-group a {
     gap: 6px;
     font-size: 16px;
@@ -76,7 +80,7 @@
     background-color: #3F88C5;
     color: #F0FAFF;
     width: 90px;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Roboto Mono", monospace;
     font-size: 14px;
 }
 
@@ -91,13 +95,20 @@ mat-select {
     border-radius: 4px;
     border: 1px solid #ccc;
     padding: 8px 12px;
-    background-color: #F1FAFF;
     outline: none; 
 }
 
 mat-select span {
-    color: #000000d3;
-    font-family: 'Poppins', sans-serif;
+    color: #000000d3;  
+}
+
+.mat-mdc-select {
+    font-family: "Roboto Mono", monospace;
+    text-transform: capitalize;
+}
+
+.mat-mdc-select-min-line {
+    text-transform: capitalize;
 }
 
 mat-option {

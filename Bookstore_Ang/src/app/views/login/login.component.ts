@@ -15,6 +15,7 @@ export class LoginComponent {
   successfulLogin: boolean = false;
   hide: boolean = true;
   errorMessage: string = '';
+  pageLogin: boolean = true;
 
   constructor(private fb: FormBuilder, private usersService: UsersService, private session: AuthenticationService,
     private router: Router) {
