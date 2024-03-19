@@ -11,7 +11,6 @@ import { Notification } from '../../../services/models/Notification';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-
   notifications: Notification[] = [];
 
   constructor(

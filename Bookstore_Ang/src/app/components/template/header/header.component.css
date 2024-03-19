@@ -1,22 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 .title-group, .header .links, .header a, .header {
     display: flex;
 }
 
 .header {
     align-items: center;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Roboto Mono", monospace;
     padding: 20px;
-    justify-content: space-around;
-    color: #000000d3;
-    background-color: #F1FAFF;
+    justify-content: space-between;
+    background-color: white;
     z-index: 10000;
+}
+
+.mat-toolbar h1{
+    font-family: "Roboto Mono", monospace;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.mat-elevation-z4 {
+    box-shadow: unset;
 }
 
 .header a {
     align-items: center;
     text-decoration: none;
     cursor: pointer;
+}
+
+.mat-toolbar a {
+    font-weight: 400;
 }
 
 .title-group a {
@@ -66,17 +80,12 @@
     background-color: #3F88C5;
     color: #F0FAFF;
     width: 90px;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Roboto Mono", monospace;
     font-size: 14px;
 }
 
 .title-group.home {
     cursor: pointer;
-}
-
-.title-group h1 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: bold;
 }
 
 mat-select {
@@ -86,13 +95,20 @@ mat-select {
     border-radius: 4px;
     border: 1px solid #ccc;
     padding: 8px 12px;
-    background-color: #F1FAFF;
     outline: none; 
 }
 
 mat-select span {
-    color: #000000d3;
-    font-family: 'Poppins', sans-serif;
+    color: #000000d3;  
+}
+
+.mat-mdc-select {
+    font-family: "Roboto Mono", monospace;
+    text-transform: capitalize;
+}
+
+.mat-mdc-select-min-line {
+    text-transform: capitalize;
 }
 
 mat-option {

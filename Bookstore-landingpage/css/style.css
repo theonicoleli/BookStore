@@ -1,0 +1,155 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Ubuntu&display=swap");
+.navbar.bg-body-tertiary {
+  padding: 15px 15px 5px 15px;
+  background-color: white !important;
+  font-family: "Roboto Mono", monospace;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  top: 0;
+}
+.navbar.bg-body-tertiary .navbar-nav, .navbar.bg-body-tertiary .navbar-collapse {
+  gap: 5px;
+}
+
+.container-fluid .navbar-collapse {
+  flex-grow: unset !important;
+}
+
+.container.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.container.main p {
+  text-align: center;
+  font-size: 19px;
+}
+
+.about-us .container {
+  display: flex;
+  gap: 8px;
+}
+.about-us img {
+  width: 500px;
+}
+.about-us .aboutus-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.about-us .aboutus-info p {
+  font-size: 19px;
+}
+@media screen and (max-width: 1200px) {
+  .about-us .container {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .about-us img {
+    width: 300px;
+  }
+  .about-us p {
+    font-size: 14px;
+  }
+}
+
+.btn {
+  font-family: "Roboto Mono", monospace;
+}
+
+h1 {
+  font-family: "Roboto Mono", monospace;
+  text-align: center;
+}
+
+.books-primary {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 20px;
+}
+.books-primary .container.row {
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  gap: 30px;
+}
+.books-primary img {
+  width: 200px;
+  height: 200px;
+  user-select: none;
+}
+
+.blockquote-sect {
+  background-color: #F6F6F6;
+  margin: 60px 0px;
+  min-height: 200px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.blockquote-sect .blockquote-footer {
+  margin-bottom: unset;
+}
+
+.faq {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 60px;
+}
+.faq div.accordion {
+  padding: 8px;
+  width: 80%;
+}
+
+.developers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.developers h1 {
+  margin-bottom: 20px;
+}
+.developers .profiles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+.developers .card {
+  text-align: center;
+  width: 18rem;
+}
+.developers img {
+  width: 120px;
+  height: 120px;
+  border-radius: 30px;
+}
+.developers .fa-brands {
+  font-size: 25px;
+}
+.developers .fa-github {
+  color: black;
+}
+
+footer a {
+  font-family: "Roboto Mono", monospace;
+}
+
+@media screen and (max-width: 1200px) {
+  p {
+    font-size: 15px !important;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */

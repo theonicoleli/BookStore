@@ -12,6 +12,7 @@ export class SignUpComponent {
   loginForm: FormGroup;
   hide: boolean = true;
   errorMessage: string = '';
+  pageSignUp: boolean = true;
 
   constructor(private fb: FormBuilder, private usersService: UsersService, private router: Router) {
     this.loginForm = this.fb.group({
