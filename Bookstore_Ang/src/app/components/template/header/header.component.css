@@ -102,7 +102,7 @@ mat-select span {
     color: #000000d3;  
 }
 
-.mat-mdc-select {
+.mat-mdc-select, .mat-mdc-option {
     font-family: "Roboto Mono", monospace;
     text-transform: capitalize;
 }
@@ -118,4 +118,9 @@ mat-option {
 
 mat-option.mat-selected {
     background-color: #e0e0e0;
+}
+
+.title-group .mat-mdc-option.mat-mdc-option-active .mdc-list-item__primary-text {
+    color: #174acb;
+    font-weight: bold;
 }
