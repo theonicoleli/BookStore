@@ -15,7 +15,6 @@ body {
 }
 
 mat-card {
-    width: 300px;
     padding: 30px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     display: flex;
@@ -111,3 +110,6 @@ input[type="file"]:not(:placeholder-shown) {
     border-color: #2196F3;
 }
 
+.image-file {
+    padding-bottom: 44px;
+}

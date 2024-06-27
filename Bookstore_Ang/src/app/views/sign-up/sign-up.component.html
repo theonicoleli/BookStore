@@ -21,7 +21,9 @@
                 </mat-error>
             </mat-form-field>
 
-            <input type="file" (change)="onFileChange($event)" id="image" accept="image/*">
+            <div class="image-file">
+                <input type="file" (change)="onFileChange($event)" id="image" accept="image/*">
+            </div>
 
             <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>

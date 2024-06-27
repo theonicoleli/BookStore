@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-edit-user',
@@ -69,7 +70,7 @@ export class EditUserComponent {
         name: this.userForm.controls['name'].value,
         userName: this.userForm.controls['userName'].value,
         email: sessionConst?.email ?? '',
-        password: this.userForm.controls['password'].value,
+        password: CryptoJS.MD5(this.userForm.controls['password'].value).toString(),
       };
 
       const formData = new FormData();

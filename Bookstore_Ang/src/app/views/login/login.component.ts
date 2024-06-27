@@ -4,6 +4,7 @@ import { UsersService } from '../../services/users.service';
 import { AuthenticationService } from '../../services/authentication.service';
 import { User } from '../../services/models/User';
 import { Router } from '@angular/router';
+import * as CryptoJS from 'crypto-js';
 
 @Component({ 
   selector: 'app-login',
@@ -15,7 +16,6 @@ export class LoginComponent {
   successfulLogin: boolean = false;
   hide: boolean = true;
   errorMessage: string = '';
-  pageLogin: boolean = true;
 
   constructor(private fb: FormBuilder, private usersService: UsersService, private session: AuthenticationService,
     private router: Router) {
@@ -39,7 +39,7 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const userEmail = this.loginForm.controls['email'].value;
-      const userPassword = this.loginForm.controls['password'].value;
+      const userPassword = CryptoJS.MD5(this.loginForm.controls['password'].value).toString();
   
       this.usersService.getUserByEmailAndPassword(userEmail, userPassword).subscribe(
         (data: User) => {
