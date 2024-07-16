@@ -1,51 +1,54 @@
 <div class="sign-up">
     <mat-card>
 
-        <h1>Sign-up</h1>
+        <h1>Hello!<br> Welcome.</h1>
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
 
-            <mat-form-field appearance="fill">
-                <mat-label>Name</mat-label>
-                <input matInput formControlName="name" type="text" id="name" name="name">
-                <mat-error *ngIf="name?.hasError('required') && name?.touched">
-                    O nome é obrigatório.
-                </mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill">
-                <mat-label>Username</mat-label>
-                <input matInput formControlName="userName" type="text" id="userName" name="userName">
-                <mat-error *ngIf="userName?.hasError('required') && userName?.touched">
-                    O UserName é obrigatório.
-                </mat-error>
-            </mat-form-field>
+            <div class="flex-row">
+                <mat-form-field appearance="fill">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" type="text" id="name" name="name">
+                    <mat-error *ngIf="name?.hasError('required') && name?.touched">
+                        O nome é obrigatório.
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Username</mat-label>
+                    <input matInput formControlName="userName" type="text" id="userName" name="userName">
+                    <mat-error *ngIf="userName?.hasError('required') && userName?.touched">
+                        O UserName é obrigatório.
+                    </mat-error>
+                </mat-form-field>
+            </div>
 
             <div class="image-file">
+                <mat-label>User Image</mat-label>
                 <input type="file" (change)="onFileChange($event)" id="image" accept="image/*">
             </div>
 
-            <mat-form-field appearance="fill">
-                <mat-label>Email</mat-label>
-                <input matInput formControlName="email" type="email" id="email" name="email">
-                <mat-error *ngIf="email?.hasError('required') && email?.touched">O email é obrigatório.</mat-error>
-                <mat-error *ngIf="email?.hasError('email') && email?.touched">O email não é válido.</mat-error>
-            </mat-form-field>
-
-            <mat-form-field>
-                <mat-label>Enter your password</mat-label>
-                <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
-                <button mat-icon-button matSuffix (click)="togglePasswordVisibility()"
-                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" class="visibilityIcon">
-                    <mat-icon>{{ getVisibilityIcon() }}</mat-icon>
-                </button>
-                <mat-error *ngIf="password?.hasError('required') && password?.touched">A senha é obrigatória.</mat-error>
-            </mat-form-field>
+            <div class="flex-row">
+                <mat-form-field appearance="fill">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" type="email" id="email" name="email">
+                    <mat-error *ngIf="email?.hasError('required') && email?.touched">O email é obrigatório.</mat-error>
+                    <mat-error *ngIf="email?.hasError('email') && email?.touched">O email não é válido.</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
+                    <button mat-icon-button matSuffix (click)="togglePasswordVisibility()"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" class="visibilityIcon">
+                        <mat-icon>{{ getVisibilityIcon() }}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="password?.hasError('required') && password?.touched">A senha é obrigatória.</mat-error>
+                </mat-form-field>
+            </div>
 
             <mat-error class="erro-geral" *ngIf="errorMessage">{{ errorMessage }}</mat-error>
 
             <button class="post-login" type="submit">Submit</button>
         </form>
-        <a class="login" routerLink="/login" routerLinkActive="active-link">Login</a>
+        <a class="login" routerLink="/login" routerLinkActive="active-link">If you already have a account! Click here to sign-in.</a>
     </mat-card>
 </div>

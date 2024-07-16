@@ -1,18 +1,18 @@
 <div class="login">
     <mat-card>
 
-        <h1>Login</h1>
+        <h1>Hello!<br>Welcome back.</h1>
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <mat-form-field appearance="fill">
-                <mat-label>Email</mat-label>
+                <mat-label>E-mail</mat-label>
                 <input matInput formControlName="email" type="email" id="email" name="email">
-                <mat-error *ngIf="email.hasError('required') && email.touched">O email é obrigatório.</mat-error>
-                <mat-error *ngIf="email.hasError('email') && email.touched">O email não é válido.</mat-error>
+                <mat-error *ngIf="email.hasError('required') && email.touched">O e-mail é obrigatório.</mat-error>
+                <mat-error *ngIf="email.hasError('email') && email.touched">O e-mail não é válido.</mat-error>
             </mat-form-field>
 
             <mat-form-field>
-                <mat-label>Enter your password</mat-label>
+                <mat-label>Password</mat-label>
                 <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
                 <button mat-icon-button matSuffix (click)="togglePasswordVisibility()"
                         [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" class="visibilityIcon">
@@ -25,6 +25,6 @@
 
             <button class="post-login" type="submit">Entrar</button>
         </form>
-        <a class="sign-up" routerLink="/signup" routerLinkActive="active-link">Sign-up</a>
+        <a class="sign-up" routerLink="/signup" routerLinkActive="active-link">Don't you have a account? Click here to sign-up</a>
     </mat-card>
 </div>

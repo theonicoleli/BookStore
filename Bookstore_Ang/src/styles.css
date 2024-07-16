@@ -1,4 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+form mat-form-field div.mdc-text-field--filled:not(.mdc-text-field--disabled) { /* TEXT INPUT */
+    background-color: transparent;
+}
+
+form .mdc-text-field--filled .mdc-floating-label { /* TEXT INPUT LABEL */
+    font-family: "Roboto Mono", monospace;
+    letter-spacing: 0px;
+}
+
+.mat-mdc-form-field-error-wrapper { /* TEXT INPUT ERROR MESSAGE */
+    margin-top: 2px;
+}
+
+.flex-row {
+    display: flex;
+    gap: 12px;
+}
+
+.header .mat-mdc-option .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
+    color: #333333;
+}

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
 body {
     margin: 0;
     display: flex;
@@ -15,12 +17,12 @@ body {
 }
 
 mat-card {
-    width: 300px;
-    padding: 30px;
+    width: 500px;
+    min-width: 300px;
+    padding: 60px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
     background-color: #ffffff;
     border-radius: 15px;
@@ -35,6 +37,7 @@ h1 {
     font-size: 30px;
     margin-bottom: 50px;
     font-weight: 500;
+    font-family: "Roboto Mono", monospace;
 }
 
 form {
@@ -46,16 +49,18 @@ form {
 mat-form-field {
     width: 100%;
     margin-bottom: 20px;
+    
 }
 
 .post-login {
-    background-color: #007bff;
+    background-color: #174acb;
     color: #fff;
     padding: 15px;
     cursor: pointer;
     border: none;
     border-radius: 8px;
     transition: background-color 0.3s;
+    font-family: "Roboto Mono", monospace;
 }
 
 .post-login:hover {
@@ -92,5 +97,11 @@ mat-form-field {
     padding-top: 20px;
     font-weight: 500;
     font-size: 12px;
+    text-align: center;
 }
+
+body > app-root > app-header > app-login > div > mat-card > form > mat-form-field.mat-mdc-form-field.ng-tns-c2608167813-1.mat-mdc-form-field-type-mat-input.mat-form-field-appearance-fill.mat-form-field-hide-placeholder.mat-primary.ng-untouched.ng-pristine.ng-invalid > div.mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled {
+    background-color: none !important;
+}
+
 
